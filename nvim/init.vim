@@ -18,20 +18,18 @@ Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'lambdalisue/suda.vim'
 Plug 'ryanoasis/vim-devicons'
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2'
-autocmd BufEnter * call ncm2#enable_for_buffer()
-set completeopt=noinsert,menuone,noselect
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
-Plug 'ncm2/ncm2-jedi'
 Plug 'tmsvg/pear-tree'
+Plug 'tpope/vim-commentary'
+Plug 'vim-scripts/AutoComplPop'
 call plug#end()
 
 " Nerdtree autostart & autokill
       autocmd VimEnter * :NERDTree | wincmd p
       autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
       noremap <F3> :NERDTreeToggle<CR>
+
+" Use tab to confirm autocompletion.
+      inoremap <expr> <Tab> pumvisible() ? "\<Enter>" : "\<Tab>"
 
 " pear-tree
       let g:pear_tree_repeatable_expand = 0
@@ -63,3 +61,7 @@ call plug#end()
       set shiftwidth=6
       set autoindent
       set smartindent
+
+" Case insensitive search unless the search contains at least one capital letter
+      set ignorecase
+      set smartcase
