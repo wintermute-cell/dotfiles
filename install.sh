@@ -1,4 +1,4 @@
-#!bin/sh
+#!bin/bash
 echo "Installing configured dotfiles to the system! Are you sure? [y/n]"
 
 read INPUT_STRING
