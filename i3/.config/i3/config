@@ -115,8 +115,9 @@ bindsym $mod+z exec --no-startup-id morc_menu
 
 # Other program hotkeys
 bindsym $mod+F2 exec firefox
-#bindsym $mod+F3 exec pcmanfm
-bindsym $mod+F3 exec ranger
+bindsym $mod+F3 exec pcmanfm
+bindsym $mod+o exec obsidian
+#bindsym $mod+F3 exec ranger
 bindsym $mod+Shift+F3 exec pcmanfm_pkexec
 bindsym $mod+F5 exec terminal -e 'mocp'
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
@@ -261,7 +262,6 @@ for_window [title="MuseScore: Play Panel"] floating enable
 for_window [class="Nitrogen"] floating enable sticky enable border normal
 for_window [class="Oblogout"] fullscreen enable
 for_window [class="octopi"] floating enable
-for_window [title="About Pale Moon"] floating enable
 for_window [class="Pamac-manager"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="qt5ct"] floating enable sticky enable border normal
@@ -322,6 +322,7 @@ exec --no-startup-id xfce4-power-manager
 exec --no-startup-id pamac-tray
 exec --no-startup-id clipit
 exec --no-startup-id $HOME/.startup/remaps.sh
+exec_always --no-startup-id /usr/lib/notification-daemon-1.0/notification-daemon
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
