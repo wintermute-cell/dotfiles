@@ -19,26 +19,41 @@ Plug 'lambdalisue/suda.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
-Plug 'vim-scripts/AutoComplPop'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
 Plug 'vim-python/python-syntax'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
-Plug 'vimwiki/vimwiki'
 Plug 'chrisbra/unicode.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'sbdchd/neoformat'
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 call plug#end()
+
+" Theme
+      set termguicolors
+      let g:indentLine_setColors = 0
+      colorscheme monotone
 
 " LSP config
 lua << EOF
 local lsp_installer = require("nvim-lsp-installer")
+local coq = require("coq")
+
+-- Register a handler that will be called for all installed servers.
 lsp_installer.on_server_ready(function(server)
-    local opts = {}
-    server:setup(opts)
-    vim.cmd [[ do User LspAttachBuffers ]]
+      local opts = {}
+      if server.name == "eslint" then
+            opts.on_attach = function (client, bufnr)
+            client.resolved_capabilities.document_formatting = true
+      end
+      opts.settings = {
+            format = { enable = true }, -- this will enable formatting
+            }
+      end
+      server:setup(coq.lsp_ensure_capabilities(opts))
 end)
 EOF
 
@@ -48,16 +63,24 @@ EOF
       noremap <F3> :NERDTreeToggle<CR>
       autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
-" Use tab to confirm autocompletion.
-      inoremap <expr> <Tab> pumvisible() ? "\<C-y>" : "\<Tab>"
-
-" Autocomplete menu configuration
-      set completeopt-=menu
-      set completeopt+=menuone
-      set completeopt-=longest
-      set completeopt-=preview
-      set completeopt+=noinsert
+" Autocompletion
+      autocmd VimEnter * :COQnow --shut-up
+      let g:coq_settings = { 'auto_start': 'shut-up' }
+      set completeopt=menuone,noinsert
       set completeopt-=noselect
+
+      let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true }
+
+      " Keybindings
+      inoremap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Esc>" : "\<Esc>"
+      inoremap <silent><expr> <C-c>   pumvisible() ? "\<C-e><C-c>" : "\<C-c>"
+      inoremap <silent><expr> <BS>    pumvisible() ? "\<C-e><BS>"  : "\<BS>"
+      inoremap <silent><expr> <CR>    pumvisible() ? "\<C-e><CR>" : "\<CR>"
+      inoremap <silent><expr> <Tab>   pumvisible() ? "\<C-y>" : "\<Tab>"
+
+" Command autocomplete
+      set wildmenu
+      set wildmode=longest,list,full
 
 " pear-tree
       let g:pear_tree_repeatable_expand = 0
@@ -71,10 +94,6 @@ EOF
       set scrolloff=10
       let g:python_highlight_all = 1
       set encoding=UTF-8
-
-" Command autocomplete
-      set wildmenu
-      set wildmode=longest,list,full
 
 " Disable autocomment on newline
       autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -98,12 +117,7 @@ EOF
 
 " Hotkeys
       map <F7> :make<CR>
-      nnoremap dv "_dd
-
-" Theme
-      set termguicolors
-      let g:indentLine_setColors = 0
-      colorscheme monotone
+      nnoremap dv "_d
 
 " Show warnings in floating window
       nnoremap <silent> g? <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
@@ -115,8 +129,12 @@ EOF
       " Python
       autocmd FileType python setlocal foldmethod=indent foldnestmax=2 foldlevel=20
       " JS
-      autocmd FileType javascript setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=2
+      autocmd FileType javascript setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
 
 
 " Showing colors with hexokinase
       let g:Hexokinase_highlighters = ['virtual']
+
+" Autorun prettier on save
+      autocmd BufWritePre *.js,*.ts,*.svelte Neoformat prettier
+      autocmd BufWritePre *.js,*.ts,*.svelte <buffer> <cmd>EslintFixAll<CR>
