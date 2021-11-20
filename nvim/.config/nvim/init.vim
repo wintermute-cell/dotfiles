@@ -42,6 +42,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-python/python-syntax'
 Plug 'sheerun/vim-polyglot'
+Plug 'lervag/vimtex'
 call plug#end()
 
 " Theme
@@ -181,6 +182,9 @@ EOF
       autocmd FileType python setlocal foldmethod=indent foldnestmax=2 foldlevel=20
       " JS
       autocmd FileType javascript setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
+      " Latex
+      let g:vimtex_view_method = 'zathura'
+
 
 
 " Showing colors with hexokinase
