@@ -43,6 +43,7 @@ Plug 'PotatoesMaster/i3-vim-syntax'
 Plug 'vim-python/python-syntax'
 Plug 'sheerun/vim-polyglot'
 Plug 'lervag/vimtex'
+Plug 'tpope/vim-dadbod'
 call plug#end()
 
 " Theme
@@ -60,6 +61,8 @@ call plug#end()
       let g:python_highlight_all = 1
       set encoding=UTF-8
       let mapleader = "\<Space>"
+      " allows switching buffers without saving
+      set hidden
 
 " LSP config
 lua << EOF
