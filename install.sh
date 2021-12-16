@@ -5,5 +5,6 @@ read INPUT_STRING
 if [ "$INPUT_STRING" = "y" ]; then
       stow -t ~ nvim
       stow -t ~ i3
+      stow -t ~ dunst
       echo "dotfiles installed"
 fi
