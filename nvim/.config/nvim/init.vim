@@ -22,7 +22,6 @@ Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 Plug 'chrisbra/unicode.vim'
 
 " Editing
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
 
@@ -37,6 +36,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Specific language extensions
 Plug 'PotatoesMaster/i3-vim-syntax'
@@ -136,6 +136,12 @@ EOF
       nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
       nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 
+" vim-tmux-navigator bindings
+      nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+      nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+      nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+      nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+
 " Nerdtree config (autostart, autokill, etc..)
       autocmd VimEnter * :NERDTree | wincmd p
 
@@ -166,7 +172,7 @@ EOF
       set completeopt=menuone,noinsert
       set completeopt-=noselect
 
-      let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true }
+      let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true, "keymap.jump_to_mark":"" }
 
       " Keybindings (also includes pear-tree keymaps for compatibility)
       imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
@@ -214,11 +220,9 @@ EOF
       " Latex
       let g:vimtex_view_method = 'zathura'
 
-
-
 " Showing colors with hexokinase
       let g:Hexokinase_highlighters = ['virtual']
 
 " Autorun prettier and eslint on save
-      autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx prettier --write ./%
-      autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx eslint ./%
+      "autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx prettier --write ./%
+      "autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx eslint ./%
