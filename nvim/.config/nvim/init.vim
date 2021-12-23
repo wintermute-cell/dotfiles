@@ -44,6 +44,7 @@ Plug 'vim-python/python-syntax'
 Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-dadbod'
 Plug 'lervag/vimtex'
+Plug 'evanleck/vim-svelte'
 call plug#end()
 
 " Theme
