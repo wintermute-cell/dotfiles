@@ -35,7 +35,7 @@ Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'christoomey/vim-tmux-navigator'
 
 " Specific language extensions
@@ -122,15 +122,17 @@ require('telescope').setup {
             file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
             grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
             qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
-      },
+            },
       extensions = {
-            fzy_native = {
-                  override_generic_sorter = false,
+            fzf = {
+                  fuzzy = true,
+                  override_generic_sorter = true,
                   override_file_sorter = true,
+                  case_mode = "smart_case",
                   }
             }
       }
-require('telescope').load_extension('fzy_native')
+require('telescope').load_extension('fzf')
 EOF
       nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<CR>
       nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
