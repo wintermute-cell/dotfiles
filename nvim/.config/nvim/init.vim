@@ -149,9 +149,6 @@ EOF
       " kill window if only nerdtree left
       autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
 
-      " kill tab if only nerdtree left
-      autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
       noremap <F3> :NERDTreeToggle<CR>
       autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
@@ -198,7 +195,7 @@ EOF
 " Tabbing and tabbed wrapping
       set breakindent
       set expandtab
-      set shiftwidth=6
+      set shiftwidth=4
       set autoindent
       set smartindent
 
@@ -218,6 +215,8 @@ EOF
       autocmd FileType python setlocal foldmethod=indent foldnestmax=2 foldlevel=20
       " JS
       autocmd FileType javascript setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
+      " Svelte
+      autocmd FileType svelte setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
       " Latex
       let g:vimtex_view_method = 'zathura'
 
