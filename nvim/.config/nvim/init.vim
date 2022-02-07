@@ -81,6 +81,7 @@ call plug#end()
     " allows switching buffers without saving
     set hidden
     map Q <Nop>
+    set conceallevel=0
 
 " LSP config
 lua << EOF
@@ -240,7 +241,7 @@ EOF
     set completeopt=menuone,noinsert
     set completeopt-=noselect
 
-    let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true, "keymap.jump_to_mark":"" }
+    let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true, "keymap.jump_to_mark":"<C-space>" }
 
     " Keybindings (also includes pear-tree keymaps for compatibility)
     imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
@@ -283,12 +284,19 @@ EOF
 " Language specific settings
     " Python
     autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
-    " JS
-   " autocmd FileType javascript setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
-    " Svelte
-   " autocmd FileType svelte setlocal foldmethod=indent foldnestmax=2 foldlevel=20 shiftwidth=4
+    autocmd BufRead *.py normal zx zR
     " Latex
     let g:vimtex_view_method = 'zathura'
+    let g:tex_conceal = ''
+    let g:vimtex_quickfix_enabled = 0
+    let g:vimtex_quickfix_latexlog = {
+                \ 'overfull' : 0,
+                \ 'underfull' : 0,
+                \ }
+    " Markdown/Latex
+    let g:indentLine_fileTypeExclude = ['tex', 'markdown']
+    autocmd BufRead *.tex setlocal conceallevel=0
+    autocmd BufRead *.md setlocal conceallevel=0
 
 " Showing colors with hexokinase
     let g:Hexokinase_highlighters = ['virtual']

@@ -7,5 +7,6 @@ if [ "$INPUT_STRING" = "y" ]; then
       stow -t ~ i3
       stow -t ~ dunst
       stow -t ~ tmux
+      stow -t ~ deadbeef
       echo "dotfiles installed"
 fi
