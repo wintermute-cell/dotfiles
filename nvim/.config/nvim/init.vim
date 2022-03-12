@@ -279,7 +279,7 @@ EOF
     nnoremap dv "_d
 
 " Show warnings in floating window
-    nnoremap <silent> g? <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+    nnoremap <silent> g? <cmd>lua vim.lsp.diagnostic.get()<CR>
 
 " Language specific settings
     " Python
