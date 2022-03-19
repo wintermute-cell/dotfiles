@@ -28,6 +28,7 @@ Plug 'lambdalisue/suda.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'pseewald/anyfold'
 Plug 'Konfekt/FastFold'
+Plug 'tpope/vim-surround'
 
 " Lsp
 Plug 'hrsh7th/cmp-nvim-lsp'
