@@ -15,11 +15,9 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/goyo.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'yggdroot/indentline'
 Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
-Plug 'chrisbra/unicode.vim'
 
 " Editing
 Plug 'tmsvg/pear-tree'
@@ -27,27 +25,43 @@ Plug 'tpope/vim-commentary'
 
 " Functionality
 Plug 'lambdalisue/suda.vim'
+
+" Lsp
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-lua/popup.nvim'
+"Plug 'tami5/lspsaga.nvim'
+
+" Completion
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
+" For ultisnips users.
+Plug 'SirVer/ultisnips'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
+
+" Telescope
+Plug 'nvim-lua/plenary.nvim' " Telescope dependency
+Plug 'nvim-lua/popup.nvim' " Telescope dependency
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
+
+" Tmux Integration
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'tami5/lspsaga.nvim'
+
 
 " Specific language extensions
-Plug 'PotatoesMaster/i3-vim-syntax'
-Plug 'vim-python/python-syntax'
-Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-dadbod'
-Plug 'lervag/vimtex'
-Plug 'evanleck/vim-svelte'
-Plug 'tmhedberg/SimpylFold'  " Python folding
-Plug 'Konfekt/FastFold'
+" Plug 'PotatoesMaster/i3-vim-syntax'
+" Plug 'vim-python/python-syntax'
+" Plug 'sheerun/vim-polyglot'
+" Plug 'tpope/vim-dadbod'
+" Plug 'lervag/vimtex'
+" Plug 'evanleck/vim-svelte'
+" Plug 'tmhedberg/SimpylFold'  " Python folding
+" Plug 'Konfekt/FastFold'
 call plug#end()
 
 " Theme
@@ -85,55 +99,8 @@ call plug#end()
 
 " LSP config
 lua << EOF
-local lsp_installer = require("nvim-lsp-installer")
-local coq = require("coq")
-local nvim_lsp = require('lspconfig')
-
--- lsp-saga config
-local saga = require('lspsaga')
-saga.setup {
-    debug = false,
-    use_saga_diagnostic_sign = true,
-    -- diagnostic sign
-    error_sign = "",
-    warn_sign = "",
-    hint_sign = "",
-    infor_sign = "",
-    diagnostic_header_icon = "   ",
-    -- code action title icon
-    code_action_icon = " ",
-    code_action_prompt = {
-        enable = true,
-        sign = true,
-        sign_priority = 40,
-        virtual_text = true,
-    },
-    finder_definition_icon = "ω  ",
-    finder_reference_icon = "ω  ",
-    max_preview_lines = 10,
-    finder_action_keys = {
-        open = "o",
-        vsplit = "s",
-        split = "i",
-        quit = "q",
-        scroll_down = "<C-f>",
-        scroll_up = "<C-b>",
-    },
-    code_action_keys = {
-        quit = "q",
-        exec = "<CR>",
-    },
-    rename_action_keys = {
-        quit = "<C-c>",
-        exec = "<CR>",
-    },
-    definition_preview_icon = "  ",
-    border_style = "single",
-    rename_prompt_prefix = "➤",
-    server_filetype_map = {},
-    diagnostic_prefix_format = "%d. ",
-    }
-saga.init_lsp_saga()
+local lsp_installer = require('nvim-lsp-installer')
+local cmp = require('cmp')
 
 -- On attach callback
 local on_attach = function(client, bufnr)
@@ -158,25 +125,61 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<leader>l=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
     -- lsp-saga mappings
-    buf_set_keymap("n", "<leader>lr", "<cmd>Lspsaga rename<cr>", opts)
-    buf_set_keymap("n", "<leader>lx", "<cmd>Lspsaga code_action<cr>", opts)
-    buf_set_keymap("n", "<leader>lh",  "<cmd>Lspsaga hover_doc<cr>", opts)
-    buf_set_keymap("n", "<leader>lf",  "<cmd>Lspsaga lsp_finder<cr>", opts)
-    buf_set_keymap("n", "<leader>ld",  "<cmd>Lspsaga lsp_finder<cr>", opts)
+    -- buf_set_keymap("n", "<leader>lr", "<cmd>Lspsaga rename<cr>", opts)
+    -- buf_set_keymap("n", "<leader>lx", "<cmd>Lspsaga code_action<cr>", opts)
+    -- buf_set_keymap("n", "<leader>lh",  "<cmd>Lspsaga hover_doc<cr>", opts)
+    -- buf_set_keymap("n", "<leader>lf",  "<cmd>Lspsaga lsp_finder<cr>", opts)
+    -- buf_set_keymap("n", "<leader>ld",  "<cmd>Lspsaga lsp_finder<cr>", opts)
 end
+
+-- Basic cmp setup (sources, bindings, ...)
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            vim.fn["UltiSnips#Anon"](args.body)
+        end,
+    },
+    mapping = {
+        ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
+        ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+        }),
+        ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    },
+    sources = cmp.config.sources({
+        { name = 'nvim_lsp' },
+        { name = 'ultisnips' }, -- For ultisnips users.
+    }, {
+        { name = 'buffer' },
+    })
+})
+
+-- Use buffer source for `/`
+cmp.setup.cmdline('/', {
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+-- Use cmdline & path source for ':'
+cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        { name = 'cmdline' }
+    })
+})
 
 -- Register a handler that will be called for all installed servers.
 lsp_installer.on_server_ready(function(server)
     local opts = {}
-    if server.name == "eslint" then
-        opts.on_attach = function (client, bufnr) client.resolved_capabilities.document_formatting = true end
-        opts.settings = {
-            format = { enable = true }, -- this will enable formatting
-            }
-    else
-        opts.on_attach = on_attach
-    end
-    server:setup(coq.lsp_ensure_capabilities(opts))
+    opts.on_attach = on_attach
+    opts.capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    server:setup(opts)
 end)
 EOF
 
@@ -215,7 +218,7 @@ EOF
     nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 
 " Nerdtree config (autostart, autokill, etc..)
-    autocmd VimEnter * :NERDTree | wincmd p
+    " autocmd VimEnter * :NERDTree | wincmd p
 
     " kill window if only nerdtree left
     autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
@@ -223,7 +226,7 @@ EOF
     noremap <F3> :NERDTreeToggle<CR>
     autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 
-" Airline config
+" airline config
     let g:airline#extensions#tabline#enabled = 1
     let g:airline_theme='minimalist'
     let g:airline#extensions#tabline#formatter = 'unique_tail'
@@ -235,13 +238,12 @@ EOF
     let g:pear_tree_smart_closers = 1
     let g:pear_tree_smart_backspace = 1
 
-" Autocompletion
-    autocmd VimEnter * :COQnow --shut-up
-    let g:coq_settings = { 'auto_start': 'shut-up' }
+" suda config
+    let g:suda_smart_edit = 1
+
+
     set completeopt=menuone,noinsert
     set completeopt-=noselect
-
-    let g:coq_settings = { "keymap.recommended": v:false, "keymap.pre_select": v:true, "keymap.jump_to_mark":"<C-space>" }
 
     " Keybindings (also includes pear-tree keymaps for compatibility)
     imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
@@ -282,21 +284,21 @@ EOF
     nnoremap <silent> g? <cmd>lua vim.diagnostic.open_float()<CR>
 
 " Language specific settings
-    " Python
-    autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
-    autocmd BufRead *.py normal zx zR
-    " Latex
-    let g:vimtex_view_method = 'zathura'
-    let g:tex_conceal = ''
-    let g:vimtex_quickfix_enabled = 0
-    let g:vimtex_quickfix_latexlog = {
-                \ 'overfull' : 0,
-                \ 'underfull' : 0,
-                \ }
-    " Markdown/Latex
-    let g:indentLine_fileTypeExclude = ['tex', 'markdown']
-    autocmd BufRead *.tex setlocal conceallevel=0
-    autocmd BufRead *.md setlocal conceallevel=0
+    " " Python
+    " autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+    " autocmd BufRead *.py normal zx zR
+    " " Latex
+    " let g:vimtex_view_method = 'zathura'
+    " let g:tex_conceal = ''
+    " let g:vimtex_quickfix_enabled = 0
+    " let g:vimtex_quickfix_latexlog = {
+    "             \ 'overfull' : 0,
+    "             \ 'underfull' : 0,
+    "             \ }
+    " " Markdown/Latex
+    " let g:indentLine_fileTypeExclude = ['tex', 'markdown']
+    " autocmd BufRead *.tex setlocal conceallevel=0
+    " autocmd BufRead *.md setlocal conceallevel=0
 
 " Showing colors with hexokinase
     let g:Hexokinase_highlighters = ['virtual']
