@@ -25,6 +25,9 @@ Plug 'tpope/vim-commentary'
 
 " Functionality
 Plug 'lambdalisue/suda.vim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'pseewald/anyfold'
+Plug 'Konfekt/FastFold'
 
 " Lsp
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -60,7 +63,6 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'lervag/vimtex'
 " Plug 'evanleck/vim-svelte'
 " Plug 'tmhedberg/SimpylFold'  " Python folding
-" Plug 'Konfekt/FastFold'
 call plug#end()
 
 " Theme
@@ -91,10 +93,13 @@ call plug#end()
     let g:python_highlight_all = 1
     set encoding=UTF-8
     let mapleader = "\<Space>"
-    " allows switching buffers without saving
-    set hidden
-    map Q <Nop>
+    set hidden " allows switching buffers without saving
     set conceallevel=0
+    set foldlevel=20
+
+    " disable ex-mode access
+    map Q <Nop>
+    map q: <Nop>
 
 " LSP config
 lua << EOF
@@ -209,6 +214,23 @@ EOF
     nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
     nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
     nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+" Treesitter config
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false,
+  },
+  indent = {
+      enable = true,
+      disable = { "python" },
+  },
+}
+EOF
+
+" enable anyfold
+    autocmd FileType * AnyFoldActivate
 
 " vim-tmux-navigator bindings
     nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
