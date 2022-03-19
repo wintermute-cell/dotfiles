@@ -38,10 +38,10 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 
-" For ultisnips users.
+" Snippets
 Plug 'SirVer/ultisnips'
 Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-
+Plug 'honza/vim-snippets'
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim' " Telescope dependency
@@ -51,7 +51,6 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
 " Tmux Integration
 Plug 'christoomey/vim-tmux-navigator'
-
 
 " Specific language extensions
 " Plug 'PotatoesMaster/i3-vim-syntax'
@@ -242,8 +241,13 @@ EOF
     let g:suda_smart_edit = 1
 
 
+" Completion
     set completeopt=menuone,noinsert
     set completeopt-=noselect
+
+    let g:UltiSnipsExpandTrigger="<Tab>"
+    let g:UltiSnipsJumpForwardTrigger="<C-j>"
+    let g:UltiSnipsJumpBackwardTrigger="<C-b>"
 
     " Keybindings (also includes pear-tree keymaps for compatibility)
     imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
