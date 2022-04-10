@@ -61,7 +61,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'vim-python/python-syntax'
 " Plug 'sheerun/vim-polyglot'
 " Plug 'tpope/vim-dadbod'
-" Plug 'lervag/vimtex'
+Plug 'lervag/vimtex'
 " Plug 'evanleck/vim-svelte'
 " Plug 'tmhedberg/SimpylFold'  " Python folding
 call plug#end()
@@ -314,18 +314,18 @@ EOF
     " " Python
     " autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
     " autocmd BufRead *.py normal zx zR
-    " " Latex
-    " let g:vimtex_view_method = 'zathura'
-    " let g:tex_conceal = ''
-    " let g:vimtex_quickfix_enabled = 0
-    " let g:vimtex_quickfix_latexlog = {
-    "             \ 'overfull' : 0,
-    "             \ 'underfull' : 0,
-    "             \ }
-    " " Markdown/Latex
-    " let g:indentLine_fileTypeExclude = ['tex', 'markdown']
-    " autocmd BufRead *.tex setlocal conceallevel=0
-    " autocmd BufRead *.md setlocal conceallevel=0
+    " Latex
+    let g:vimtex_view_method = 'zathura'
+    let g:tex_conceal = ''
+    let g:vimtex_quickfix_enabled = 0
+    let g:vimtex_quickfix_latexlog = {
+                \ 'overfull' : 0,
+                \ 'underfull' : 0,
+                \ }
+    " Markdown/Latex
+    let g:indentLine_fileTypeExclude = ['tex', 'markdown']
+    autocmd BufRead *.tex setlocal conceallevel=0
+    autocmd BufRead *.md setlocal conceallevel=0
 
 " Showing colors with hexokinase
     let g:Hexokinase_highlighters = ['virtual']
