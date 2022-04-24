@@ -29,6 +29,7 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'pseewald/anyfold'  " makes telescope open really slowly
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-surround'
+Plug 'puremourning/vimspector'
 
 " Lsp
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -97,9 +98,15 @@ call plug#end()
     set hidden " allows switching buffers without saving
     set conceallevel=0
     set foldlevel=20
-    let g:python3_host_prog = '/usr/bin/python'
+    let g:python3_host_prog = '/usr/bin/python'  " this is necessary when working in a venv
 
-    " disable ex-mode access
+" Remaps
+    map <F7> :make<CR>
+    nnoremap dv "_d
+    nnoremap ]' :bn<CR>
+    nnoremap [; :bp<CR>
+
+" disable ex-mode access
     map Q <Nop>
     map q: <Nop>
 
@@ -232,7 +239,7 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 " enable anyfold
-    autocmd FileType * AnyFoldActivate
+    " autocmd FileType * AnyFoldActivate  " plugin disabeled because incompatible with telescope
 
 " vim-tmux-navigator bindings
     nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -303,10 +310,6 @@ EOF
 " Case insensitive search unless the search contains at least one capital letter
     set ignorecase
     set smartcase
-
-" Hotkeys
-    map <F7> :make<CR>
-    nnoremap dv "_d
 
 " Show warnings in floating window
     nnoremap <silent> g? <cmd>lua vim.diagnostic.open_float()<CR>
