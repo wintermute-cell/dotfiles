@@ -26,7 +26,7 @@ Plug 'tpope/vim-commentary'
 " Functionality
 Plug 'lambdalisue/suda.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'pseewald/anyfold'
+" Plug 'pseewald/anyfold'  " makes telescope open really slowly
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-surround'
 
@@ -97,6 +97,7 @@ call plug#end()
     set hidden " allows switching buffers without saving
     set conceallevel=0
     set foldlevel=20
+    let g:python3_host_prog = '/usr/bin/python'
 
     " disable ex-mode access
     map Q <Nop>
