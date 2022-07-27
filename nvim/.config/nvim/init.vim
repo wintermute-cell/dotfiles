@@ -32,7 +32,6 @@ Plug 'tpope/vim-surround'
 Plug 'puremourning/vimspector'
 
 " Lsp
-Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/nvim-lsp-installer'
 "Plug 'tami5/lspsaga.nvim'
@@ -41,6 +40,7 @@ Plug 'williamboman/nvim-lsp-installer'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/nvim-cmp'
 
 " Snippets
@@ -71,7 +71,7 @@ call plug#end()
     set termguicolors
     let g:indentLine_color_term = 240
     let g:indentLine_char_list = ['¦', '┆', '┊', ':', '.']
-    colorscheme monotone
+    colorscheme plan9 "monotone
     " Fitting lsp-saga to the theme
     highlight link LspSagaFinderSelection Search
     highlight link LspFloatWinNormal Normal
@@ -152,7 +152,9 @@ cmp.setup({
             vim.fn["UltiSnips#Anon"](args.body)
         end,
     },
-    mapping = {
+    mapping = cmp.mapping.preset.cmdline({
+        ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+        ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
         ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
         ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
         ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
@@ -162,13 +164,17 @@ cmp.setup({
         c = cmp.mapping.close(),
         }),
         ['<Tab>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    },
+    }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
         { name = 'ultisnips' }, -- For ultisnips users.
     }, {
         { name = 'buffer' },
     })
+})
+
+cmp.setup.cmdline({
+    mapping = cmp.mapping.preset.cmdline({})
 })
 
 -- Use buffer source for `/`
