@@ -5,7 +5,7 @@ window:
   opacity: 1.00 #From 0.00 to 1.00
 
 
-# Font configuration
+  ## Font configuration
 font:
   # Normal (roman) font face
   normal:
