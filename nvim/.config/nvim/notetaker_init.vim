@@ -1,35 +1,28 @@
-"###########################################################
+" ##############################################################
+"  _   _  ____ _______ ______ _______       _  ________ _____
+" | \ | |/ __ |__   __|  ____|__   __|/\   | |/ |  ____|  __ \
+" |  \| | |  | | | |  | |__     | |  /  \  | ' /| |__  | |__) |
+" |   ` | |  | | | |  |  __|    | | / /\ \ |  < |  __| |  _  /
+" | |\  | |__| | | |  | |____   | |/ ____ \| | \| |____| | \ \
+" |_| \_|\____/  |_|  |______|  |_/_/    \_|_|\_|______|_|  \_\
 "
-" #### ##    ## #### ########     ##     ## #### ##     ##
-"  ##  ###   ##  ##     ##        ##     ##  ##  ###   ###
-"  ##  ####  ##  ##     ##        ##     ##  ##  #### ####
-"  ##  ## ## ##  ##     ##        ##     ##  ##  ## ### ##
-"  ##  ##  ####  ##     ##         ##   ##   ##  ##     ##
-"  ##  ##   ###  ##     ##    ###   ## ##    ##  ##     ##
-" #### ##    ## ####    ##    ###    ###    #### ##     ##
-"
-"###########################################################
+" ##############################################################
 
 call plug#begin('~/.config/nvim/plugged')
 " Interface
-Plug 'scrooloose/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
-Plug 'yggdroot/indentline'
-Plug 'RRethy/vim-hexokinase', { 'do': 'make hexokinase' }
 
 " Editing
 Plug 'tmsvg/pear-tree'
 Plug 'tpope/vim-commentary'
 
 " Functionality
-Plug 'lambdalisue/suda.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " Plug 'pseewald/anyfold'  " makes telescope open really slowly
 Plug 'Konfekt/FastFold'
 Plug 'tpope/vim-surround'
-Plug 'puremourning/vimspector'
 
 " Lsp
 Plug 'neovim/nvim-lspconfig'
@@ -54,23 +47,13 @@ Plug 'nvim-lua/popup.nvim' " Telescope dependency
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
-" Tmux Integration
-Plug 'christoomey/vim-tmux-navigator'
-
 " Specific language extensions
-" Plug 'PotatoesMaster/i3-vim-syntax'
-" Plug 'vim-python/python-syntax'
 " Plug 'sheerun/vim-polyglot'
-" Plug 'tpope/vim-dadbod'
 Plug 'lervag/vimtex'
-" Plug 'evanleck/vim-svelte'
-" Plug 'tmhedberg/SimpylFold'  " Python folding
 call plug#end()
 
 " Theme
     set termguicolors
-    let g:indentLine_color_term = 240
-    let g:indentLine_char_list = ['¦', '┆', '┊', ':', '.']
     colorscheme plan9 "monotone
     " Fitting lsp-saga to the theme
     highlight link LspSagaFinderSelection Search
@@ -86,7 +69,6 @@ call plug#end()
     highlight link LspSagaRenamePromptPrefix Title
 
 " Basics
-    set nocompatible
     set number relativenumber
     set encoding=utf-8
     syntax on
@@ -100,15 +82,82 @@ call plug#end()
     set foldlevel=20
     let g:python3_host_prog = '/usr/bin/python'  " this is necessary when working in a venv
 
-" Remaps
-    map <F7> :make<CR>
-    nnoremap dv "_d
-    nnoremap ]' :bn<CR>
-    nnoremap [; :bp<CR>
-
 " disable ex-mode access
     map Q <Nop>
     map q: <Nop>
+
+" airline config
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline_theme='minimalist'
+    let g:airline#extensions#tabline#formatter = 'unique_tail'
+
+" pear-tree
+    let g:pear_tree_repeatable_expand = 0
+    let g:pear_tree_map_special_keys = 0
+    let g:pear_tree_smart_openers = 1
+    let g:pear_tree_smart_closers = 1
+    let g:pear_tree_smart_backspace = 1
+
+" Completion
+    set completeopt=menuone,noinsert
+    set completeopt-=noselect
+
+    let g:UltiSnipsExpandTrigger="<Tab>"
+    let g:UltiSnipsJumpForwardTrigger="<C-j>"
+    let g:UltiSnipsJumpBackwardTrigger="<C-b>"
+
+" Keybindings (also includes pear-tree keymaps for compatibility)
+    imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
+    imap <silent><expr> <BS>    pumvisible() ? "\<C-e><Plug>(PearTreeBackspace)"  : "\<Plug>(PearTreeBackspace)"
+    imap <silent><expr> <CR>    pumvisible() ? "\<C-e><Plug>(PearTreeExpand)" : "\<Plug>(PearTreeExpand)"
+    inoremap <silent><expr> <C-c>   pumvisible() ? "\<C-e><C-c>" : "\<C-c>"
+    inoremap <silent><expr> <Tab>   pumvisible() ? "\<C-y>" : "\<Tab>"
+
+" Command autocomplete
+    set wildmenu
+    set wildmode=longest,list,full
+
+" Split to bottom and right
+    set splitbelow splitright
+
+" Remove trailing whitespaces on save
+    autocmd BufWritePre * %s/\s\+$//e
+
+" Tabbing and tabbed wrapping
+    set breakindent
+    set expandtab
+    set shiftwidth=4
+    set autoindent
+    set smartindent
+
+" Case insensitive search unless the search contains at least one capital letter
+    set ignorecase
+    set smartcase
+
+" Show warnings in floating window
+    nnoremap <silent> g? <cmd>lua vim.diagnostic.open_float()<CR>
+
+" Language specific settings
+    " " Python
+    " autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
+    " autocmd BufRead *.py normal zx zR
+    " Latex
+    let g:vimtex_view_method = 'zathura'
+    let g:tex_conceal = ''
+    let g:vimtex_quickfix_enabled = 0
+    let g:vimtex_quickfix_latexlog = {
+                \ 'overfull' : 0,
+                \ 'underfull' : 0,
+                \ }
+    " Markdown/Latex
+    let g:indentLine_fileTypeExclude = ['tex', 'markdown']
+    autocmd BufRead *.tex setlocal conceallevel=0
+    autocmd BufRead *.md setlocal conceallevel=0
+
+
+" ##########
+" LUA CONFIG
+" ##########
 
 " LSP config
 lua << EOF
@@ -243,103 +292,3 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
-
-" enable anyfold
-    " autocmd FileType * AnyFoldActivate  " plugin disabeled because incompatible with telescope
-
-" vim-tmux-navigator bindings
-    nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-    nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-    nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-    nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-
-" Nerdtree config (autostart, autokill, etc..)
-    " autocmd VimEnter * :NERDTree | wincmd p
-
-    " kill window if only nerdtree left
-    autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
-
-    noremap <F3> :NERDTreeToggle<CR>
-    autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
-
-" airline config
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline_theme='minimalist'
-    let g:airline#extensions#tabline#formatter = 'unique_tail'
-
-" pear-tree
-    let g:pear_tree_repeatable_expand = 0
-    let g:pear_tree_map_special_keys = 0
-    let g:pear_tree_smart_openers = 1
-    let g:pear_tree_smart_closers = 1
-    let g:pear_tree_smart_backspace = 1
-
-" suda config
-    let g:suda_smart_edit = 1
-
-
-" Completion
-    set completeopt=menuone,noinsert
-    set completeopt-=noselect
-
-    let g:UltiSnipsExpandTrigger="<Tab>"
-    let g:UltiSnipsJumpForwardTrigger="<C-j>"
-    let g:UltiSnipsJumpBackwardTrigger="<C-b>"
-
-    " Keybindings (also includes pear-tree keymaps for compatibility)
-    imap <silent><expr> <Esc>   pumvisible() ? "\<C-e><Plug>(PearTreeFinishExpansion)" : "\<Plug>(PearTreeFinishExpansion)"
-    imap <silent><expr> <BS>    pumvisible() ? "\<C-e><Plug>(PearTreeBackspace)"  : "\<Plug>(PearTreeBackspace)"
-    imap <silent><expr> <CR>    pumvisible() ? "\<C-e><Plug>(PearTreeExpand)" : "\<Plug>(PearTreeExpand)"
-    inoremap <silent><expr> <C-c>   pumvisible() ? "\<C-e><C-c>" : "\<C-c>"
-    inoremap <silent><expr> <Tab>   pumvisible() ? "\<C-y>" : "\<Tab>"
-
-" Command autocomplete
-    set wildmenu
-    set wildmode=longest,list,full
-
-" Disable autocomment on newline
-    autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
-" Split to bottom and right
-    set splitbelow splitright
-
-" Remove trailing whitespaces on save
-    autocmd BufWritePre * %s/\s\+$//e
-
-" Tabbing and tabbed wrapping
-    set breakindent
-    set expandtab
-    set shiftwidth=4
-    set autoindent
-    set smartindent
-
-" Case insensitive search unless the search contains at least one capital letter
-    set ignorecase
-    set smartcase
-
-" Show warnings in floating window
-    nnoremap <silent> g? <cmd>lua vim.diagnostic.open_float()<CR>
-
-" Language specific settings
-    " " Python
-    " autocmd BufWritePre *.py lua vim.lsp.buf.formatting_sync(nil, 100)
-    " autocmd BufRead *.py normal zx zR
-    " Latex
-    let g:vimtex_view_method = 'zathura'
-    let g:tex_conceal = ''
-    let g:vimtex_quickfix_enabled = 0
-    let g:vimtex_quickfix_latexlog = {
-                \ 'overfull' : 0,
-                \ 'underfull' : 0,
-                \ }
-    " Markdown/Latex
-    let g:indentLine_fileTypeExclude = ['tex', 'markdown']
-    autocmd BufRead *.tex setlocal conceallevel=0
-    autocmd BufRead *.md setlocal conceallevel=0
-
-" Showing colors with hexokinase
-    let g:Hexokinase_highlighters = ['virtual']
-
-" Autorun prettier and eslint on save
-    "autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx prettier --write ./%
-    "autocmd BufWritePre *.js,*.ts,*.svelte,*.css !npx eslint ./%
