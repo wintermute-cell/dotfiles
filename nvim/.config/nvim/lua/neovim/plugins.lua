@@ -46,6 +46,13 @@ local p = packer.startup(function(use)
     use 'ryanoasis/vim-devicons'
     use 'liuchengxu/vim-which-key'
     use 'folke/tokyonight.nvim'
+    use { 'anuvyklack/pretty-fold.nvim',
+        config = function()
+            require('pretty-fold').setup {
+                fill_char = '·',
+            }
+        end
+    }
 
     -- editing
     use 'tmsvg/pear-tree'       -- automatically pair parens, quotes, html-tags ..
@@ -104,5 +111,8 @@ vim.g.pear_tree_map_special_keys = 0
 vim.g.pear_tree_smart_openers = 1
 vim.g.pear_tree_smart_closers = 1
 vim.g.pear_tree_smart_backspace = 1
+
+-- pretty-fold
+
 
 return p

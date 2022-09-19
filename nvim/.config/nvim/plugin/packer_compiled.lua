@@ -9,23 +9,26 @@ vim.api.nvim_command('packadd packer.nvim')
 
 local no_errors, error_msg = pcall(function()
 
-  local time
-  local profile_info
-  local should_profile = false
-  if should_profile then
-    local hrtime = vim.loop.hrtime
-    profile_info = {}
-    time = function(chunk, start)
-      if start then
-        profile_info[chunk] = hrtime()
-      else
-        profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
-      end
+_G._packer = _G._packer or {}
+_G._packer.inside_compile = true
+
+local time
+local profile_info
+local should_profile = false
+if should_profile then
+  local hrtime = vim.loop.hrtime
+  profile_info = {}
+  time = function(chunk, start)
+    if start then
+      profile_info[chunk] = hrtime()
+    else
+      profile_info[chunk] = (hrtime() - profile_info[chunk]) / 1e6
     end
-  else
-    time = function(chunk, start) end
   end
-  
+else
+  time = function(chunk, start) end
+end
+
 local function save_profiles(threshold)
   local sorted_times = {}
   for chunk_name, time_taken in pairs(profile_info) do
@@ -38,8 +41,10 @@ local function save_profiles(threshold)
       results[i] = elem[1] .. ' took ' .. elem[2] .. 'ms'
     end
   end
+  if threshold then
+    table.insert(results, '(Only showing plugins that took longer than ' .. threshold .. ' ms ' .. 'to load)')
+  end
 
-  _G._packer = _G._packer or {}
   _G._packer.profile_output = results
 end
 
@@ -104,31 +109,20 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/cmp-path",
     url = "https://github.com/hrsh7th/cmp-path"
   },
-  ["goyo.vim"] = {
+  ["mason-lspconfig.nvim"] = {
     loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/goyo.vim",
-    url = "https://github.com/junegunn/goyo.vim"
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
+    url = "https://github.com/williamboman/mason-lspconfig.nvim"
   },
-  ["limelight.vim"] = {
+  ["mason.nvim"] = {
     loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/limelight.vim",
-    url = "https://github.com/junegunn/limelight.vim"
-  },
-  neorg = {
-    config = { "\27LJ\2\në\1\0\0\a\0\15\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\r\0005\3\3\0004\4\0\0=\4\4\0034\4\0\0=\4\5\0034\4\0\0=\4\6\0035\4\n\0005\5\b\0005\6\a\0=\6\t\5=\5\v\4=\4\f\3=\3\14\2B\0\2\1K\0\1\0\tload\1\0\0\21core.norg.dirman\vconfig\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\25core.norg.completion\24core.norg.concealer\18core.defaults\1\0\0\nsetup\nneorg\frequire\0" },
-    loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/neorg",
-    url = "https://github.com/nvim-neorg/neorg"
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://github.com/williamboman/mason.nvim"
   },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-cmp",
     url = "https://github.com/hrsh7th/nvim-cmp"
-  },
-  ["nvim-lsp-installer"] = {
-    loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-lsp-installer",
-    url = "https://github.com/williamboman/nvim-lsp-installer"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -139,11 +133,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
-  },
-  ["nvim-ts-rainbow"] = {
-    loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow",
-    url = "https://github.com/p00f/nvim-ts-rainbow"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -170,10 +159,11 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
   },
-  ["telekasten.nvim"] = {
+  ["pretty-fold.nvim"] = {
+    config = { "\27LJ\2\nM\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\14fill_char\aÂ·\nsetup\16pretty-fold\frequire\0" },
     loaded = true,
-    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/telekasten.nvim",
-    url = "https://github.com/renerocksai/telekasten.nvim"
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/pretty-fold.nvim",
+    url = "https://github.com/anuvyklack/pretty-fold.nvim"
   },
   ["telescope-fzy-native.nvim"] = {
     loaded = true,
@@ -233,10 +223,17 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: neorg
-time([[Config for neorg]], true)
-try_loadstring("\27LJ\2\në\1\0\0\a\0\15\0\0216\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\r\0005\3\3\0004\4\0\0=\4\4\0034\4\0\0=\4\5\0034\4\0\0=\4\6\0035\4\n\0005\5\b\0005\6\a\0=\6\t\5=\5\v\4=\4\f\3=\3\14\2B\0\2\1K\0\1\0\tload\1\0\0\21core.norg.dirman\vconfig\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\25core.norg.completion\24core.norg.concealer\18core.defaults\1\0\0\nsetup\nneorg\frequire\0", "config", "neorg")
-time([[Config for neorg]], false)
+-- Config for: pretty-fold.nvim
+time([[Config for pretty-fold.nvim]], true)
+try_loadstring("\27LJ\2\nM\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\14fill_char\aÂ·\nsetup\16pretty-fold\frequire\0", "config", "pretty-fold.nvim")
+time([[Config for pretty-fold.nvim]], false)
+
+_G._packer.inside_compile = false
+if _G._packer.needs_bufread == true then
+  vim.cmd("doautocmd BufRead")
+end
+_G._packer.needs_bufread = false
+
 if should_profile then save_profiles() end
 
 end)

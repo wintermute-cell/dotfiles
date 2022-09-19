@@ -4,7 +4,7 @@ local opt = vim.opt
 -- GENERAL ---------
 ------------------------------
 opt.fileencoding = "utf-8"
-opt.clipboard = 'unnamedplus'   -- use system clipboard
+-- opt.clipboard = 'unnamedplus'   -- use system clipboard
 opt.timeoutlen = 800            -- time to wait for sequence to compelete in ms
 opt.undofile = true             -- enable persistent undos
 opt.backup = false              -- make a permanent backup file
@@ -17,10 +17,9 @@ opt.number = true               -- show absolute line number at cursor line
 opt.relativenumber = true       -- show relative line numbers
 opt.showmatch = true            -- highlight matching parens
 opt.foldmethod = 'expr'         -- enable folding (default 'foldmarker')
-opt.foldlevel = 1               -- only expand the first fold level when opening a file
+opt.foldlevel = 9999            -- open a file fully expanded
 vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
-vim.cmd[[set foldtext=getline(v:foldstart).'...'.trim(getline(v:foldend))]]
-opt.fillchars = "fold: "    -- use space as a filler after a fold
+opt.fillchars = "fold: "        -- use space as a filler after a fold
 opt.colorcolumn = '80'          -- line lenght marker at 80 columns
 opt.splitright = true           -- vertical split to the right
 opt.splitbelow = true           -- horizontal split to the bottom
