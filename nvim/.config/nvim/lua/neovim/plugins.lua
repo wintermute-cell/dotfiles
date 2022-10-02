@@ -60,6 +60,7 @@ local p = packer.startup(function(use)
     -- functionality
     use 'Konfekt/FastFold'
     use 'tpope/vim-surround'
+    use 'lambdalisue/suda.vim'
 
     -- snippets
     use 'SirVer/ultisnips'
@@ -112,7 +113,8 @@ vim.g.pear_tree_smart_openers = 1
 vim.g.pear_tree_smart_closers = 1
 vim.g.pear_tree_smart_backspace = 1
 
--- pretty-fold
+-- suda
+vim.g.suda_smart_edit = 1
 
 
 return p

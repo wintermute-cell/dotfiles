@@ -165,6 +165,11 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/pretty-fold.nvim",
     url = "https://github.com/anuvyklack/pretty-fold.nvim"
   },
+  ["suda.vim"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/suda.vim",
+    url = "https://github.com/lambdalisue/suda.vim"
+  },
   ["telescope-fzy-native.nvim"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/telescope-fzy-native.nvim",
