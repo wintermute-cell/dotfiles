@@ -13,5 +13,5 @@ pa-applet &
 dwm_asyncbar.sh &
 
 # background
-feh --bg-scale --no-fehbg /home/wintermute/Pictures/bg_glenda.jpg &
+feh --bg-scale --no-fehbg /home/wintermute/Pictures/wallpapers/bg_glenda.jpg &
 exec dwm
