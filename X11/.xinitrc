@@ -5,7 +5,7 @@ source /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 /home/wintermute/scripts/remaps.sh
 
 # autostart
-udiskie --tray &
+udiskie --smart-tray -f pcmanfm &
 pa-applet &
 dwm_asyncbar.sh &
 
