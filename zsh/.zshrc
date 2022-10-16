@@ -18,14 +18,19 @@ bindkey -v
 
 # env variables
 export SCRIPTDIR="/home/wintermute/scripts"
+
 # xdg
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_STATE_HOME="${HOME}/.local/state"
+
 # custom
 export THEME_MODE="plan9"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+
+# set $PATH
+export PATH="/home/wintermute/.local/bin:/usr/bin:$PATH"
 
 # custom prompt
 setopt prompt_subst # reeval prompt every time it is printed

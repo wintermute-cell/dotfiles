@@ -46,12 +46,12 @@ end
 -- make basic capabilities
 local c = vim.lsp.protocol.make_client_capabilities()
 
--- check if cmp_nvim_lsp can be required, and if so, update_capabilites with it
+-- check if cmp_nvim_lsp can be required, and if so, default_capabilites with it
 local status_ok, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
 if not status_ok then
     print "handlers.lua: Unable to require cmp_nvim_lsp, loading lsp without cmp!"
 else
-    c = cmp_lsp.update_capabilities(c)
+    c = cmp_lsp.default_capabilities(c)
 end
 
 -- attach to return value
