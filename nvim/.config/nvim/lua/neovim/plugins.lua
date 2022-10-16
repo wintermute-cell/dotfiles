@@ -72,6 +72,9 @@ local p = packer.startup(function(use)
     use 'williamboman/mason-lspconfig.nvim'
     --use 'williamboman/nvim-lsp-installer'     -- superceded by mason.nvim
     --use 'tami5/lspsaga.nvim'
+    
+    -- language tools
+    use 'lervag/vimtex'
 
     -- completion
     use 'hrsh7th/nvim-cmp'
@@ -115,6 +118,9 @@ vim.g.pear_tree_smart_backspace = 1
 
 -- suda
 vim.g.suda_smart_edit = 1
+
+-- vimtex
+vim.g.vimtex_view_method = 'zathura'
 
 
 return p

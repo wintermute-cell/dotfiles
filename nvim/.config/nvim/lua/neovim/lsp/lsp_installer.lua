@@ -54,6 +54,14 @@ mason_lspconfig.setup_handlers({
             opts = vim.tbl_deep_extend('force', sumneko_lua_opts, opts)
         end
 
+        if server_name == "ltex" then
+            opts.settings = {
+                ltex = {
+                    language = "de"
+                }
+            }
+        end
+
         require('lspconfig')[server_name].setup(opts)
     end
 })

@@ -224,6 +224,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-which-key",
     url = "https://github.com/liuchengxu/vim-which-key"
+  },
+  vimtex = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vimtex",
+    url = "https://github.com/lervag/vimtex"
   }
 }
 
