@@ -6,24 +6,35 @@ zstyle :compinstall filename '/home/wintermute/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt autocd extendedglob nomatch
-unsetopt beep
-bindkey -v
-# End of lines configured by zsh-newuser-install
-
-
-# env variables
-export SCRIPTDIR="/home/wintermute/scripts"
 
 # xdg
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_STATE_HOME="${HOME}/.local/state"
+
+# history
+export HISTSIZE=10000
+export SAVEHIST=10000
+export HISTFILE="${XDG_STATE_HOME}/zsh/.history"
+
+setopt appendhistory
+setopt SHARE_HISTORY
+
+# immediately add to history
+setopt INC_APPEND_HISTORY
+
+# timestamp for history entries
+export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+
+
+setopt autocd extendedglob nomatch
+unsetopt beep
+bindkey -v
+
+# env variables
+export SCRIPTDIR="/home/wintermute/scripts"
 
 # custom
 export THEME_MODE="plan9"
@@ -68,7 +79,6 @@ alias py="python"
 # cleanup
 export GOPATH="/usr/local/go"
 export GOROOT="/usr/local/go"
-export HISTFILE="${XDG_STATE_HOME}"/bash/history
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export XCURSOR_PATH=/usr/share/icons:${XDG_DATA_HOME}/icons
@@ -76,4 +86,3 @@ export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
 export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
-export HISTFILE="$XDG_STATE_HOME"/zsh/history
