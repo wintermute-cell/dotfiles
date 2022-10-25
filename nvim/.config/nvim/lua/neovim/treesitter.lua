@@ -14,7 +14,7 @@ configs.setup {
         additional_vim_regex_highlighting = true, -- use vims old regex based system as well
     },
     indent = {
-        enable = true,                            -- indent based on treesitter
+        enable = false,                            -- indent based on treesitter
         disable = { '' },                         -- disable treesitter indent for these langs
     },
     fold = {

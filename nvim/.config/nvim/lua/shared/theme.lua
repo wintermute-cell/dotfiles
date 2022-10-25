@@ -12,4 +12,3 @@ if mode == 'plan9' then
 elseif mode == 'monotone' then
     vim.cmd [[colorscheme monotone]]   -- setting the colorscheme (plan9, monotone)
 end
-

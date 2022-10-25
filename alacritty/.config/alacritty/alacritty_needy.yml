@@ -34,30 +34,30 @@ font:
 colors:
   # Default colors
   primary:
-    background: '#FFFDF7'
-    foreground: '#222222'
+    background: '#fef0ff'
+    foreground: '#785abd'
 
   # Normal colors
   normal:
-    black:   '#473131'
-    red:     '#B02541'
-    green:   '#005F00'
-    yellow:  '#D98E01'
-    blue:    '#000062'
-    magenta: '#C63C5E'
-    cyan:    '#009BAA'
-    white:   '#EEEEEE'
+    black:   '#2f1e2e'
+    red:     '#ef6155'
+    green:   '#48b685'
+    yellow:  '#fec418'
+    blue:    '#06b6ef'
+    magenta: '#815ba4'
+    cyan:    '#5bc4bf'
+    white:   '#a39e9b'
 
   # Bright colors
   bright:
-    black:   '#473131'
-    red:     '#FDCFB1'
-    green:   '#E1EEB8'
-    yellow:  '#FFFEC4'
-    blue:    '#D6DDF7'
-    magenta: '#F1E3FC'
-    cyan:    '#DBECF7'
-    white:   '#EEEEEE'
+    black:   '#776e71'
+    red:     '#ef6155'
+    green:   '#48b685'
+    yellow:  '#fec418'
+    blue:    '#06b6ef'
+    magenta: '#815ba4'
+    cyan:    '#5bc4bf'
+    white:   '#e7e9db'
 
 cursor:
   thickness: 0.26

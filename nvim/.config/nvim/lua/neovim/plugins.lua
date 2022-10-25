@@ -72,7 +72,7 @@ local p = packer.startup(function(use)
     use 'williamboman/mason-lspconfig.nvim'
     --use 'williamboman/nvim-lsp-installer'     -- superceded by mason.nvim
     --use 'tami5/lspsaga.nvim'
-    
+
     -- language tools
     use 'lervag/vimtex'
 
