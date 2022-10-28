@@ -75,6 +75,7 @@ local p = packer.startup(function(use)
 
     -- language tools
     use 'lervag/vimtex'
+    use 'elkowar/yuck.vim'
 
     -- completion
     use 'hrsh7th/nvim-cmp'

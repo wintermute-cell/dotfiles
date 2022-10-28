@@ -36,6 +36,11 @@ bindkey -v
 # env variables
 export SCRIPTDIR="/home/wintermute/scripts"
 
+# wayland specific
+export LD_LIBRARY_PATH="/home/wintermute/src/bemenu"
+export BEMENU_RENDERERS="/home/wintermute/src/bemenu"
+export MOZ_ENABLE_WAYLAND=1
+
 # custom
 export THEME_MODE="plan9"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
