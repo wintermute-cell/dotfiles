@@ -1,0 +1,128 @@
+[{
+    "layer": "top", // Waybar at top layer
+    "output": "DP-3",
+    "position": "top", // Waybar at the bottom of your screen
+    "height": 18, // Waybar height
+    "width": 2560, // Waybar width
+    // Choose the order of the modules
+    "modules-left": ["custom/dwl_tag#0", "custom/dwl_tag#1", "custom/dwl_tag#2", "custom/dwl_tag#3", "custom/dwl_tag#4", "custom/dwl_tag#5", "custom/dwl_tag#6", "custom/dwl_tag#7", "custom/dwl_tag#8", "custom/dwl_layout"],
+    "modules-center": ["custom/dwl_title"],
+    "modules-right": ["backlight", "battery#0", "battery#1", "pulseaudio", "clock", "tray"],
+    "custom/dwl_tag#0": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 0",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#1": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 1",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#2": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 2",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#3": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 3",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#4": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 4",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#5": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 5",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#6": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 6",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#7": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 7",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_tag#8": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 tag 8",
+     "format": "{}",
+     "return-type": "json"
+    },
+    "custom/dwl_layout": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 layout",
+     "format": "{}",
+     "escape": true,
+     "return-type": "json"
+    },
+    "custom/dwl_title": {
+     "exec": "/home/wintermute/.cargo/bin/dwl-waybar-client DP-3 title",
+     "format": "{}",
+     "escape": true,
+     "return-type": "json",
+     "max-length": 100
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon}{percent}% |",
+        "format-icons": ["光"],
+        "on-scroll-up": "sudo light -A 6",
+        "on-scroll-down": "sudo light -U 6",
+        "on-click": "sudo light -S 0"
+    },
+    "battery#0": {
+        "bat": "BAT0", // internal battery
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 10
+        },
+        "format": "i{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "battery#1": {
+        "bat": "BAT1", // external battery
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 10
+        },
+        "format": "e{capacity}% {icon} |",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "clock": {
+        "format": "{:%H:%M | %d/%m/%Y}",
+        "format-alt": "{:%a, %d. %b, %y}",
+    },
+    "tray": {
+        // "icon-size": 21,
+        "spacing": 10
+    },
+    "pulseaudio": {
+        //"scroll-step": 1,
+        "format": "{volume}% {icon} ",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": "",
+            "handsfree": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "custom/spotify": {
+        "format": " {}",
+        "max-length": 40,
+        "interval": 30, // Remove this if your script is endless and write in loop
+        "exec": "$HOME/.config/waybar/mediaplayer.sh 2> /dev/null", // Script in resources folder
+        "exec-if": "pgrep spotify"
+    }
+}]
