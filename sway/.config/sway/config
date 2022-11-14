@@ -1,0 +1,171 @@
+################################################
+#                                              #
+#     ▄▀▀▀▀▄  ▄▀▀▄    ▄▀▀▄  ▄▀▀█▄   ▄▀▀▄ ▀▀▄   #
+#    █ █   ▐ █   █    ▐  █ ▐ ▄▀ ▀▄ █   ▀▄ ▄▀   #
+#       ▀▄   ▐  █        █   █▄▄▄█ ▐     █     #
+#    ▀▄   █    █   ▄    █   ▄▀   █       █     #
+#     █▀▀▀      ▀▄▀ ▀▄ ▄▀  █   ▄▀      ▄▀      #
+#     ▐               ▀    ▐   ▐       █       #
+#                                      ▐       #
+################################################
+
+
+#####################
+#      SCRIPTS      #
+#####################
+exec_always "pkill -f 'python3? .+/swaymonad.py';  ~/.config/sway/swaymonad/swaymonad.py"
+
+#####################
+#     VARIABLES     #
+#####################
+# modkey
+set $mod Mod4
+# navigation
+set $left h
+set $down j
+set $up k
+set $right l
+# terminal emulator
+set $term alacritty
+# application launcher
+# Note: pass the final command to swaymsg so that the resulting window can be opened
+# on the original workspace that the command was run on.
+set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+#####################
+#      OUTPUTS      #
+#####################
+# wallpaper
+output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+
+# monitors
+# get the names of your outputs by running: swaymsg -t get_outputs
+output DP-3 resolution 2560x1440 position 0,0
+output eDP-1 resolution 1920x1080 position 2560,0
+
+### Idle configuration
+#
+# Example configuration:
+#
+# exec swayidle -w \
+#          timeout 300 'swaylock -f -c 000000' \
+#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
+# This will lock your screen after 300 seconds of inactivity, then turn off
+# your displays after another 300 seconds, and turn your screens back on when
+# resumed. It will also lock your screen before your computer goes to sleep.
+
+#####################
+#       INPUT       #
+#####################
+# get the names of your inputs by running: swaymsg -t get_inputs
+input "type:touchpad" {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
+input "type:keyboard" {
+    repeat_delay 300
+    repeat_rate  50
+    xkb_options "caps:escape,compose:rctrl"
+}
+
+#####################
+#     KEYBINDS      #
+#####################
+
+# program hotkeys
+bindsym $mod+Return exec $term
+bindsym $mod+p exec $menu
+
+# window-management
+bindsym $mod+Shift+c kill
+bindsym $mod+Shift+space floating toggle
+
+# other
+bindsym $mod+Shift+q reload
+#bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+
+# swaymonad
+bindsym $mod+Shift+Return nop promote_window
+
+bindsym $mod+$down nop focus_next_window
+bindsym $mod+$up nop focus_prev_window
+
+bindsym $mod+Shift+$down nop swap_with_next_window
+bindsym $mod+Shift+$up nop swap_with_prev_window
+
+bindsym $mod+x nop reflectx
+bindsym $mod+y nop reflecty
+bindsym $mod+t nop transpose
+
+bindsym $mod+f nop fullscreen
+
+bindsym $mod+Comma nop increment_masters
+bindsym $mod+Period nop decrement_masters
+
+mode "layout" {
+  bindsym t nop set_layout tall
+  bindsym 3 nop set_layout 3_col
+  bindsym n nop set_layout nop
+
+  # Return to default mode
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+}
+#bindsym $mod+l mode "layout"
+
+mouse_warping container
+focus_wrapping no
+
+# workspaces
+# (workspaces can have any name, not just numbers.)
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+bindsym $mod+Shift+$left nop incmfact
+bindsym $mod+Shift+$right nop decmfact
+
+#
+# Status Bar:
+#
+# Read `man 5 sway-bar` for more information about this section.
+bar {
+    position top
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+
+    colors {
+        statusline #ffffff
+        background #323232
+        inactive_workspace #32323200 #32323200 #5c5c5c
+    }
+}
+
+include /etc/sway/config.d/*
