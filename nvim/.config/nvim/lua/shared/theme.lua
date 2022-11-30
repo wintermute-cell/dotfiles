@@ -8,7 +8,9 @@ end
 
 opt.termguicolors = true        -- enable 24-bit RGB colors
 if mode == 'plan9' then
-    vim.cmd [[colorscheme plan9]]   -- setting the colorscheme (plan9, monotone)
+    vim.cmd [[colorscheme plan9]]
 elseif mode == 'monotone' then
-    vim.cmd [[colorscheme monotone]]   -- setting the colorscheme (plan9, monotone)
+    vim.cmd [[colorscheme monotone]]
+elseif mode == 'flowver' then
+    vim.cmd [[colorscheme flowver]]
 end

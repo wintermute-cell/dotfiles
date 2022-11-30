@@ -205,10 +205,20 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-airline-themes",
     url = "https://github.com/vim-airline/vim-airline-themes"
   },
+  ["vim-be-good"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-be-good",
+    url = "https://github.com/ThePrimeagen/vim-be-good"
+  },
   ["vim-devicons"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-devicons",
     url = "https://github.com/ryanoasis/vim-devicons"
+  },
+  ["vim-hexokinase"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-hexokinase",
+    url = "https://github.com/RRethy/vim-hexokinase"
   },
   ["vim-snippets"] = {
     loaded = true,

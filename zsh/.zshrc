@@ -42,7 +42,7 @@ export BEMENU_RENDERERS="/home/wintermute/src/bemenu"
 export MOZ_ENABLE_WAYLAND=1
 
 # custom
-export THEME_MODE="plan9"
+export THEME_MODE="flowver"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 # set $PATH
@@ -80,10 +80,9 @@ alias note="nvim -u $XDG_CONFIG_HOME/nvim/notetaker_init.lua"
 alias c="$SCRIPTDIR/c.sh"
 alias rm="rm -I"
 alias py="python"
+alias n="nnn -edDgx"
 
 # cleanup
-export GOPATH="/usr/local/go"
-export GOROOT="/usr/local/go"
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
 export XCURSOR_PATH=/usr/share/icons:${XDG_DATA_HOME}/icons

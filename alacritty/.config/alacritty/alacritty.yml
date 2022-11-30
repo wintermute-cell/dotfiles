@@ -1,9 +1,19 @@
 window:
   padding:
-    x: 2
-    y: 2
-  opacity: 1.00 #From 0.00 to 1.00
+    x: 10
+    y: 10
+  dynamic_padding: false
+  opacity: 1.0 #From 0.00 to 1.00
+  decorations: full
 
+tabspace: 4
+
+draw_bold_text_with_bright_colors: true
+
+mouse:
+  hide_when_typing: true
+
+dynamic_title: true
 
   ## Font configuration
 font:
@@ -28,36 +38,36 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 13
+  size: 12
 
-# Colors (plan9)
 colors:
-  # Default colors
   primary:
-    background: '#FFFDF7'
-    foreground: '#222222'
+    background: '#fff6f6'
+    foreground: '#000000'
 
-  # Normal colors
+  cursor:
+    text:   '#44475a'
+    cursor: '#ebdbb2'
+
   normal:
-    black:   '#473131'
-    red:     '#B02541'
-    green:   '#005F00'
-    yellow:  '#D98E01'
-    blue:    '#000062'
-    magenta: '#C63C5E'
-    cyan:    '#009BAA'
-    white:   '#EEEEEE'
+    black:   '#222422'
+    red:     '#cc241d'
+    green:   '#1e8f73'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#207571'
+    white:   '#a89984'
 
-  # Bright colors
   bright:
-    black:   '#473131'
-    red:     '#FDCFB1'
-    green:   '#E1EEB8'
-    yellow:  '#FFFEC4'
-    blue:    '#D6DDF7'
-    magenta: '#F1E3FC'
-    cyan:    '#DBECF7'
-    white:   '#EEEEEE'
+    black:   '#606660'
+    red:     '#fb4934'
+    green:   '#80C6A4'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#2B9E99'
+    white:   '#ebdbb2'
 
 cursor:
   thickness: 0.26

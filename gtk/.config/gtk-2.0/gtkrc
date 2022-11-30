@@ -2,9 +2,9 @@
 # Any customization should be done in ~/.gtkrc-2.0.mine instead.
 
 include "/home/wintermute/.gtkrc-2.0.mine"
-gtk-theme-name="Raleigh-Reloaded"
-gtk-icon-theme-name="classic95-master"
-gtk-font-name="CozetteVector 13"
+gtk-theme-name="Tee"
+gtk-icon-theme-name="Zafiro-Icons-Light"
+gtk-font-name="CozetteVector 12"
 gtk-cursor-theme-name="plan9"
 gtk-cursor-theme-size=0
 gtk-toolbar-style=GTK_TOOLBAR_BOTH
@@ -16,4 +16,3 @@ gtk-enable-input-feedback-sounds=1
 gtk-xft-antialias=1
 gtk-xft-hinting=1
 gtk-xft-hintstyle="hintfull"
-gtk-xft-rgba="none"

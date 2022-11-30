@@ -9,6 +9,10 @@ opt.timeoutlen = 800            -- time to wait for sequence to compelete in ms
 opt.undofile = true             -- enable persistent undos
 opt.backup = false              -- make a permanent backup file
 opt.writebackup = true          -- make a temp backup during file writing
+opt.title = true                -- make the window-title dynamic
+-- disable automatic comment continuation on newline
+vim.cmd("autocmd BufEnter * set formatoptions-=cro")
+vim.cmd("autocmd BufEnter * setlocal formatoptions-=cro")
 
 -------------
 -- TUI -------------

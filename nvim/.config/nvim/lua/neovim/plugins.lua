@@ -36,6 +36,9 @@ end
 local p = packer.startup(function(use)
     use "wbthomason/packer.nvim" -- Have packer manage itself
 
+    -- misc
+    use 'ThePrimeagen/vim-be-good'
+
     -- dependencies            |    required by
     use 'nvim-lua/popup.nvim'    -- Telescope
     use 'nvim-lua/plenary.nvim'  -- Telescope
@@ -46,6 +49,9 @@ local p = packer.startup(function(use)
     use 'ryanoasis/vim-devicons'
     use 'liuchengxu/vim-which-key'
     use 'folke/tokyonight.nvim'
+    use {'RRethy/vim-hexokinase',
+        run = "make hexokinase"
+    }
     use { 'anuvyklack/pretty-fold.nvim',
         config = function()
             require('pretty-fold').setup {
@@ -106,7 +112,7 @@ end)
 -- PLUGIN CONFIG -----
 ------------------------------
 -- airline
-vim.g.airline_theme = 'minimalist'
+vim.g.airline_theme = 'base16_atelier_cave_light'
 vim.g["airline#extensions#tabline#enabled"] = 1
 vim.g["airline#extensions#tabline#formatter"] = 'unique_tail'
 
@@ -123,5 +129,7 @@ vim.g.suda_smart_edit = 1
 -- vimtex
 vim.g.vimtex_view_method = 'zathura'
 
+-- hexokinase
+vim.g["Hexokinase_highlighters"] = {'backgroundfull'}
 
 return p

@@ -9,11 +9,93 @@
 #                                      ▐       #
 ################################################
 
+#<[# QUICK SETTINGS ########################################################
+#--- Include --------------------------------------------------------------
+set $background		#4f6878
+set $foreground		#fff6f6
+set $selection		#6272a4
+set $unfocused		#44475a
+set $cyan			#689d6a
+set $green			#98971a
+set $orange			#d65d0e
+set $pink			#FF5370
+set $purple			#b16286
+set $red			#bf6374
+set $yellow			#d79921
+set $dark           #323732
+set $fore			#222222
+
+#--- Font ------------------------------------------------------------------
+set $font			"CozetteVector 11"
+
+#--- GUI -------------------------------------------------------------------
+set {
+	$gtk_theme  	'Tee'
+	$icon_theme		'Zafiro-icons-Light'
+	$cursor_theme	'plan9'
+}
+
+#--- Window Decortations ---------------------------------------------------
+set {
+   	$border      	3
+  	$nofocus     	$foreground
+	$focus       	$background
+	$titletxt    	$fore
+	$titlepad		3	
+	$gaps_inner  	8
+	$gaps_outer  	14
+}
+
+#]>#########################################################################
+
+#<[# APPEARANCE ############################################################
+seat seat0 xcursor_theme $cursor_theme 20
+
+exec_always {
+	gsettings set org.gnome.desktop.interface font-name     $font
+	gsettings set org.gnome.desktop.interface gtk-theme		$gtk_theme
+	gsettings set org.gnome.desktop.interface icon-theme	$icon_theme
+	gsettings set org.gnome.desktop.interface cursor-theme	$cursor_theme
+}
+
+#]>#########################################################################
+
+#--- Colors ----------------------------------------------------------------
+client.focused          $focus   $focus   $titletxt $focus    $focus
+client.focused_inactive $nofocus $nofocus $titletxt $nofocus  $nofocus
+client.unfocused        $nofocus $nofocus $titletxt $nofocus  $nofocus
+client.urgent           $nofocus $nofocus $titletxt $nofocus  $nofocus
+
+#--- Bars ------------------------------------------------------------------
+bar swaybar_command	waybar
+
+#--- Gaps ------------------------------------------------------------------
+gaps inner $gaps_inner
+gaps outer $gaps_outer
+
+#--- Titlebar --------------------------------------------------------------
+font $font
+for_window [title="."] title_format "%title"
+titlebar_border_thickness 0
+titlebar_padding $titlepad $titlepad
+title_align center
+#--- Default Borders -------------------------------------------------------
+default_floating_border	pixel	$border
+default_border			pixel	$border
+#]>#########################################################################
+
 
 #####################
 #      SCRIPTS      #
 #####################
 exec_always "pkill -f 'python3? .+/swaymonad.py';  ~/.config/sway/swaymonad/swaymonad.py"
+
+#####################
+#     AUTOSTART     #
+#####################
+set $wobsock $XDG_RUNTIME_DIR/wob.sock
+exec_always rm -f $wobsock && mkfifo $wobsock && tail -f $wobsock | wob --border-color "#fff6f6FF" --background-color "#4f6878FF" --bar-color "#fff6f6FF" -H 32 -W 280
+exec_always ~/.config/sway/sway_autostart.sh
 
 #####################
 #     VARIABLES     #
@@ -30,18 +112,21 @@ set $term alacritty
 # application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu 'wrofi -show run'
 
 #####################
 #      OUTPUTS      #
 #####################
 # wallpaper
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg bg.jpg fill
 
 # monitors
 # get the names of your outputs by running: swaymsg -t get_outputs
 output DP-3 resolution 2560x1440 position 0,0
-output eDP-1 resolution 1920x1080 position 2560,0
+output eDP-1 resolution 1920x1080 position 2560,0 scale 1.5
+
+# workspaces
+workspace 1 output DP-3
 
 ### Idle configuration
 #
@@ -79,6 +164,9 @@ input "type:keyboard" {
 # program hotkeys
 bindsym $mod+Return exec $term
 bindsym $mod+p exec $menu
+bindsym $mod+a exec rofi_audio_output
+bindsym $mod+0 exec rofi_powermenu
+bindsym Print exec grimshot copy area
 
 # window-management
 bindsym $mod+Shift+c kill
@@ -87,6 +175,16 @@ bindsym $mod+Shift+space floating toggle
 # other
 bindsym $mod+Shift+q reload
 #bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+floating_modifier $mod normal
+
+# laptop keys
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl get-sink-volume @DEFAULT_SINK@ | head -n 1| awk '{print substr($5, 1, length($5)-1)}' > $wobsock
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pactl get-sink-volume @DEFAULT_SINK@ | head -n 1 | awk '{print substr($5, 1, length($5)-1)}' > $wobsock
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym XF86MonBrightnessUp exec sudo light -A 8 && light -G | cut -d'.' -f1 > $wobsock
+bindsym XF86MonBrightnessDown exec sudo light -U 8 && light -G | cut -d'.' -f1 > $wobsock
+bindsym XF86AudioPlay exec playerctl play-pause
 
 # swaymonad
 bindsym $mod+Shift+Return nop promote_window
@@ -115,7 +213,7 @@ mode "layout" {
   bindsym Return mode "default"
   bindsym Escape mode "default"
 }
-#bindsym $mod+l mode "layout"
+bindsym $mod+Shift+l mode "layout"
 
 mouse_warping container
 focus_wrapping no
@@ -131,7 +229,6 @@ bindsym $mod+6 workspace number 6
 bindsym $mod+7 workspace number 7
 bindsym $mod+8 workspace number 8
 bindsym $mod+9 workspace number 9
-bindsym $mod+0 workspace number 10
 bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
@@ -141,31 +238,30 @@ bindsym $mod+Shift+6 move container to workspace number 6
 bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
-bindsym $mod+Shift+0 move container to workspace number 10
 
 # scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
-bindsym $mod+Shift+$left nop incmfact
-bindsym $mod+Shift+$right nop decmfact
+bindsym $mod+$left nop incmfact
+bindsym $mod+$right nop decmfact
 
 #
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-bar {
-    position top
-
-    # When the status_command prints a new line to stdout, swaybar updates.
-    # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
-}
+#bar {
+#    position top
+#
+#    # When the status_command prints a new line to stdout, swaybar updates.
+#    # The default just shows the current date and time.
+#    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+#
+#    colors {
+#        statusline #ffffff
+#        background #323232
+#        inactive_workspace #32323200 #32323200 #5c5c5c
+#    }
+#}
 
 include /etc/sway/config.d/*
