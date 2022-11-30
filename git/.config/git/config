@@ -3,3 +3,5 @@
 	name = wintermute
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+[url "ssh://git@gitlab2.informatik.uni-wuerzburg.de/"]
+	insteadOf = gitlab2.informatik.uni-wuerzburg.de 
