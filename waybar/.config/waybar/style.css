@@ -82,19 +82,16 @@ window#waybar.bottom {
 #backlight,
 #battery,
 #idle_inhibitor{
-	font-size: 14px;
 	margin: 0px 2px;
 }
 
 #battery
 {
     color: @foreground;
-	font-size: 20px;
 }
 
 #pulseaudio
 {
-	font-size: 16px;
 }
 
 #custom-separator {
@@ -171,15 +168,12 @@ window#waybar.bottom {
 }
 
 #custom-menu{
-	font-size: 20px;
 }
 
 #clock {
-	font-size: 11px;
     padding-right: 14px;
 }
 #custom-shutdown{
-	font-size: 12px;
 	padding: 2px 0px 6px 0px;
 }
 

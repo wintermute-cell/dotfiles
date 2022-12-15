@@ -49,7 +49,7 @@ set {
 #]>#########################################################################
 
 #<[# APPEARANCE ############################################################
-seat seat0 xcursor_theme $cursor_theme 20
+#seat seat0 xcursor_theme $cursor_theme 20
 
 exec_always {
 	gsettings set org.gnome.desktop.interface font-name     $font
@@ -112,7 +112,7 @@ set $term alacritty
 # application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu 'wrofi -show run'
+set $menu '/home/wintermute/.local/bin/wrofi -show run'
 
 #####################
 #      OUTPUTS      #

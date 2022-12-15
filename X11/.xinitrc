@@ -5,7 +5,7 @@ source /etc/X11/xinit/xinitrc.d/50-systemd-user.sh
 /home/wintermute/scripts/remaps.sh
 
 # setting correct display configuration, depending if dock is present
-/home/wintermute/scripts/system/dock_toggle.sh &
+/home/wintermute/scripts/dock_toggle.sh &
 
 # autostart
 udiskie --smart-tray -f pcmanfm &

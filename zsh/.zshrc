@@ -1,17 +1,34 @@
-# The following lines were added by compinstall
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]} m:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*'
-zstyle :compinstall filename '/home/wintermute/.zshrc'
+# plugins
+if [[ ! -d ~/src/zsh-autopair ]]; then
+  git clone https://github.com/hlissner/zsh-autopair ~/src/zsh-autopair
+fi
+source ~/src/zsh-autopair/autopair.zsh
+autopair-init
+
+if [[ ! -d ~/src/zsh-syntax ]]; then
+    git clone https://github.com/zdharma-continuum/fast-syntax-highlighting ~/src/zsh-syntax
+fi
+source ~/src/zsh-syntax/fast-syntax-highlighting.plugin.zsh
+
+# autocomplete
+zstyle ':completion:*' gain_privileges 1
+zstyle ':completion:*' completer _expand _complete _ignored _match _correct _approximate
+zstyle ':completion:*' completions 1
+zstyle ':completion:*' file-sort name
+zstyle ':completion:*' glob 1
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' ignore-parents parent pwd
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'r:|[._-/]=** r:|=**' 'l:|=* r:|=*'
+# zstyle ':completion:*' menu select=long
+zstyle ':completion:*' menu select
+# zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' substitute 1
+zstyle :compinstall filename '/home/li/.config/zsh/.zshrc'
 
 autoload -Uz compinit
 compinit
-# End of lines added by compinstall
-
-# xdg
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_STATE_HOME="${HOME}/.local/state"
+zmodload zsh/complist
 
 # history
 export HISTSIZE=10000
@@ -29,24 +46,12 @@ export HISTTIMEFORMAT="[%F %T] "
 setopt EXTENDED_HISTORY
 
 
-setopt autocd extendedglob nomatch
-unsetopt beep
+setopt extendedglob nomatch
+unsetopt beep autocd
 bindkey -v
 
-# env variables
-export SCRIPTDIR="/home/wintermute/scripts"
-
-# wayland specific
-export LD_LIBRARY_PATH="/home/wintermute/src/bemenu"
-export BEMENU_RENDERERS="/home/wintermute/src/bemenu"
-export MOZ_ENABLE_WAYLAND=1
-
-# custom
-export THEME_MODE="flowver"
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-
-# set $PATH
-export PATH="/home/wintermute/.local/bin:/usr/bin:$PATH"
+# colors
+autoload -U colors && colors
 
 # custom prompt
 setopt prompt_subst # reeval prompt every time it is printed
@@ -64,15 +69,48 @@ git_prompt() {
 
 PS1='%2~ $(git_prompt)%# '
 
-# preferred editor
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
-else
-    export EDITOR='nvim'
-fi
+# Change cursor shape for different vi modes.
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
+}
+zle -N zle-keymap-select
+zle-line-init() {
+    zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
+    echo -ne "\e[5 q"
+}
+zle -N zle-line-init
+echo -ne '\e[5 q' # Use beam shape cursor on startup.
+preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
+
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
 
 # enable reverse search
 bindkey '^R' history-incremental-search-backward
+
+bindkey '^n' expand-or-complete
+bindkey '^p' reverse-menu-complete
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^E' edit-command-line
 
 # aliases
 alias v="nvim"
@@ -81,11 +119,3 @@ alias c="$SCRIPTDIR/c.sh"
 alias rm="rm -I"
 alias py="python"
 alias n="nnn -edDgx"
-
-# cleanup
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
-export XCURSOR_PATH=/usr/share/icons:${XDG_DATA_HOME}/icons
-export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
-export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
-compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
