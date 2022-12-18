@@ -7,6 +7,8 @@ map K zoom in
 map J zoom out
 map i recolor
 map t toggle_statusbar
+map <C-n> navigate next
+map <C-p> navigate previous
 
 set selection-clipboard clipboard
 set default-bg "#323732"

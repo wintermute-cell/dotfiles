@@ -8,11 +8,5 @@
 --|
 --|############################################
 
-require 'neovim.options'
-require 'neovim.keymaps'
-require 'neovim.plugins'
-require 'neovim.completion'
-require 'neovim.lsp'
-require 'neovim.telescope'
-require 'neovim.treesitter'
+require 'neovim'
 require 'shared.theme'

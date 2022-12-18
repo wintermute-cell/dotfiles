@@ -1,9 +1,17 @@
-local dopts = { noremap = true, silent = true } -- default opts, should fit most
-local keymap = vim.api.nvim_set_keymap -- shorthand
-
+local status_ok, wk = pcall(require, 'which-key')
+if not status_ok then
+    print "keymaps.lua: Unable to require which-key!"
+end
+local status_ok, lsp = pcall(require, "lsp-zero") -- required for lsp mappings
+if not status_ok then
+    print "keymaps.lua: Unable to require lsp-zero!"
+    return
+end
+local keymap = vim.keymap.set -- shorthand
+table.unpack = table.unpack or unpack  -- fix usage of deprecated unpack
 
 -- mapping leader key
-keymap("", "<Space>", "<Nop>", dopts)
+keymap("", "<Space>", "<Nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -22,73 +30,80 @@ vim.g.maplocalleader = " "
 -- NORMAL --------
 ------------------------------
 -- vanilla leader mappings
-keymap("n", "<leader>e", ":Lex 30<CR>", dopts)
+wk.register({["<leader>o"] = {name = "+helper windows"}})
+keymap("n", "<leader>ou", vim.cmd.UndotreeToggle, {desc = 'Open Undotree'})
+keymap("n", "<leader>oe", ":Lex 30<CR>", {desc = 'Explore Files'})
 
 -- telescope.nvim
-keymap("n", "<leader>ff", "<cmd>lua require('telescope.builtin').find_files()<CR>", dopts)
-keymap("n", "<leader>fg", "<cmd>lua require('telescope.builtin').live_grep()<CR>", dopts)
-keymap("n", "<leader>fb", "<cmd>lua require('telescope.builtin').buffers()<CR>", dopts)
-keymap("n", "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<CR>", dopts)
-
--- telekasten
-keymap("n", "<leader>zf", "<cmd>lua require('telekasten').find_notes()<CR>", dopts)
-keymap("n", "<leader>zd", "<cmd>lua require('telekasten').find_daily_notes()<CR>", dopts)
-keymap("n", "<leader>zg", "<cmd>lua require('telekasten').search_notes()<CR>", dopts)
-keymap("n", "<leader>zz", "<cmd>lua require('telekasten').follow_link()<CR>", dopts)
-keymap("n", "<leader>zT", "<cmd>lua require('telekasten').goto_today()<CR>", dopts)
-keymap("n", "<leader>zW", "<cmd>lua require('telekasten').goto_thisweek()<CR>", dopts)
-keymap("n", "<leader>zw", "<cmd>lua require('telekasten').find_weekly_notes()<CR>", dopts)
-keymap("n", "<leader>zn", "<cmd>lua require('telekasten').new_note()<CR>", dopts)
-keymap("n", "<leader>zN", "<cmd>lua require('telekasten').new_templated_note()<CR>", dopts)
-keymap("n", "<leader>zy", "<cmd>lua require('telekasten').yank_notelink()<CR>", dopts)
-keymap("n", "<leader>zc", "<cmd>lua require('telekasten').show_calendar()<CR>", dopts)
-keymap("n", "<leader>zi", "<cmd>lua require('telekasten').paste_img_and_link()<CR>", dopts)
-keymap("n", "<leader>zt", "<cmd>lua require('telekasten').toggle_todo()<CR>", dopts)
-keymap("n", "<leader>zb", "<cmd>lua require('telekasten').show_backlinks()<CR>", dopts)
-keymap("n", "<leader>zF", "<cmd>lua require('telekasten').find_friends()<CR>", dopts)
-keymap("n", "<leader>zI", "<cmd>lua require('telekasten').insert_img_link({ i=true })<CR>", dopts)
-keymap("n", "<leader>zp", "<cmd>lua require('telekasten').preview_img()<CR>", dopts)
-keymap("n", "<leader>zm", "<cmd>lua require('telekasten').browse_media()<CR>", dopts)
-keymap("n", "<leader>za", "<cmd>lua require('telekasten').show_tags()<CR>", dopts)
-keymap("n", "<leader>z#", "<cmd>lua require('telekasten').show_tags()<CR>", dopts)
-keymap("n", "<leader>zr", "<cmd>lua require('telekasten').rename_note()<CR>", dopts)
-
-keymap("n", "<leader>z", "<cmd>lua require('telekasten').panel()<CR>", dopts)
-
-keymap("i", "<C-c><C-n>", "<cmd>lua require('telekasten').insert_link({ i=true })<CR>", dopts)
-keymap("i", "<C-c><C-t>", "<cmd>lua require('telekasten').show_tags({i = true})<CR>", dopts)
+local tsb = require('telescope.builtin')
+wk.register({["<leader>f"] = {name = "+telescope"}})
+keymap("n", "<leader>ff", tsb.find_files, {desc = 'find files'})
+keymap("n", "<leader>fg", tsb.live_grep, {desc = 'live grep'})
+keymap("n", "<leader>fs", tsb.live_grep, {desc = 'grep for string at cursor'})
+keymap("n", "<leader>fb", tsb.buffers, {desc = 'find buffers'})
+keymap("n", "<leader>fh", tsb.help_tags, {desc = 'find helptags'})
 
 -- resizing with ctrl+arrows
-keymap("n", "<C-Up>", ":resize +2<CR>", dopts)
-keymap("n", "<C-Down>", ":resize -2<CR>", dopts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", dopts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", dopts)
+keymap("n", "<C-Up>", ":resize +2<CR>")
+keymap("n", "<C-Down>", ":resize -2<CR>")
+keymap("n", "<C-Left>", ":vertical resize -2<CR>")
+keymap("n", "<C-Right>", ":vertical resize +2<CR>")
 
 -- better buffer navigation with SHIFT+H/L
-keymap("n", "<S-h>", ":bprevious<CR>", dopts)
-keymap("n", "<S-l>", ":bnext<CR>", dopts)
+local function bnav_skip(command)
+    repeat command() until vim.bo.buftype ~= 'quickfix'
+end
+keymap("n", "<S-h>", function () bnav_skip(vim.cmd.bprevious) end)
+keymap("n", "<S-l>", function () bnav_skip(vim.cmd.bnext) end)
 
-keymap("n", "Q", "<Nop>", dopts)
-keymap("n", "q:", "<Nop>", dopts)
+-- disabling some features
+keymap("n", "Q", "<Nop>")
+keymap("n", "q:", "<Nop>")
+
+-- easy plus register
+keymap("n", "<leader>y", "\"+y", {desc = 'yank to +'})
+
+-- LSP related keymaps
+-- defined in on_attach, so they are only active when functions are available
+-- and otherwise vim builtins are used
+wk.register({["<leader>l"] = {name = "+lsp"}})
+lsp.on_attach(function(client, bufnr)
+  local opts = {buffer = bufnr, remap = false}
+
+  -- LEFT IN AS AN EXAMPLE:
+  --if client.name == "eslint" then
+  --    vim.cmd [[ LspStop eslint ]]
+  --    return
+  --end
+
+  keymap("n", "gd", vim.lsp.buf.definition, opts)
+  keymap("n", "K", vim.lsp.buf.hover, opts)
+  keymap("n", "<leader>ld", vim.diagnostic.open_float, {desc = 'float diagnostic', table.unpack(opts)})
+  keymap("n", "[d", vim.diagnostic.goto_next, opts)
+  keymap("n", "]d", vim.diagnostic.goto_prev, opts)
+  keymap("n", "<leader>ln", vim.diagnostic.goto_next, {desc = 'next diagnostic', table.unpack(opts)})
+  keymap("n", "<leader>lp", vim.diagnostic.goto_prev, {desc = 'previous diagnostic', table.unpack(opts)})
+  keymap("n", "<leader>la", vim.lsp.buf.code_action, {desc = 'code action', table.unpack(opts)})
+  keymap("n", "<leader>lr", vim.lsp.buf.references, {desc = 'references', table.unpack(opts)})
+  keymap("n", "<leader>ln", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
+  keymap("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+end)
 
 -------------
--- VISUAL --------
+-- VISUAL MODE --
 ------------------------------
--- Move text up and down with ALT+j/k
-keymap("v", "<A-j>", ":m .+1<CR>==", dopts)
-keymap("v", "<A-k>", ":m .-2<CR>==", dopts)
-
--- don't overwrite register / yank by pasting over something
-keymap("v", "p", '"_dP', dopts)
+keymap("v", "<leader>y", "\"+y", {desc = 'yank to +'})
 
 -------------
 -- VISUAL BLOCK --
 ------------------------------
 -- Move text up and down
-keymap("x", "J", ":move '>+1<CR>gv-gv", dopts)
-keymap("x", "K", ":move '<-2<CR>gv-gv", dopts)
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", dopts)
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", dopts)
+keymap("x", "J", ":move '>+1<CR>gv=gv")
+keymap("x", "K", ":move '<-2<CR>gv=gv")
+keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
+keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
+
+keymap("x", "<leader>y", "\"+y", {desc = 'yank to +'})
 
 -------------
 -- TERMINAL ------
@@ -99,19 +114,3 @@ keymap("t", "<C-w>h", "<C-\\><C-N><C-w>h", term_opts)
 keymap("t", "<C-w>j", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-w>k", "<C-\\><C-N><C-w>k", term_opts)
 keymap("t", "<C-w>l", "<C-\\><C-N><C-w>l", term_opts)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

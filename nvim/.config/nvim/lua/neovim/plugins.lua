@@ -47,8 +47,14 @@ local p = packer.startup(function(use)
     use 'vim-airline/vim-airline'
     use 'vim-airline/vim-airline-themes'
     use 'ryanoasis/vim-devicons'
-    use 'liuchengxu/vim-which-key'
     use 'folke/tokyonight.nvim'
+    use 'junegunn/goyo.vim'
+    use 'junegunn/limelight.vim'
+    use { 'folke/which-key.nvim',
+        config = function()
+            require("which-key").setup { }
+        end
+    }
     use {'RRethy/vim-hexokinase',
         run = "make hexokinase"
     }
@@ -61,21 +67,44 @@ local p = packer.startup(function(use)
     }
 
     -- editing
-    use 'tmsvg/pear-tree'       -- automatically pair parens, quotes, html-tags ..
+    -- use 'tmsvg/pear-tree'       -- automatically pair parens, quotes, html-tags ..
+    use 'windwp/nvim-autopairs'
 
     -- functionality
     use 'Konfekt/FastFold'
     use 'tpope/vim-surround'
     use 'lambdalisue/suda.vim'
+    use 'mbbill/undotree'
 
     -- snippets
-    use 'SirVer/ultisnips'
-    use 'honza/vim-snippets'
+    -- use 'SirVer/ultisnips'
+    -- use 'honza/vim-snippets'
 
     -- lsp
-    use 'neovim/nvim-lspconfig'
-    use 'williamboman/mason.nvim'
-    use 'williamboman/mason-lspconfig.nvim'
+    use {
+        'VonHeikemen/lsp-zero.nvim',
+        requires = {
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},
+            {'williamboman/mason.nvim'},
+            {'williamboman/mason-lspconfig.nvim'},
+
+            -- Autocompletion
+            {'hrsh7th/nvim-cmp'},
+            {'hrsh7th/cmp-buffer'},
+            {'hrsh7th/cmp-path'},
+            {'saadparwaiz1/cmp_luasnip'},
+            {'hrsh7th/cmp-nvim-lsp'},
+            {'hrsh7th/cmp-nvim-lua'},
+
+            -- Snippets
+            {'L3MON4D3/LuaSnip'},
+            {'rafamadriz/friendly-snippets'},
+        }
+    }
+    -- use 'neovim/nvim-lspconfig'
+    -- use 'williamboman/mason.nvim'
+    -- use 'williamboman/mason-lspconfig.nvim'
     --use 'williamboman/nvim-lsp-installer'     -- superceded by mason.nvim
     --use 'tami5/lspsaga.nvim'
 
@@ -84,13 +113,13 @@ local p = packer.startup(function(use)
     use 'elkowar/yuck.vim'
 
     -- completion
-    use 'hrsh7th/nvim-cmp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-nvim-lua'
-    use 'quangnguyen30192/cmp-nvim-ultisnips'
+    -- use 'hrsh7th/nvim-cmp'
+    -- use 'hrsh7th/cmp-buffer'
+    -- use 'hrsh7th/cmp-path'
+    -- use 'hrsh7th/cmp-cmdline'
+    -- use 'hrsh7th/cmp-nvim-lsp'
+    -- use 'hrsh7th/cmp-nvim-lua'
+    -- use 'quangnguyen30192/cmp-nvim-ultisnips'
 
     -- telescope
     use 'nvim-telescope/telescope.nvim'
@@ -117,17 +146,19 @@ vim.g["airline#extensions#tabline#enabled"] = 1
 vim.g["airline#extensions#tabline#formatter"] = 'unique_tail'
 
 --pear-tree
-vim.g.pear_tree_repeatable_expand = 0
-vim.g.pear_tree_map_special_keys = 0
-vim.g.pear_tree_smart_openers = 1
-vim.g.pear_tree_smart_closers = 1
-vim.g.pear_tree_smart_backspace = 1
+-- vim.g.pear_tree_repeatable_expand = 0
+-- vim.g.pear_tree_map_special_keys = 0
+-- vim.g.pear_tree_smart_openers = 1
+-- vim.g.pear_tree_smart_closers = 1
+-- vim.g.pear_tree_smart_backspace = 1
 
 -- suda
 vim.g.suda_smart_edit = 1
 
 -- vimtex
 vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_quickfix_ignore_filters = { 'Overfull', 'Underfull' }
+vim.g.vimtex_quickfix_open_on_warning = 0
 
 -- hexokinase
 vim.g["Hexokinase_highlighters"] = {'backgroundfull'}

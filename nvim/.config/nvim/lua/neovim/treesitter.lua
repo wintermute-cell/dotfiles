@@ -4,18 +4,21 @@ if not status_ok then
 end
 
 configs.setup {
-    ensure_installed = { '' },                     -- one of "all", "maintained" (parsers with maintainers) or list of langs
-    sync_install = false,                         -- for 'ensure_installed', install asyncronously
-    auto_install = true,                          -- auto-install missing parsers when entering buffer
-    ignore_install = { '' },                      -- don't use for languages from this list
+    ensure_installed = { 'help', 'bash' }, -- one of "all", "maintained" (parsers with maintainers) or list of langs
+    sync_install = false,      -- for 'ensure_installed', install asyncronously
+    auto_install = true,       -- auto-install missing parsers when entering buffer
+    ignore_install = { '' },   -- don't use for languages from this list
+    autopairs = {
+        enable = true,
+    },
     highlight = {
-        enable = true,                            -- highlight based on treesitter
-        disable = { '' },                         -- list of languages to disable treesitter-highlighting for
-        additional_vim_regex_highlighting = true, -- use vims old regex based system as well
+        enable = true,         -- highlight based on treesitter
+        disable = { '' },      -- list of languages to disable treesitter-highlighting for
+        additional_vim_regex_highlighting = false, -- use vims old regex based system as well
     },
     indent = {
-        enable = false,                            -- indent based on treesitter
-        disable = { '' },                         -- disable treesitter indent for these langs
+        enable = false,        -- indent based on treesitter
+        disable = { '' },      -- disable treesitter indent for these langs
     },
     fold = {
         fold_one_line_after = true,
