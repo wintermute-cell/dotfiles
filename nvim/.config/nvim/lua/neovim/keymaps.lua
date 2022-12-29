@@ -32,7 +32,12 @@ vim.g.maplocalleader = " "
 -- vanilla leader mappings
 wk.register({["<leader>o"] = {name = "+helper windows"}})
 keymap("n", "<leader>ou", vim.cmd.UndotreeToggle, {desc = 'Open Undotree'})
-keymap("n", "<leader>oe", ":Lex 30<CR>", {desc = 'Explore Files'})
+keymap("n", "<leader>oe", function () -- opening Lexplore 30 sets the width to
+    vim.cmd.Lexplore()                -- 30%, so this is necessary
+    if vim.bo.filetype == 'netrw' then
+        vim.api.nvim_win_set_width(0, 30)
+    end
+end, {desc = 'Explore Files'})
 
 -- telescope.nvim
 local tsb = require('telescope.builtin')
@@ -51,10 +56,22 @@ keymap("n", "<C-Right>", ":vertical resize +2<CR>")
 
 -- better buffer navigation with SHIFT+H/L
 local function bnav_skip(command)
-    repeat command() until vim.bo.buftype ~= 'quickfix'
+    repeat command() until (vim.bo.buftype ~= 'quickfix' and vim.bo.buftype ~= 'terminal')
 end
 keymap("n", "<S-h>", function () bnav_skip(vim.cmd.bprevious) end)
 keymap("n", "<S-l>", function () bnav_skip(vim.cmd.bnext) end)
+
+-- deleting buffers without closing splits with moll/vim-bbye
+local function bd_skip(command)
+    command()
+    repeat vim.cmd.bnext() until (vim.bo.buftype ~= 'quickfix' and vim.bo.buftype ~= 'terminal')
+end
+keymap("n", "<leader>bd", function () bd_skip(vim.cmd.Bdelete) end, {desc = 'delete buffer without closing split'})
+keymap("n", "<leader>bw", function () bd_skip(vim.cmd.Bwipeout) end, {desc = 'wipeout buffer without closing split'})
+
+-- better vertical movement/navigation
+keymap("n", "<C-d>", "<C-d>zz")
+keymap("n", "<C-u>", "<C-u>zz")
 
 -- disabling some features
 keymap("n", "Q", "<Nop>")

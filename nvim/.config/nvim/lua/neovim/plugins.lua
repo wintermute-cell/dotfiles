@@ -75,6 +75,7 @@ local p = packer.startup(function(use)
     use 'tpope/vim-surround'
     use 'lambdalisue/suda.vim'
     use 'mbbill/undotree'
+    use 'moll/vim-bbye'
 
     -- snippets
     -- use 'SirVer/ultisnips'
@@ -157,7 +158,7 @@ vim.g.suda_smart_edit = 1
 
 -- vimtex
 vim.g.vimtex_view_method = 'zathura'
-vim.g.vimtex_quickfix_ignore_filters = { 'Overfull', 'Underfull' }
+vim.g.vimtex_quickfix_ignore_filters = { 'Overfull', 'Underfull', 'Warning' }
 vim.g.vimtex_quickfix_open_on_warning = 0
 
 -- hexokinase
