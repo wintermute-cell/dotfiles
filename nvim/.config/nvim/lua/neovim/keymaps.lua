@@ -83,7 +83,7 @@ keymap("n", "<leader>y", "\"+y", {desc = 'yank to +'})
 -- LSP related keymaps
 -- defined in on_attach, so they are only active when functions are available
 -- and otherwise vim builtins are used
-wk.register({["<leader>l"] = {name = "+lsp"}})
+wk.register({["<leader>k"] = {name = "+lsp"}})
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
@@ -95,14 +95,14 @@ lsp.on_attach(function(client, bufnr)
 
   keymap("n", "gd", vim.lsp.buf.definition, opts)
   keymap("n", "K", vim.lsp.buf.hover, opts)
-  keymap("n", "<leader>ld", vim.diagnostic.open_float, {desc = 'float diagnostic', table.unpack(opts)})
   keymap("n", "[d", vim.diagnostic.goto_next, opts)
   keymap("n", "]d", vim.diagnostic.goto_prev, opts)
-  keymap("n", "<leader>ln", vim.diagnostic.goto_next, {desc = 'next diagnostic', table.unpack(opts)})
-  keymap("n", "<leader>lp", vim.diagnostic.goto_prev, {desc = 'previous diagnostic', table.unpack(opts)})
-  keymap("n", "<leader>la", vim.lsp.buf.code_action, {desc = 'code action', table.unpack(opts)})
-  keymap("n", "<leader>lr", vim.lsp.buf.references, {desc = 'references', table.unpack(opts)})
-  keymap("n", "<leader>ln", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
+  keymap("n", "zn", vim.diagnostic.goto_next, {desc = 'next diagnostic', table.unpack(opts)})
+  keymap("n", "zp", vim.diagnostic.goto_prev, {desc = 'previous diagnostic', table.unpack(opts)})
+  keymap("n", "<leader>kd", vim.diagnostic.open_float, {desc = 'float diagnostic', table.unpack(opts)})
+  keymap("n", "<leader>ka", vim.lsp.buf.code_action, {desc = 'code action', table.unpack(opts)})
+  keymap("n", "<leader>kr", vim.lsp.buf.references, {desc = 'references', table.unpack(opts)})
+  keymap("n", "<leader>kn", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
   keymap("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 end)
 

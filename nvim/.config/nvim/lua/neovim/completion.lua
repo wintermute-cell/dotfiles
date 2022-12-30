@@ -29,14 +29,14 @@ cmp.setup({
         i = cmp.mapping.abort(),
         c = cmp.mapping.close(),
         }),
-        ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+        ['<Tab>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
+        ['<CR>'] = cmp.config.disable,
     }),
     window = {
         -- define a custom border here
         documentation = true, -- { border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }, },
     },
 })
-
 
 
 -- Use buffer source for `/`

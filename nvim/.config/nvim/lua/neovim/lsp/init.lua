@@ -27,10 +27,11 @@ lsp.ensure_installed({
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp.defaults.cmp_mappings({
-  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-  ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-  ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+    ['<Tab>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
+    ['<CR>'] = cmp.config.disable,
+    ['<C-Space>'] = cmp.mapping.complete(),
 })
 
 lsp.setup_nvim_cmp({
@@ -38,7 +39,7 @@ lsp.setup_nvim_cmp({
   sources = {
       {name = 'path'},
       {name = 'nvim_lsp', keyword_length = 3},
-      {name = 'buffer', keyword_length = 3},
+      {name = 'buffer', keyword_length = 3, option = { keyword_pattern = [[\k\+]] }}, -- pattern allows for umlauts in completions
       {name = 'luasnip', keyword_length = 2},
   },
 })
