@@ -67,7 +67,6 @@ local p = packer.startup(function(use)
     }
 
     -- editing
-    -- use 'tmsvg/pear-tree'       -- automatically pair parens, quotes, html-tags ..
     use 'windwp/nvim-autopairs'
 
     -- functionality
@@ -76,10 +75,12 @@ local p = packer.startup(function(use)
     use 'lambdalisue/suda.vim'
     use 'mbbill/undotree'
     use 'moll/vim-bbye'
-
-    -- snippets
-    -- use 'SirVer/ultisnips'
-    -- use 'honza/vim-snippets'
+    use {
+        'lewis6991/spellsitter.nvim',
+        config = function()
+            require('spellsitter').setup()
+        end
+    }
 
     -- lsp
     use {
@@ -103,24 +104,10 @@ local p = packer.startup(function(use)
             {'rafamadriz/friendly-snippets'},
         }
     }
-    -- use 'neovim/nvim-lspconfig'
-    -- use 'williamboman/mason.nvim'
-    -- use 'williamboman/mason-lspconfig.nvim'
-    --use 'williamboman/nvim-lsp-installer'     -- superceded by mason.nvim
-    --use 'tami5/lspsaga.nvim'
 
     -- language tools
     use 'lervag/vimtex'
     use 'elkowar/yuck.vim'
-
-    -- completion
-    -- use 'hrsh7th/nvim-cmp'
-    -- use 'hrsh7th/cmp-buffer'
-    -- use 'hrsh7th/cmp-path'
-    -- use 'hrsh7th/cmp-cmdline'
-    -- use 'hrsh7th/cmp-nvim-lsp'
-    -- use 'hrsh7th/cmp-nvim-lua'
-    -- use 'quangnguyen30192/cmp-nvim-ultisnips'
 
     -- telescope
     use 'nvim-telescope/telescope.nvim'

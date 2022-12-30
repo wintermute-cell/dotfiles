@@ -25,10 +25,31 @@ local sumneko_lua_opts = {
 lsp.setup_servers({'sumneko_lua', opts = sumneko_lua_opts})
 
 -- ltex
+local spell_path = vim.fn.stdpath 'config' .. '/spell/en.utf-8.add'
+local known_words_en = {}
+for word in io.open(spell_path, 'r'):lines() do
+  table.insert(known_words_en, word)
+end
+spell_path = vim.fn.stdpath 'config' .. '/spell/de.utf-8.add'
+local known_words_de = {}
+for word in io.open(spell_path, 'r'):lines() do
+  table.insert(known_words_de, word)
+end
+
 local ltex_opts = {
     settings = {
         ltex = {
-            language = "de"
+            language = "de-DE",
+            disabledRules = {
+                ['en-US'] = { 'PROFANITY' },
+                ['en-GB'] = { 'PROFANITY' },
+                ['de-DE'] = { 'PROFANITY' },
+            },
+            dictionary = {
+                ['en-US'] = known_words_en,
+                ['en-GB'] = known_words_en,
+                ['de-DE'] = known_words_de,
+            },
         }
     }
 }
