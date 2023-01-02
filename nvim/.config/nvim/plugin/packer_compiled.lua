@@ -109,6 +109,16 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["copilot.vim"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/copilot.vim",
+    url = "https://github.com/github/copilot.vim"
+  },
+  ["dirbuf.nvim"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/dirbuf.nvim",
+    url = "https://github.com/elihunter173/dirbuf.nvim"
+  },
   ["friendly-snippets"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/friendly-snippets",
@@ -119,10 +129,21 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/goyo.vim",
     url = "https://github.com/junegunn/goyo.vim"
   },
+  ["indent-blankline.nvim"] = {
+    config = { "\27LJ\2\né\1\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\3\25show_current_context\2\31show_current_context_start\2\25space_char_blankline\6 \nsetup\21indent_blankline\frequire\0" },
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
+    url = "https://github.com/lukas-reineke/indent-blankline.nvim"
+  },
   ["limelight.vim"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/limelight.vim",
     url = "https://github.com/junegunn/limelight.vim"
+  },
+  ["lsp-colors.nvim"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/lsp-colors.nvim",
+    url = "https://github.com/folke/lsp-colors.nvim"
   },
   ["lsp-zero.nvim"] = {
     loaded = true,
@@ -144,6 +165,11 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
   },
+  ["nvim-base16"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-base16",
+    url = "https://github.com/RRethy/nvim-base16"
+  },
   ["nvim-cmp"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-cmp",
@@ -158,6 +184,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
+  },
+  ["nvim-treesitter-textobjects"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -251,15 +282,30 @@ _G.packer_plugins = {
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-hexokinase",
     url = "https://github.com/RRethy/vim-hexokinase"
   },
+  ["vim-polyglot"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-polyglot",
+    url = "https://github.com/sheerun/vim-polyglot"
+  },
   ["vim-surround"] = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
+  ["vim-svelte"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vim-svelte",
+    url = "https://github.com/evanleck/vim-svelte"
+  },
   vimtex = {
     loaded = true,
     path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vimtex",
-    url = "https://github.com/lervag/vimtex"
+    url = "/home/wintermute/src/vimtex"
+  },
+  ["vscode-svelte-snippets"] = {
+    loaded = true,
+    path = "/home/wintermute/.local/share/nvim/site/pack/packer/start/vscode-svelte-snippets",
+    url = "https://github.com/fivethree-team/vscode-svelte-snippets"
   },
   ["which-key.nvim"] = {
     config = { "\27LJ\2\n;\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14which-key\frequire\0" },
@@ -279,6 +325,10 @@ time([[Defining packer_plugins]], false)
 time([[Config for pretty-fold.nvim]], true)
 try_loadstring("\27LJ\2\nM\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\14fill_char\a¬∑\nsetup\16pretty-fold\frequire\0", "config", "pretty-fold.nvim")
 time([[Config for pretty-fold.nvim]], false)
+-- Config for: indent-blankline.nvim
+time([[Config for indent-blankline.nvim]], true)
+try_loadstring("\27LJ\2\né\1\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\3\25show_current_context\2\31show_current_context_start\2\25space_char_blankline\6 \nsetup\21indent_blankline\frequire\0", "config", "indent-blankline.nvim")
+time([[Config for indent-blankline.nvim]], false)
 -- Config for: spellsitter.nvim
 time([[Config for spellsitter.nvim]], true)
 try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16spellsitter\frequire\0", "config", "spellsitter.nvim")

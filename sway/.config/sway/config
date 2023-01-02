@@ -49,7 +49,7 @@ set {
 #]>#########################################################################
 
 #<[# APPEARANCE ############################################################
-#seat seat0 xcursor_theme $cursor_theme 20
+seat seat0 xcursor_theme $cursor_theme 20
 
 exec_always {
 	gsettings set org.gnome.desktop.interface font-name     $font
@@ -254,7 +254,6 @@ bindsym $mod+$right nop decmfact
 #    position top
 #
 #    # When the status_command prints a new line to stdout, swaybar updates.
-b
 #    # The default just shows the current date and time.
 #    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
 #

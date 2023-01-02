@@ -1,5 +1,5 @@
-local status_ok, wk = pcall(require, 'which-key')
-if not status_ok then
+local wk_status_ok, wk = pcall(require, 'which-key')
+if not wk_status_ok then
     print "keymaps.lua: Unable to require which-key!"
 end
 local status_ok, lsp = pcall(require, "lsp-zero") -- required for lsp mappings
@@ -14,6 +14,20 @@ table.unpack = table.unpack or unpack  -- fix usage of deprecated unpack
 keymap("", "<Space>", "<Nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+------------------------------
+-- WHICH-KEY REGISTRATIONS --------
+-----------------------------------
+local prfx_buffers = 'b'
+local prfx_telescope = 'f'
+local prfx_windows = 'o'
+local prfx_lsp = 'l'
+if wk_status_ok then
+  wk.register({["<leader>" .. prfx_buffers] = {name = "+buffers"}})
+  wk.register({["<leader>" .. prfx_telescope] = {name = "+telescope"}})
+  wk.register({["<leader>" .. prfx_windows] = {name = "+helper windows"}})
+  wk.register({["<leader>" .. prfx_lsp] = {name = "+lsp"}})
+end
 
 -------------
 -- HINT ----------
@@ -30,7 +44,6 @@ vim.g.maplocalleader = " "
 -- NORMAL --------
 ------------------------------
 -- vanilla leader mappings
-wk.register({["<leader>o"] = {name = "+helper windows"}})
 keymap("n", "<leader>ou", vim.cmd.UndotreeToggle, {desc = 'Open Undotree'})
 keymap("n", "<leader>oe", function () -- opening Lexplore 30 sets the width to
     vim.cmd.Lexplore()                -- 30%, so this is necessary
@@ -41,12 +54,11 @@ end, {desc = 'Explore Files'})
 
 -- telescope.nvim
 local tsb = require('telescope.builtin')
-wk.register({["<leader>f"] = {name = "+telescope"}})
-keymap("n", "<leader>ff", tsb.find_files, {desc = 'find files'})
-keymap("n", "<leader>fg", tsb.live_grep, {desc = 'live grep'})
-keymap("n", "<leader>fs", tsb.live_grep, {desc = 'grep for string at cursor'})
-keymap("n", "<leader>fb", tsb.buffers, {desc = 'find buffers'})
-keymap("n", "<leader>fh", tsb.help_tags, {desc = 'find helptags'})
+keymap("n", "<leader>" .. prfx_telescope .. "f", tsb.find_files, {desc = 'find files'})
+keymap("n", "<leader>" .. prfx_telescope .. "g", tsb.live_grep, {desc = 'live grep'})
+keymap("n", "<leader>" .. prfx_telescope .. "s", tsb.live_grep, {desc = 'grep for string at cursor'})
+keymap("n", "<leader>" .. prfx_telescope .. "b", tsb.buffers, {desc = 'find buffers'})
+keymap("n", "<leader>" .. prfx_telescope .. "h", tsb.help_tags, {desc = 'find helptags'})
 
 -- resizing with ctrl+arrows
 keymap("n", "<C-Up>", ":resize +2<CR>")
@@ -66,8 +78,8 @@ local function bd_skip(command)
     command()
     repeat vim.cmd.bnext() until (vim.bo.buftype ~= 'quickfix' and vim.bo.buftype ~= 'terminal')
 end
-keymap("n", "<leader>bd", function () bd_skip(vim.cmd.Bdelete) end, {desc = 'delete buffer without closing split'})
-keymap("n", "<leader>bw", function () bd_skip(vim.cmd.Bwipeout) end, {desc = 'wipeout buffer without closing split'})
+keymap("n", "<leader>" .. prfx_buffers .. "d", function () bd_skip(vim.cmd.Bdelete) end, {desc = 'delete buffer without closing split'})
+keymap("n", "<leader>" .. prfx_buffers .. "w", function () bd_skip(vim.cmd.Bwipeout) end, {desc = 'wipeout buffer without closing split'})
 
 -- better vertical movement/navigation
 keymap("n", "<C-d>", "<C-d>zz")
@@ -77,13 +89,15 @@ keymap("n", "<C-u>", "<C-u>zz")
 keymap("n", "Q", "<Nop>")
 keymap("n", "q:", "<Nop>")
 
+-- keymap to map C-y instead of tab to the copilot accept function
+keymap('i', '<C-y>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
+
 -- easy plus register
 keymap("n", "<leader>y", "\"+y", {desc = 'yank to +'})
 
 -- LSP related keymaps
 -- defined in on_attach, so they are only active when functions are available
 -- and otherwise vim builtins are used
-wk.register({["<leader>k"] = {name = "+lsp"}})
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
@@ -99,16 +113,17 @@ lsp.on_attach(function(client, bufnr)
   keymap("n", "]d", vim.diagnostic.goto_prev, opts)
   keymap("n", "zn", vim.diagnostic.goto_next, {desc = 'next diagnostic', table.unpack(opts)})
   keymap("n", "zp", vim.diagnostic.goto_prev, {desc = 'previous diagnostic', table.unpack(opts)})
-  keymap("n", "<leader>kd", vim.diagnostic.open_float, {desc = 'float diagnostic', table.unpack(opts)})
-  keymap("n", "<leader>ka", vim.lsp.buf.code_action, {desc = 'code action', table.unpack(opts)})
-  keymap("n", "<leader>kr", vim.lsp.buf.references, {desc = 'references', table.unpack(opts)})
-  keymap("n", "<leader>kn", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
+  keymap("n", "<leader>" .. prfx_lsp .. "d", vim.diagnostic.open_float, {desc = 'float diagnostic', table.unpack(opts)})
+  keymap("n", "<leader>" .. prfx_lsp .. "a", vim.lsp.buf.code_action, {desc = 'code action', table.unpack(opts)})
+  keymap("n", "<leader>" .. prfx_lsp .. "r", vim.lsp.buf.references, {desc = 'references', table.unpack(opts)})
+  keymap("n", "<leader>" .. prfx_lsp .. "n", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
   keymap("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 end)
 
 -------------
 -- VISUAL MODE --
 ------------------------------
+-- easy plus register
 keymap("v", "<leader>y", "\"+y", {desc = 'yank to +'})
 
 -------------
@@ -120,6 +135,7 @@ keymap("x", "K", ":move '<-2<CR>gv=gv")
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
 
+-- easy plus register
 keymap("x", "<leader>y", "\"+y", {desc = 'yank to +'})
 
 -------------

@@ -38,6 +38,7 @@ local p = packer.startup(function(use)
 
     -- misc
     use 'ThePrimeagen/vim-be-good'
+    use 'github/copilot.vim'
 
     -- dependencies            |    required by
     use 'nvim-lua/popup.nvim'    -- Telescope
@@ -48,8 +49,19 @@ local p = packer.startup(function(use)
     use 'vim-airline/vim-airline-themes'
     use 'ryanoasis/vim-devicons'
     use 'folke/tokyonight.nvim'
+    use 'RRethy/nvim-base16'
+    use 'folke/lsp-colors.nvim'
     use 'junegunn/goyo.vim'
     use 'junegunn/limelight.vim'
+    use {'lukas-reineke/indent-blankline.nvim',
+        config = function ()
+            require("indent_blankline").setup {
+                space_char_blankline = " ",
+                show_current_context = true,
+                show_current_context_start = true,
+            }
+        end
+    }
     use { 'folke/which-key.nvim',
         config = function()
             require("which-key").setup { }
@@ -70,11 +82,14 @@ local p = packer.startup(function(use)
     use 'windwp/nvim-autopairs'
 
     -- functionality
+    use 'elihunter173/dirbuf.nvim'
     use 'Konfekt/FastFold'
     use 'tpope/vim-surround'
     use 'lambdalisue/suda.vim'
     use 'mbbill/undotree'
     use 'moll/vim-bbye'
+    use 'sheerun/vim-polyglot'
+    use 'evanleck/vim-svelte'
     use {
         'lewis6991/spellsitter.nvim',
         config = function()
@@ -104,15 +119,25 @@ local p = packer.startup(function(use)
             {'rafamadriz/friendly-snippets'},
         }
     }
+    use 'fivethree-team/vscode-svelte-snippets'
+    use({
+        'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+        disable = true,
+        config = function()
+            require("lsp_lines").setup()
+        end,
+    })
 
     -- language tools
-    use 'lervag/vimtex'
+    --use 'lervag/vimtex'
+    use '~/src/vimtex'
     use 'elkowar/yuck.vim'
 
     -- telescope
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
     use 'nvim-telescope/telescope-media-files.nvim'
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
 
     -- treesitter
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
@@ -133,12 +158,8 @@ vim.g.airline_theme = 'base16_atelier_cave_light'
 vim.g["airline#extensions#tabline#enabled"] = 1
 vim.g["airline#extensions#tabline#formatter"] = 'unique_tail'
 
---pear-tree
--- vim.g.pear_tree_repeatable_expand = 0
--- vim.g.pear_tree_map_special_keys = 0
--- vim.g.pear_tree_smart_openers = 1
--- vim.g.pear_tree_smart_closers = 1
--- vim.g.pear_tree_smart_backspace = 1
+-- vim-svelte
+vim.g.svelte_preprocessors = { 'typescript' }
 
 -- suda
 vim.g.suda_smart_edit = 1
@@ -147,6 +168,7 @@ vim.g.suda_smart_edit = 1
 vim.g.vimtex_view_method = 'zathura'
 vim.g.vimtex_quickfix_ignore_filters = { 'Overfull', 'Underfull', 'Warning' }
 vim.g.vimtex_quickfix_open_on_warning = 0
+vim.g.vimtex_mappings_prefix = "<localleader>v"
 
 -- hexokinase
 vim.g["Hexokinase_highlighters"] = {'backgroundfull'}
