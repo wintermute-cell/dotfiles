@@ -18,7 +18,7 @@ configs.setup {
     },
     indent = {
         enable = true,        -- indent based on treesitter
-        disable = { '' },      -- disable treesitter indent for these langs
+        disable = { 'python' },      -- disable treesitter indent for these langs
     },
     fold = {
         fold_one_line_after = true,

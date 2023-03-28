@@ -37,8 +37,21 @@ local p = packer.startup(function(use)
     use "wbthomason/packer.nvim" -- Have packer manage itself
 
     -- misc
+    use '/home/wintermute/src/gitignore.nvim'
+        config = function ()
+            require("gitignore")
+        end
     use 'ThePrimeagen/vim-be-good'
-    use 'github/copilot.vim'
+    use {'github/copilot.vim',
+        config = function()
+            vim.g.copilot_filetypes = {
+                ['*'] = true,
+                ['help'] = false,
+                ['.'] = false,
+                ['TelescopePrompt'] = false,
+            }
+        end
+    }
 
     -- dependencies            |    required by
     use 'nvim-lua/popup.nvim'    -- Telescope
@@ -77,6 +90,14 @@ local p = packer.startup(function(use)
             }
         end
     }
+    use {
+        "folke/trouble.nvim",
+        config = function()
+            require("trouble").setup {
+                icons = false,
+            }
+        end
+    }
 
     -- editing
     use 'windwp/nvim-autopairs'
@@ -88,7 +109,7 @@ local p = packer.startup(function(use)
     use 'lambdalisue/suda.vim'
     use 'mbbill/undotree'
     use 'moll/vim-bbye'
-    use 'sheerun/vim-polyglot'
+    --use 'sheerun/vim-polyglot'
     use 'evanleck/vim-svelte'
     use {
         'lewis6991/spellsitter.nvim',
@@ -96,6 +117,7 @@ local p = packer.startup(function(use)
             require('spellsitter').setup()
         end
     }
+    use 'tpope/vim-fugitive'
 
     -- lsp
     use {
@@ -129,8 +151,7 @@ local p = packer.startup(function(use)
     })
 
     -- language tools
-    --use 'lervag/vimtex'
-    use '~/src/vimtex'
+    use 'lervag/vimtex'
     use 'elkowar/yuck.vim'
 
     -- telescope

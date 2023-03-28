@@ -16,9 +16,7 @@ lsp.ensure_installed({
     'jsonls',       -- json
     'tsserver',     -- javascript/typescript (js/ts)
     'ltex',         -- LaTeX
-    'sumneko_lua',  -- lua
     'marksman',     -- markdown
-    'pylsp',        -- python
     'sqlls',        -- sql
     'svelte',       -- svelte
     'yamlls'        -- yaml
@@ -32,6 +30,7 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<Tab>'] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true }),
     ['<CR>'] = cmp.config.disable,
     ['<C-Space>'] = cmp.mapping.complete(),
+    ['<S-Tab>'] = nil,
 })
 
 lsp.setup_nvim_cmp({

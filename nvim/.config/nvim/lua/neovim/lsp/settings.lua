@@ -6,7 +6,7 @@ if not status_ok then
 end
 
 -- sumneko_lua
-local sumneko_lua_opts = {
+lsp.configure('lua_ls', {
     settings = {
         Lua = {
             diagnostics = {
@@ -20,9 +20,7 @@ local sumneko_lua_opts = {
             }
         }
     }
-
-}
-lsp.setup_servers({'sumneko_lua', opts = sumneko_lua_opts})
+})
 
 -- ltex
 local spell_path = vim.fn.stdpath 'config' .. '/spell/en.utf-8.add'
@@ -36,7 +34,7 @@ for word in io.open(spell_path, 'r'):lines() do
   table.insert(known_words_de, word)
 end
 
-local ltex_opts = {
+lsp.configure('ltex', {
     settings = {
         ltex = {
             language = "de-DE",
@@ -52,5 +50,4 @@ local ltex_opts = {
             },
         }
     }
-}
-lsp.setup_servers({'ltex', opts = ltex_opts})
+})

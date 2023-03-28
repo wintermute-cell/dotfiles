@@ -22,11 +22,13 @@ local prfx_buffers = 'b'
 local prfx_telescope = 'f'
 local prfx_windows = 'o'
 local prfx_lsp = 'l'
+local prfx_trouble = 'x'
 if wk_status_ok then
   wk.register({["<leader>" .. prfx_buffers] = {name = "+buffers"}})
   wk.register({["<leader>" .. prfx_telescope] = {name = "+telescope"}})
   wk.register({["<leader>" .. prfx_windows] = {name = "+helper windows"}})
   wk.register({["<leader>" .. prfx_lsp] = {name = "+lsp"}})
+  wk.register({["<leader>" .. prfx_trouble] = {name = "+trouble"}})
 end
 
 -------------
@@ -54,11 +56,11 @@ end, {desc = 'Explore Files'})
 
 -- telescope.nvim
 local tsb = require('telescope.builtin')
-keymap("n", "<leader>" .. prfx_telescope .. "f", tsb.find_files, {desc = 'find files'})
+keymap("n", "<leader>" .. prfx_telescope .. "a", tsb.find_files, {desc = 'find files'})
 keymap("n", "<leader>" .. prfx_telescope .. "g", tsb.live_grep, {desc = 'live grep'})
-keymap("n", "<leader>" .. prfx_telescope .. "s", tsb.live_grep, {desc = 'grep for string at cursor'})
 keymap("n", "<leader>" .. prfx_telescope .. "b", tsb.buffers, {desc = 'find buffers'})
 keymap("n", "<leader>" .. prfx_telescope .. "h", tsb.help_tags, {desc = 'find helptags'})
+keymap("n", "<leader>" .. prfx_telescope .. "f", tsb.git_files, {desc = 'find git files'})
 
 -- resizing with ctrl+arrows
 keymap("n", "<C-Up>", ":resize +2<CR>")
@@ -90,7 +92,7 @@ keymap("n", "Q", "<Nop>")
 keymap("n", "q:", "<Nop>")
 
 -- keymap to map C-y instead of tab to the copilot accept function
-keymap('i', '<C-y>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
+keymap('i', '<S-Tab>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
 
 -- easy plus register
 keymap("n", "<leader>y", "\"+y", {desc = 'yank to +'})
@@ -119,6 +121,18 @@ lsp.on_attach(function(client, bufnr)
   keymap("n", "<leader>" .. prfx_lsp .. "n", vim.lsp.buf.rename, {desc = 'rename', table.unpack(opts)})
   keymap("i", "<C-k>", vim.lsp.buf.signature_help, opts)
 end)
+
+-- trouble.nvim
+keymap("n", "<leader>" .. prfx_trouble .. "w",
+  "<cmd>TroubleToggle workspace_diagnostics<cr>", {desc = 'workspace diagnostics'})
+keymap("n", "<leader>" .. prfx_trouble .. "d",
+  "<cmd>TroubleToggle document_diagnostics<cr>", {desc = 'document diagnostics'})
+keymap("n", "<leader>" .. prfx_trouble .. "l",
+  "<cmd>TroubleToggle loclist<cr>", {desc = 'loclist'})
+keymap("n", "<leader>" .. prfx_trouble .. "q",
+  "<cmd>TroubleToggle quickfix<cr>", {desc = 'quickfix'})
+keymap("n", "<leader>" .. prfx_trouble .. "r",
+  "<cmd>TroubleToggle lsp_references<cr>", {desc = 'references'})
 
 -------------
 -- VISUAL MODE --
