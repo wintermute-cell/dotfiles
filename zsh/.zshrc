@@ -114,8 +114,9 @@ bindkey '^E' edit-command-line
 
 # aliases
 alias v="nvim"
-alias note="nvim -u $XDG_CONFIG_HOME/nvim/notetaker_init.lua"
 alias c="$SCRIPTDIR/c.sh"
 alias rm="rm -I"
 alias py="python"
 alias n="nnn -edDgx"
+alias ,pckginfo="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
+alias ,whoowns="print -rC1 -- ${(ko)commands} | fzf --preview 'pacman -Qo {}' --layout=reverse"

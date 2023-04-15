@@ -70,8 +70,8 @@ local p = packer.startup(function(use)
         config = function ()
             require("indent_blankline").setup {
                 space_char_blankline = " ",
-                show_current_context = true,
-                show_current_context_start = true,
+                --show_current_context = true,
+                --show_current_context_start = true,
             }
         end
     }
@@ -163,6 +163,7 @@ local p = packer.startup(function(use)
     -- treesitter
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use 'nvim-treesitter/playground'
+    use 'nvim-treesitter/nvim-treesitter-context'
 
     -- Automatically set up your configuration after cloning packer.nvim
     -- Put this at the end after all plugins
