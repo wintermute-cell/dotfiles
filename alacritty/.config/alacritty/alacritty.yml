@@ -15,24 +15,16 @@ mouse:
 
 dynamic_title: true
 
-  ## Font configuration
 font:
-  # Normal (roman) font face
   normal:
-    family: CozetteVector
+    family: BIZ UDMincho
     style: Regular
-
-  # Bold font face
   #bold:
     #family: monospace
     # style: Bold
-
-  # Italic font face
   #italic:
     #family: monospace
     #style: Italic
-
-  # Bold italic font face
   #bold_italic:
     #family: monospace
     #style: Bold Italic

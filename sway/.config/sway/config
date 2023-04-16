@@ -69,11 +69,11 @@ client.urgent           $nofocus $nofocus $titletxt $nofocus  $nofocus
 bar swaybar_command	waybar
 # bar {
 #     position top
-# 
+#
 #     # When the status_command prints a new line to stdout, swaybar updates.
 #     # The default just shows the current date and time.
 #     status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-# 
+#
 #     colors {
 #         statusline #ffffff
 #         background #323232
@@ -231,6 +231,16 @@ mouse_warping container
 focus_wrapping no
 
 # workspaces
+workspace number 1 output DP-3
+workspace number 2 output DP-3
+workspace number 3 output DP-3
+workspace number 4 output DP-3
+workspace number 5 output DP-3
+workspace number 6 output eDP-1
+workspace number 7 output eDP-1
+workspace number 8 output eDP-1
+workspace number 9 output eDP-1
+
 # (workspaces can have any name, not just numbers.)
 bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
