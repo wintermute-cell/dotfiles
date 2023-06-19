@@ -19,7 +19,7 @@ lsp.ensure_installed({
     'marksman',     -- markdown
     'sqlls',        -- sql
     'svelte',       -- svelte
-    'yamlls'        -- yaml
+    'yamlls',       -- yaml
 })
 
 local cmp = require('cmp')
@@ -55,6 +55,13 @@ lsp.set_preferences({
 
 vim.diagnostic.config({
     virtual_text = true,
+})
+
+lsp.configure('gdscript', {
+    force_setup = true, -- because the LSP is global. Read more on lsp-zero docs about this.
+    single_file_support = false,
+    root_dir = require('lspconfig.util').root_pattern('project.godot', '.git'),
+    filetypes = {'gd', 'gdscript', 'gdscript3' }
 })
 
 require 'neovim.lsp.settings'

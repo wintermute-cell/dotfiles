@@ -92,7 +92,7 @@ keymap("n", "Q", "<Nop>")
 keymap("n", "q:", "<Nop>")
 
 -- keymap to map C-y instead of tab to the copilot accept function
-keymap('i', '<S-Tab>', 'copilot#Accept("<CR>")', {expr=true, silent=true})
+keymap('i', '<S-Tab>', 'copilot#Accept("<CR>")', {expr=true, silent=true, noremap=true, replace_keycodes=false})
 
 -- easy plus register
 keymap("n", "<leader>y", "\"+y", {desc = 'yank to +'})

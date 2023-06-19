@@ -153,6 +153,7 @@ local p = packer.startup(function(use)
     -- language tools
     use 'lervag/vimtex'
     use 'elkowar/yuck.vim'
+    use 'habamax/vim-godot'
 
     -- telescope
     use 'nvim-telescope/telescope.nvim'
