@@ -106,7 +106,7 @@ local p = packer.startup(function(use)
     use 'elihunter173/dirbuf.nvim'
     use 'Konfekt/FastFold'
     use 'tpope/vim-surround'
-    use 'lambdalisue/suda.vim'
+    --use 'lambdalisue/suda.vim'
     use 'mbbill/undotree'
     use 'moll/vim-bbye'
     --use 'sheerun/vim-polyglot'

@@ -109,7 +109,8 @@ lsp.on_attach(function(client, bufnr)
   --    return
   --end
 
-  keymap("n", "gd", vim.lsp.buf.definition, opts)
+  keymap("n", "gd", vim.lsp.buf.definition, {desc = 'jump to definition', table.unpack(opts)})
+  keymap("n", "gD", vim.lsp.buf.declaration, {desc = 'jump to declaration', table.unpack(opts)})
   keymap("n", "K", vim.lsp.buf.hover, opts)
   keymap("n", "[d", vim.diagnostic.goto_next, opts)
   keymap("n", "]d", vim.diagnostic.goto_prev, opts)
