@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<keyboard version="1">
+    <commands>
+        <key command="GotoPreviousFrame" context="Normal" shortcut="Shift+{" />
+        <key command="GotoNextFrame" context="Normal" shortcut="Shift+}" />
+    </commands>
+    <tools />
+    <quicktools />
+    <actions />
+    <wheel />
+    <drag />
+</keyboard>

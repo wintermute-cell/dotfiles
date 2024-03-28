@@ -1,136 +1,76 @@
 window:
   padding:
-    x: 8
-    y: 8
-  opacity: 0.95
+    x: 10
+    y: 10
+  dynamic_padding: false
+  opacity: 1.0 #From 0.00 to 1.00
+  decorations: full
 
-# Font configuration
+tabspace: 4
+
+draw_bold_text_with_bright_colors: true
+
+mouse:
+  hide_when_typing: true
+
+dynamic_title: true
+
 font:
-  # Normal (roman) font face
   normal:
-    family: Iosevka Nerd Font Mono
+    #family: CozetteVector
+    #family: BIZ UDMincho
+    family: Triplicate A Code
     style: Regular
-
-  # Bold font face
-  bold:
+  #bold:
     #family: monospace
-    style: Bold
-
-  # Italic font face
-  italic:
+    # style: Bold
+  #italic:
     #family: monospace
-    style: Italic
-
-  # Bold italic font face
-  bold_italic:
+    #style: Italic
+  #bold_italic:
     #family: monospace
-    style: Bold Italic
+    #style: Bold Italic
 
   # Point size
-  #size: 11.0
+  size: 11.5
+  offset:
+    x: -1    # For letter spacing (default: 0).
+    y: -2    # For line spacing (default: 0).
+  glyph_offset:
+    x: 0    # For letter spacing (default: 0).
+    y: -2    # For line spacing (default: 0).
 
-# Colors (Tomorrow Night)
 colors:
-  # Default colors
   primary:
-    background: '#111111'
-    foreground: '#c5c8c6'
+    background: '#fff6f6'
+    foreground: '#000000'
 
-  # Normal colors
-  #normal:
-  #  black:   '#1d1f21'
-  #  red:     '#cc6666'
-  #  green:   '#b5bd68'
-  #  yellow:  '#f0c674'
-  #  blue:    '#81a2be'
-  #  magenta: '#b294bb'
-  #  cyan:    '#8abeb7'
-  #  white:   '#c5c8c6'
+  cursor:
+    text:   '#44475a'
+    cursor: '#ebdbb2'
 
-  # Bright colors
-  #bright:
-  #  black:   '#666666'
-  #  red:     '#d54e53'
-  #  green:   '#b9ca4a'
-  #  yellow:  '#e7c547'
-  #  blue:    '#7aa6da'
-  #  magenta: '#c397d8'
-  #  cyan:    '#70c0b1'
-  #  white:   '#eaeaea'
+  normal:
+    black:   '#222422'
+    red:     '#cc241d'
+    green:   '#1e8f73'
+    yellow:  '#d79921'
+    blue:    '#458588'
+    magenta: '#b16286'
+    cyan:    '#207571'
+    white:   '#a89984'
 
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  #dim:
-  #  black:   '#131415'
-  #  red:     '#864343'
-  #  green:   '#777c44'
-  #  yellow:  '#9e824c'
-  #  blue:    '#556a7d'
-  #  magenta: '#75617b'
-  #  cyan:    '#5b7d78'
-  #  white:   '#828482'
+  bright:
+    black:   '#606660'
+    red:     '#fb4934'
+    green:   '#80C6A4'
+    yellow:  '#fabd2f'
+    blue:    '#83a598'
+    magenta: '#d3869b'
+    cyan:    '#2B9E99'
+    white:   '#ebdbb2'
 
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #
-  # Example:
-  #   `- { index: 16, color: '#ff00ff' }`
-  #
-  #indexed_colors: []
-
-#selection:
-  # This string contains all characters that are used as separators for
-  # "semantic words" in Alacritty.
-  #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
-
-  # When set to `true`, selected text will be copied to the primary clipboard.
-  #save_to_clipboard: false
-
-#cursor:
-  # Cursor style
-  #style:
-    # Cursor shape
-    #
-    # Values for `shape`:
-    #   - ▇ Block
-    #   - _ Underline
-    #   - | Beam
-    #shape: Block
-
-    # Cursor blinking state
-    #
-    # Values for `blinking`:
-    #   - Never: Prevent the cursor from ever blinking
-    #   - Off: Disable blinking by default
-    #   - On: Enable blinking by default
-    #   - Always: Force the cursor to always blink
-    #blinking: Off
-
-  # Vi mode cursor style
-  #
-  # If the vi mode cursor style is `None` or not specified, it will fall back to
-  # the style of the active value of the normal cursor.
-  #
-  # See `cursor.style` for available options.
-  #vi_mode_style: None
-
-  # Cursor blinking interval in milliseconds.
-  #blink_interval: 750
-
-  # If this is `true`, the cursor will be rendered as a hollow box when the
-  # window is not focused.
-  #unfocused_hollow: true
-
-  # Thickness of the cursor relative to the cell width as floating point number
-  # from `0.0` to `1.0`.
-  #thickness: 0.15
-
-# Live config reload (changes require restart)
-#live_config_reload: true
+cursor:
+  thickness: 0.26
 
 # Shell
 #
@@ -155,18 +95,6 @@ colors:
 
 # Send ESC (\x1b) before characters when alt is pressed.
 #alt_send_esc: true
-
-#mouse:
-  # Click settings
-  #
-  # The `double_click` and `triple_click` settings control the time
-  # alacritty should wait for accepting multiple clicks as one double
-  # or triple click.
-  #double_click: { threshold: 300 }
-  #triple_click: { threshold: 300 }
-
-  # If this is `true`, the cursor is temporarily hidden when typing.
-  #hide_when_typing: false
 
 # Regex hints
 #
@@ -211,32 +139,6 @@ colors:
   #   binding:
   #     key: U
   #     mods: Control|Shift
-
-# Mouse bindings
-#
-# Mouse bindings are specified as a list of objects, much like the key
-# bindings further below.
-#
-# To trigger mouse bindings when an application running within Alacritty
-# captures the mouse, the `Shift` modifier is automatically added as a
-# requirement.
-#
-# Each mouse binding will specify a:
-#
-# - `mouse`:
-#
-#   - Middle
-#   - Left
-#   - Right
-#   - Numeric identifier such as `5`
-#
-# - `action` (see key bindings)
-#
-# And optionally:
-#
-# - `mods` (see key bindings)
-#mouse_bindings:
-#  - { mouse: Middle, action: PasteSelection }
 
 # Key bindings
 #

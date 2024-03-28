@@ -1,20 +1,20 @@
-@define-color background	#323732;
-@define-color foreground	#302828;
+@define-color background	#111111;
+@define-color foreground	#c5c8c6;
 @define-color selection		#44475a;
 @define-color unfocused		#6272a4;
 @define-color cyan			#5d7380;
 @define-color green			#fff6f6;
-@define-color orange		#d65d0e;
+@define-color orange		#f5ac46;
 @define-color pink			#ff5370;
 @define-color purple		#b16286;
 @define-color red			#bf6374;
-@define-color yellow		#d79921;
+@define-color yellow		#e7c547;
 @define-color fore          #d1c29d;
 
 
 * {
 	font-size: 16px;
-	font-family: "BIZ UDMincho";
+	font-family: "Iosevka Nerd Font Mono";
 	padding: 0px;
 	margin: 0px;
     /*text-shadow:1px 1px 2px rgba(0,0,0,.2);*/
@@ -22,6 +22,7 @@
 
 window#waybar {
 	color: @foreground;
+    background: @background;
 	border-radius: 0;
 }
 
@@ -162,7 +163,7 @@ window#waybar.bottom {
 }
 
 #tray {
-	color: black;
+	color: @foreground;
 	icon-shadow: 0px 1px 2px alpha(#020000, .6);
 	padding: 2px 0px 2px 14px;
 }
@@ -185,14 +186,10 @@ window#waybar.bottom {
 	margin: 0;
 	padding: 0px 0px 0px 0px;
 	border-radius: 0px;
-	color: @background;
+	color: @foreground;
 }
 
 #workspaces button.focused {
 	color: @background;
-	text-shadow: 0px 0px 4px @background;
-	border-style: solid;
-	border-width: 0 0 0 0;
-	border-color: @foreground;
-	border-radius: 0;
+    background: @foreground;
 }

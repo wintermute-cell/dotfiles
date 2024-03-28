@@ -12,92 +12,6 @@
 ################################################
 
 #####################
-#    APPEARANCE     #
-#####################
-# color definitions
-set $background		#4f6878
-set $foreground		#fff6f6
-set $selection		#6272a4
-set $unfocused		#44475a
-set $cyan			#689d6a
-set $green			#98971a
-set $orange			#d65d0e
-set $pink			#FF5370
-set $purple			#b16286
-set $red			#bf6374
-set $yellow			#d79921
-set $dark           #323732
-set $fore			#222222
-
-# font
-set $font			"CozetteVector 11"
-
-# GUI
-set {
-	$gtk_theme  	'Tee'
-	$icon_theme		'Zafiro-icons-Light'
-	$cursor_theme	'plan9'
-    $cursor_size    20
-}
-
-# window decorations
-set {
-   	$border      	3
-  	$nofocus     	$foreground
-	$focus       	$background
-	$titletxt    	$fore
-	$titlepad		3	
-	$gaps_inner  	0
-	$gaps_outer  	0
-}
-
-# setting the values defined above
-seat seat0 xcursor_theme $cursor_theme $cursor_size
-exec_always {
-	gsettings set org.gnome.desktop.interface font-name     $font
-	gsettings set org.gnome.desktop.interface gtk-theme		$gtk_theme
-	gsettings set org.gnome.desktop.interface icon-theme	$icon_theme
-	gsettings set org.gnome.desktop.interface cursor-theme	$cursor_theme
-}
-client.focused          $focus   $focus   $titletxt $focus    $focus
-client.focused_inactive $nofocus $nofocus $titletxt $nofocus  $nofocus
-client.unfocused        $nofocus $nofocus $titletxt $nofocus  $nofocus
-client.urgent           $nofocus $nofocus $titletxt $nofocus  $nofocus
-
-# status bar
-# Read `man 5 sway-bar` for more information about this section.
-bar swaybar_command	waybar
-# bar {
-#     position top
-#
-#     # When the status_command prints a new line to stdout, swaybar updates.
-#     # The default just shows the current date and time.
-#     status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-#
-#     colors {
-#         statusline #ffffff
-#         background #323232
-#         inactive_workspace #32323200 #32323200 #5c5c5c
-#     }
-# }
-
-# gaps
-gaps inner $gaps_inner
-gaps outer $gaps_outer
-
-# window titlebar
-font $font
-for_window [title="."] title_format "%title"
-titlebar_border_thickness 0
-titlebar_padding $titlepad $titlepad
-title_align center
-
-# borders
-default_floating_border	pixel	$border
-default_border			pixel	$border
-
-
-#####################
 #      SCRIPTS      #
 #####################
 exec_always "pkill -f 'python3? .+/swaymonad.py';  ~/.config/sway/swaymonad/swaymonad.py"
@@ -108,6 +22,7 @@ exec_always "pkill -f 'python3? .+/swaymonad.py';  ~/.config/sway/swaymonad/sway
 set $wobsock $XDG_RUNTIME_DIR/wob.sock
 exec_always rm -f $wobsock && mkfifo $wobsock && tail -f $wobsock | wob
 exec_always ~/.config/sway/sway_autostart.sh
+exec --no-startup-id /usr/lib/xdg-desktop-portal -r
 
 #####################
 #     VARIABLES     #
@@ -122,7 +37,7 @@ set $right l
 # terminal emulator
 set $term alacritty
 # application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
+# Note: pass the final command to waymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
 set $menu 'fuzzel'
 
@@ -130,7 +45,8 @@ set $menu 'fuzzel'
 #      OUTPUTS      #
 #####################
 # wallpaper
-output * bg bg.jpg fill
+# output * bg bg_flowver.jpg fill
+ output * bg bg_monotone.png fill
 
 # monitors
 # get the names of your outputs by running: swaymsg -t get_outputs
@@ -177,6 +93,14 @@ bindsym $mod+p exec $menu
 bindsym $mod+a exec audiomenu
 bindsym $mod+0 exec powermenu
 bindsym Print exec grimshot copy area
+bindsym $mod+Print exec wf-recorder --file "/home/wintermute/Videos/recording_$(date +%d_%m_%y-%H:%M:%S).mp4" -g "$(slurp)" -r 144 -x yuv420p  --audio=alsa_output.usb-Focusrite_Scarlett_Solo_USB-00.HiFi__hw_USB_1__sink.monitor
+bindsym $mod+Shift+Print exec killall -s SIGINT wf-recorder
+
+# vim everywhere
+bindsym Escape+k exec wtype -P up -p up
+bindsym Escape+j exec wtype -P down -p down
+bindsym Escape+h exec wtype -P left -p left
+bindsym Escape+l exec wtype -P right -p right
 
 # window-management
 bindsym $mod+Shift+c kill
@@ -268,3 +192,8 @@ bindsym $mod+$left nop incmfact
 bindsym $mod+$right nop decmfact
 
 include /etc/sway/config.d/*
+
+########################
+#     STYLE/THEME      #
+########################
+include ./style.conf

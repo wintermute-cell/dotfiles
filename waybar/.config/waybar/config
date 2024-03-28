@@ -7,7 +7,7 @@
                        // Choose the order of the modules
         "modules-left": ["tray", "custom/spacer", "sway/window"],
         "modules-center": ["sway/workspaces"],
-        "modules-right": ["backlight", "custom/spacer", "battery#0", "battery#1", "custom/spacer", "pulseaudio", "custom/spacer", "clock"],
+        "modules-right": ["custom/recording", "custom/spacer", "backlight", "custom/spacer", "battery#0", "battery#1", "custom/spacer", "pulseaudio", "custom/spacer", "clock"],
         "sway/window": {
             "max-length": 50,
         },
@@ -90,6 +90,13 @@
             "interval": "once",
             "tooltip": false,
             "on-click": "",
+        },
+        "custom/recording": {
+            "format": "REC",
+            "max-length": "3",
+            "exec": "pgrep wf-recorder",
+            "exec-if": "pgrep wf-recorder",
+            "interval": 2,
         },
 },
 

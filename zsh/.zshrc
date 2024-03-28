@@ -120,4 +120,13 @@ alias py="python"
 alias n="nnn -edDgx"
 alias ,pckginfo="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias ,whoowns="print -rC1 -- ${(ko)commands} | fzf --preview 'pacman -Qo {}' --layout=reverse"
-alias ,oplrun="/opt/ibm/ILOG/CPLEX_Studio_Community2211/opl/bin/x86-64_linux/oplrun"
+alias ditherdragon="/home/wintermute/src/pxtool/pxtool-src/Builds/linux/ditherdragon-linux.x86_64"
+alias ditherdragon-dev="godot --path /home/wintermute/src/pxtool/pxtool-src"
+alias ,ide="/home/wintermute/scripts/ide.sh"
+alias ,vide="/home/wintermute/scripts/vide.sh"
+alias ,staticwebserver="go run /home/wintermute/scripts/staticwebserver.go"
+alias ,newtask="/home/wintermute/scripts/new_task.sh"
+alias t="go-task"
+
+# completion definitions
+fpath=(~/.config/zsh/completion_files/_glow $fpath)
