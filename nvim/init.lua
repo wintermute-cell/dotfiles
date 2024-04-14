@@ -48,8 +48,12 @@ opt.conceallevel = 0 -- never conceal anything by default
 opt.signcolumn = 'yes' -- always show sign column; prevent shifting
 opt.scrolloff = 20 -- <3
 opt.showmode = false -- no mode change message in `messages`
-opt.list = true -- display certain whitespace chars
-opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' } -- how to display certain whitespace chars
+--opt.list = true -- display certain whitespace chars
+-- opt.listchars = { -- how to display certain whitespace chars
+--   tab = '',
+--   trail = '·',
+--   nbsp = '␣',
+-- }
 opt.inccommand = 'split' -- preview s/ substitutions live, as you type!
 opt.hlsearch = true -- highlight on search
 opt.laststatus = 3 -- global statusline at the bottom
@@ -84,6 +88,12 @@ vim.api.nvim_create_autocmd('FileType', { -- only 2 spaces indent on these filet
   callback = function()
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
+  end,
+})
+vim.api.nvim_create_autocmd('FileType', { -- use tabs for Go, as per the language convention
+  pattern = { 'go' },
+  callback = function()
+    vim.opt_local.expandtab = false
   end,
 })
 
