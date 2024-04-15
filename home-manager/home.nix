@@ -25,6 +25,7 @@
     cargo
     rustc
     libnotify
+    go-task
 
     # python packages
     (python311.withPackages (ps: with ps; [ # this is the python install. add all library packages here
@@ -92,6 +93,12 @@
   programs.firefox = {
     enable = true;
     profiles."winterveil" = {
+      isDefault = true;
+      settings = {
+        "browser.compactmode.show" = true;
+        "general.autoScroll" = true;
+        "browser.toolbars.bookmarks.visibility" = "always";
+      };
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         tridactyl
         bitwarden
@@ -107,6 +114,7 @@
         ublock-origin
         youtube-nonstop
         translate-web-pages
+        darkreader
       ];
     };
   };
