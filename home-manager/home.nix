@@ -166,5 +166,41 @@
       recursive = false;
     };
 
+    # aseprite
+    "${config.xdg.configHome}/aseprite" = {
+      source = ../aseprite;
+      recursive = false;
+    };
+
+    # fuzzel
+    "${config.xdg.configHome}/fuzzel" = {
+      source = ../fuzzel;
+      recursive = false;
+    };
+
+    # mpd
+    "${config.xdg.configHome}/mpd" = {
+      source = ../mpd;
+      recursive = false;
+    };
+
+    # streamrip
+    "${config.xdg.configHome}/streamrip" = {
+      source = ../streamrip;
+      recursive = false;
+    };
+
+    # wob
+    "${config.xdg.configHome}/wob" = {
+      source = ../wob;
+      recursive = false;
+    };
+
+    # ssh
+    "${config.home.homeDirectory}/.ssh/config" = {
+      source = ../ssh/config;
+      recursive = false;
+    };
+
   };
 }
