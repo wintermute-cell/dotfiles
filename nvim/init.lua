@@ -37,7 +37,7 @@ opt.foldlevel = 9999 -- open a file fully expanded
 vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
 ---@diagnostic disable-next-line
 opt.fillchars = 'fold: ' -- use space as a filler after a fold
-opt.colorcolumn = '80' -- line lenght marker at 80 columns
+opt.colorcolumn = '80' -- line length marker at 80 columns
 opt.splitright = true -- vertical split to the right
 opt.splitbelow = true -- horizontal split to the bottom
 opt.ignorecase = true -- ignore case when searching, except with \C
@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
 })
 
 opt.background = 'dark'
-vim.cmd.colorscheme 'candelabra'
+vim.cmd.colorscheme 'schellar'
 
 -------------
 -- USAGE -----------

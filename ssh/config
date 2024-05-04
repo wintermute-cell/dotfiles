@@ -1,6 +1,9 @@
 Host github.com
  HostName github.com
- IdentityFile ~/.ssh/github
+ IdentityFile ~/.ssh/github.com
 Host ec2-frontpages
  HostName ec2-frontpages
  IdentityFile ~/.ssh/frontpages-server.pem
+Host gitlab2.informatik.uni-wuerzburg.de
+ HostName gitlab2.informatik.uni-wuerzburg.de
+ IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
