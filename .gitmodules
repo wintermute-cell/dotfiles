@@ -1,0 +1,3 @@
+[submodule "nix-packages/xcursor-plan9"]
+	path = nix-packages/xcursor-plan9
+	url = https://github.com/wintermute-cell/xcursor-plan9.git
