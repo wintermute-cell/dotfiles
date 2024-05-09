@@ -29,7 +29,7 @@ buildGoModule rec {
   meta = with lib; {
     description = "A simple CLI for tracking your working time.";
     homepage = "https://github.com/dominikbraun/timetrace";
-    license = licenses.apache20;
+    license = licenses.asl20;
     maintainers = [ ];
     platforms = platforms.linux ++ platforms.darwin;
   };
