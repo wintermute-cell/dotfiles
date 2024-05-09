@@ -11,7 +11,7 @@
     enable = true;
     cursorTheme = {
       name = "plan9";
-      package = (pkgs.callPackage ../nix-packages/plan9-cursor/default.nix {});
+      package = (pkgs.callPackage ../nix-packages/xcursor-plan9/default.nix {});
     };
   };
 
