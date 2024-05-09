@@ -1,6 +1,38 @@
 [colors.primary]
-background = "#111111"
-foreground = "#c5c8c6"
+background = "#fdf6e3"
+foreground = "#000000"
+
+#[colors.normal]
+#black   = '#1d1f21'
+#red     = '#cc6666'
+#green   = '#b5bd68'
+#yellow  = '#f0c674'
+#blue    = '#81a2be'
+#magenta = '#b294bb'
+#cyan    = '#8abeb7'
+#white   = '#c5c8c6'
+
+# everforest
+#[colors.normal]
+#black   = '#2f3337'
+#red     = '#e67e80'
+#green   = '#a7c080'
+#yellow  = '#dbbc7f'
+#blue    = '#7fbbb3'
+#magenta = '#d699b6'
+#cyan    = '#83c092'
+#white   = '#c5c8c6'
+
+# everforest light
+[colors.normal]
+black   = '#5C6A72'
+red     = '#F85552'
+green   = '#8DA101'
+yellow  = '#DFA000'
+blue    = '#3A94C5'
+magenta = '#DF69BA'
+cyan    = '#35A77C'
+white   = '#A6B0A0'
 
 [font]
 size = 10
@@ -19,7 +51,7 @@ family = "IosevkaTerm Nerd Font Mono"
 style = "Regular"
 
 [window]
-opacity = 0.95
+opacity = 1
 
 [window.padding]
 x = 8

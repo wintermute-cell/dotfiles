@@ -7,6 +7,14 @@
   # required to autoload fonts from packages installed via Home Manager
   fonts.fontconfig.enable = true;
 
+  gtk = {
+    enable = true;
+    cursorTheme = {
+      name = "plan9";
+      package = (pkgs.callPackage ../nix-packages/plan9-cursor/default.nix {});
+    };
+  };
+
   home.packages = with pkgs; [
     # meta
     nix-search-cli
@@ -112,7 +120,8 @@
     mnemosyne
     xournalpp
     gnome.adwaita-icon-theme # required by xournalpp
-    (callPackage ../nix-packages/plan9-cursor/default.nix {})
+    wl-mirror
+    (callPackage ../nix-packages/timetrace/default.nix {})
 
   ];
 
@@ -283,16 +292,18 @@
 
     shellAliases = {
       # aliases
-      "v"          = "nvim";
-      "rm"         = "rm -I";
-      "py"         = "python";
-      "n"          = "nnn -edDgx";
-      ",ide"       = "${config.home.homeDirectory}/scripts/ide.sh";
-      ",vide"      = "${config.home.homeDirectory}/scripts/vide.sh";
-      ",staticsrv" = "go run ${config.home.homeDirectory}/scripts/staticwebserver.go";
-      ",newtask"   = "${config.home.homeDirectory}/scripts/new_task.sh";
-      "t"          = "task"; # careful, setting this to go-task will break completion, as completion expects "task"
-      "del"        = "trashy put";
+      "v"               = "nvim";
+      "rm"              = "rm -I";
+      "py"              = "python";
+      "n"               = "nnn -edDgx";
+      ",ide"            = "${config.home.homeDirectory}/scripts/ide.sh";
+      ",vide"           = "${config.home.homeDirectory}/scripts/vide.sh";
+      ",staticsrv"      = "go run ${config.home.homeDirectory}/scripts/staticwebserver.go";
+      ",newtask"        = "${config.home.homeDirectory}/scripts/new_task.sh";
+      "t"               = "task"; # careful, setting this to go-task will break completion, as completion expects "task"
+      "del"             = "trashy put";
+      ",nix-switch-hm"  = "${config.home.homeDirectory}/scripts/nixos/home_manager_switch.sh";
+      ",nix-switch-os"  = "${config.home.homeDirectory}/scripts/nixos/nixos_switch.sh";
     };
   };
 

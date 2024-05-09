@@ -152,6 +152,37 @@ vim.keymap.set('t', '<C-w>j', '<C-\\><C-N><C-w>j', term_opts)
 vim.keymap.set('t', '<C-w>k', '<C-\\><C-N><C-w>k', term_opts)
 vim.keymap.set('t', '<C-w>l', '<C-\\><C-N><C-w>l', term_opts)
 
+-------------
+--   LUA   -------
+------------------------------
+
+-- Define a function to run visually selected Lua code
+function RunSelectedLua()
+  local start_pos = vim.fn.getpos "'<"
+  local end_pos = vim.fn.getpos "'>"
+
+  -- Get the lines containing the visual selection
+  local lines = vim.fn.getline(start_pos[2], end_pos[2])
+
+  -- Extract the portion of the first and last lines within the visual selection
+  lines[1] = string.sub(lines[1], start_pos[3])
+  lines[#lines] = string.sub(lines[#lines], 1, end_pos[3])
+
+  -- Concatenate the lines into a single Lua script
+  local lua_code = table.concat(lines, '\n')
+
+  -- Execute the Lua code using pcall for safe error handling
+  local success, result = pcall(load(lua_code))
+  if not success then
+    print('Error executing Lua code:', result)
+  else
+    print('Result:', result)
+  end
+end
+
+-- Map a key to call this function (adjust the key as needed)
+vim.api.nvim_set_keymap('v', '<leader>r', [[:lua RunSelectedLua()<CR>]], { noremap = true, silent = true })
+
 ----------------
 --  PLUGINS  -------
 -------------------------------
