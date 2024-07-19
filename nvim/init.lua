@@ -68,8 +68,7 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
 
 opt.background = 'dark'
 --vim.cmd.colorscheme 'quieter'
--- vim.cmd.colorscheme 'ron'
-vim.cmd.colorscheme 'vacme'
+--vim.cmd.colorscheme 'biscuit'
 
 -------------
 -- USAGE -----------
@@ -236,12 +235,12 @@ require('lazy').setup({
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+      require('which-key').add {
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>f', group = '[F]ind' },
+        { '<leader>w', group = '[W]orkspace' },
       }
     end,
   },
@@ -669,6 +668,16 @@ require('lazy').setup({
   --    vim.cmd.colorscheme 'monotone'
   --  end,
   --},
+
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    init = function()
+      vim.cmd.colorscheme 'tokyonight-moon'
+    end,
+  },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
