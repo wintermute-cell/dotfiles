@@ -43,6 +43,7 @@
     tree
     sshfs # mounting remote filesystems
     awscli2
+    plan9port
 
     # networking stuff
     nmap
@@ -64,6 +65,7 @@
     nodejs
     #python3
     go
+    delve # go debugger
     docker
     sqlite
     elixir
@@ -121,9 +123,24 @@
     xournalpp
     gnome.adwaita-icon-theme # required by xournalpp
     wl-mirror
-    (callPackage ../nix-packages/timetrace/default.nix {})
+    # (callPackage ../nix-packages/timetrace/default.nix {}) # replaced by watson
+    figlet
+    obs-studio
+    (callPackage ../nix-packages/pureref/default.nix {})
+    ffmpeg
+    reaper
 
   ];
+
+  # watson
+  programs.watson = {
+    enable = true;
+    enableZshIntegration = true;
+    settings.options = {
+      pager = false;
+      date_format = "%d.%m.%Y";
+    };
+  };
 
   # firefox
   programs.firefox = {
@@ -245,8 +262,7 @@
     '';
 
     envExtra = ''
-      # default programs
-      export TERM="alacritty"
+      export TERM="xterm-256color" # some programs/systems don't recognize 'alacritty', so use xterm-256color
       export VISUAL="nvim"
       if [[ -n $SSH_CONNECTION ]]; then
           export EDITOR="vim"
@@ -304,6 +320,10 @@
       "del"             = "trashy put";
       ",nix-switch-hm"  = "${config.home.homeDirectory}/scripts/nixos/home_manager_switch.sh";
       ",nix-switch-os"  = "${config.home.homeDirectory}/scripts/nixos/nixos_switch.sh";
+      ",ws"             = "watson start";
+      ",wstop"          = "watson stop";
+      ",wclock"         = "watch -n 5 \"watson status | sed 's/^.*started \\(.*\\) ago (.*$/\\1/' | figlet\"
+";
     };
   };
 

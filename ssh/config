@@ -7,3 +7,6 @@ Host ec2-frontpages
 Host gitlab2.informatik.uni-wuerzburg.de
  HostName gitlab2.informatik.uni-wuerzburg.de
  IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
+Host writersglen-publications.git.beanstalkapp.com
+ HostName writersglen-publications.git.beanstalkapp.com
+ IdentityFile ~/.ssh/writersglen-publications.beanstalkapp.com

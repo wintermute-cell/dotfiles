@@ -67,7 +67,9 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
 })
 
 opt.background = 'dark'
-vim.cmd.colorscheme 'schellar'
+--vim.cmd.colorscheme 'quieter'
+-- vim.cmd.colorscheme 'ron'
+vim.cmd.colorscheme 'vacme'
 
 -------------
 -- USAGE -----------
@@ -431,6 +433,10 @@ require('lazy').setup({
           --  See `:help K` for why this keymap.
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
 
+          -- Show the signature of the function call you're currently writing arguments for.
+          --  This is useful when you're not sure what arguments a function takes.
+          vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = event.buf, desc = 'LSP: Signature Help' })
+
           -- This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -456,7 +462,9 @@ require('lazy').setup({
         -- clangd = {},
         gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {
+          config = { cargo = { features = 'all' } },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -738,7 +746,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
 
