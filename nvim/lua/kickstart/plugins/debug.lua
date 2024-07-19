@@ -55,6 +55,24 @@ return {
       dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
     end, { desc = 'Debug: Set Breakpoint' })
 
+    -- Auto load a project-dap.lua file if it exists
+    vim.cmd [[
+      augroup ProjectSpecificConfig
+          autocmd!
+          autocmd VimEnter * lua LoadProjectSpecificConfig()
+      augroup END
+    ]]
+    function LoadProjectSpecificConfig()
+      local plenary_ok, reload = pcall(require, 'plenary.reload')
+      local project_dap_file = vim.fn.getcwd() .. '/project-dap.lua'
+      if vim.fn.filereadable(project_dap_file) == 1 then
+        if plenary_ok then
+          reload.reload_module 'project-dap'
+        end
+        vim.cmd('luafile ' .. project_dap_file)
+      end
+    end
+
     -- Dap UI setup
     -- For more information, see |:help nvim-dap-ui|
     dapui.setup {
