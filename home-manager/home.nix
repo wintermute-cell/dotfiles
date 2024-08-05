@@ -83,6 +83,7 @@
     neovim
     stylua  # external prog, used for formatting lua code
     ripgrep
+    tree-sitter # the latex plugin needs this to be a PATH executable
 
     # user progs
     firefox
@@ -129,6 +130,12 @@
     (callPackage ../nix-packages/pureref/default.nix {})
     ffmpeg
     reaper
+    davinci-resolve
+    pandoc
+    (texliveFull.withPackages (ps: with ps; [
+      courier
+    ]))
+    liberation_ttf_v1 # some basic fonts
 
   ];
 
@@ -322,8 +329,8 @@
       ",nix-switch-os"  = "${config.home.homeDirectory}/scripts/nixos/nixos_switch.sh";
       ",ws"             = "watson start";
       ",wstop"          = "watson stop";
-      ",wclock"         = "watch -n 5 \"watson status | sed 's/^.*started \\(.*\\) ago (.*$/\\1/' | figlet\"
-";
+      ",wclock"         = "watch -n 5 \"watson status | sed 's/^.*started \\(.*\\) ago (.*$/\\1/' | figlet\" ";
+      ",prime-run"      = "${config.home.homeDirectory}/scripts/prime-run.sh";
     };
   };
 

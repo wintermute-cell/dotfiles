@@ -66,9 +66,14 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
   end,
 })
 
-opt.background = 'dark'
---vim.cmd.colorscheme 'quieter'
+--opt.background = 'light'
+--vim.cmd.colorscheme 'deepflowv'
+
 --vim.cmd.colorscheme 'biscuit'
+
+vim.cmd.colorscheme 'candelabra'
+opt.background = 'light'
+opt.background = 'dark'
 
 -------------
 -- USAGE -----------
@@ -492,6 +497,9 @@ require('lazy').setup({
         },
       }
 
+      -- load clangd with raw lspconfig, since we want to use the system clangd
+      require('lspconfig').clangd.setup {}
+
       -- Ensure the servers and tools above are installed
       require('mason').setup()
 
@@ -669,15 +677,15 @@ require('lazy').setup({
   --  end,
   --},
 
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    init = function()
-      vim.cmd.colorscheme 'tokyonight-moon'
-    end,
-  },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  --   init = function()
+  --     vim.cmd.colorscheme 'tokyonight-moon'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
