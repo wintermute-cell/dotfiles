@@ -168,7 +168,7 @@
 
     # user progs
     thunderbird
-    alacritty
+    #alacritty  # nix based alacritty has opengl problems on other systems
     wezterm
     tmux
     lazygit
@@ -177,15 +177,9 @@
     nsxiv
     dust # du but better UX
     mpv
-    signal-desktop
-    discord
     pcmanfm
-    aseprite
     neofetch
-    teamspeak_client
     pavucontrol
-    chafa  # image/gif to textmode art cli tool
-    (callPackage ../nix-packages/streamrip/streamrip.nix {})
     (gimp-with-plugins.override {
       plugins = with gimpPlugins; [
         gmic
@@ -203,36 +197,22 @@
     # mnemosyne # NOTE: compilation broken on latest unstable 18.10.24
     xournalpp
     gnome.adwaita-icon-theme # required by xournalpp
-    wl-mirror
-    # (callPackage ../nix-packages/timetrace/default.nix {}) # replaced by watson
     figlet
-    obs-studio
-    (callPackage ../nix-packages/pureref/default.nix {})
     ffmpeg
-    reaper
-    davinci-resolve
     pandoc
     (texliveFull.withPackages (ps: with ps; [
       courier
     ]))
     liberation_ttf_v1 # some basic fonts
-    unstable.prusa-slicer
-    jetbrains.goland
-    jetbrains.clion
-    unstable.zoom-us
     vlc
     avizo
     kitty
     unstable.ghostty
     playerctl
-    j4-dmenu-desktop
-    bemenu
     qimgv
     yt-dlp
-    rx # vim like pixelart program
     lazydocker
     libreoffice
-    (callPackage ../nix-packages/dam/default.nix {})
     go-task
   ];
 
@@ -532,10 +512,10 @@
     };
 
     # sway
-    "${config.xdg.configHome}/sway" = {
-      source = ../sway;
-      recursive = false;
-    };
+    #"${config.xdg.configHome}/sway" = {
+    #  source = ../sway;
+    #  recursive = false;
+    #};
 
     # alacritty
     "${config.xdg.configHome}/alacritty" = {
@@ -543,9 +523,9 @@
       recursive = false;
     };
 
-    # wezterm
-    "${config.xdg.configHome}/wezterm" = {
-      source = ../wezterm;
+    # lazygit
+    "${config.xdg.configHome}/lazygit" = {
+      source = ../lazygit;
       recursive = false;
     };
 
@@ -590,12 +570,6 @@
       recursive = false;
     };
 
-    # aseprite
-    #"${config.xdg.configHome}/aseprite" = {
-    #  source = ../aseprite;
-    #  recursive = false;
-    #};
-
     # fuzzel
     "${config.xdg.configHome}/fuzzel" = {
       source = ../fuzzel;
@@ -605,12 +579,6 @@
     # mpd
     "${config.xdg.configHome}/mpd" = {
       source = ../mpd;
-      recursive = false;
-    };
-
-    # streamrip
-    "${config.xdg.configHome}/streamrip" = {
-      source = ../streamrip;
       recursive = false;
     };
 

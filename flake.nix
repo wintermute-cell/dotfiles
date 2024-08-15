@@ -8,7 +8,7 @@
   #     `nix run . -- switch --flake $HOME'/dotfiles?submodules=1';`
   #
   # Since the home-manager config should specify 
-  #     `programs.home-mnager.enable = true`
+  #     `programs.home-manager.enable = true`
   # this should make the `home-manager` command available.
   #
   # From then on, use this to activate the configuration:

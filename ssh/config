@@ -1,21 +1,13 @@
+Host github.com-work
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/github.com-work
+
+Host github.com-private
+	HostName github.com
+	User git
+	IdentityFile ~/.ssh/github.com-private
+
 Host github.com
- HostName github.com
- IdentityFile ~/.ssh/github.com
-Host github-work.com
- HostName github.com
- IdentityFile ~/.ssh/github-work.com
-Host ec2-frontpages
- HostName ec2-frontpages
- IdentityFile ~/.ssh/frontpages-server.pem
-Host gitlab.informatik.uni-wuerzburg.de
- HostName gitlab.informatik.uni-wuerzburg.de
- IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
-Host gitlab2.informatik.uni-wuerzburg.de
- HostName gitlab2.informatik.uni-wuerzburg.de
- IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
-Host writersglen-publications.git.beanstalkapp.com
- HostName writersglen-publications.git.beanstalkapp.com
- IdentityFile ~/.ssh/writersglen-publications.beanstalkapp.com
-Host 167.235.48.227
- HostName 167.235.48.227
- IdentityFile ~/.ssh/hetzner-tsserver
+	HostName github.com
+	User git

@@ -35,7 +35,7 @@ cyan    = '#35A77C'
 white   = '#A6B0A0'
 
 [font]
-size = 10
+size = 8
 
 [font.bold]
 style = "Bold"
