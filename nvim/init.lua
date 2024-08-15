@@ -66,14 +66,14 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
   end,
 })
 
---opt.background = 'light'
---vim.cmd.colorscheme 'deepflowv'
+opt.background = 'light'
+vim.cmd.colorscheme 'deepflowv'
 
 --vim.cmd.colorscheme 'biscuit'
 
-vim.cmd.colorscheme 'candelabra'
-opt.background = 'light'
-opt.background = 'dark'
+--vim.cmd.colorscheme 'candelabra'
+--opt.background = 'light'
+--opt.background = 'dark'
 
 -------------
 -- USAGE -----------
@@ -246,6 +246,7 @@ require('lazy').setup({
         { '<leader>r', group = '[R]ename' },
         { '<leader>f', group = '[F]ind' },
         { '<leader>w', group = '[W]orkspace' },
+        { '<leader>t', group = '[T]esting' },
       }
     end,
   },

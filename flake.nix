@@ -8,7 +8,7 @@
   #     `nix run . -- switch --flake $HOME'/dotfiles?submodules=1';`
   #
   # Since the home-manager config should specify 
-  #     `programs.home-mnager.enable = true`
+  #     `programs.home-manager.enable = true`
   # this should make the `home-manager` command available.
   #
   # From then on, use this to activate the configuration:
@@ -35,11 +35,11 @@
   outputs = { nixpkgs, home-manager, nur, ... }:
   let
     system = "x86_64-linux";
-    user = "winterveil";
+    user = "work";
   in {
     packages.${system}.default = home-manager.defaultPackage.${system};
     homeConfigurations = {
-      "winterveil" = home-manager.lib.homeManagerConfiguration {
+      "work" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ nur.overlay ];
