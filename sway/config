@@ -42,7 +42,7 @@ set $up k
 set $right l
 
 # terminal emulator
-set $term alacritty
+set $term wezterm
 
 # application launcher
 # Note: pass the final command to waymsg so that the resulting window can be opened

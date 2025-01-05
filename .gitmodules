@@ -1,3 +1,6 @@
 [submodule "nix-packages/xcursor-plan9"]
 	path = nix-packages/xcursor-plan9
 	url = https://github.com/wintermute-cell/xcursor-plan9.git
+[submodule "nix-packages/dam"]
+	path = nix-packages/dam
+	url = https://codeberg.org/winterveil/dam

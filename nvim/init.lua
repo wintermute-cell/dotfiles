@@ -66,13 +66,14 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
   end,
 })
 
---opt.background = 'light'
+-- opt.background = 'dark'
+-- vim.cmd.colorscheme 'base16-black-metal-burzum'
+
 --vim.cmd.colorscheme 'deepflowv'
-
---vim.cmd.colorscheme 'biscuit'
-
-vim.cmd.colorscheme 'candelabra'
-opt.background = 'light'
+vim.cmd.colorscheme 'biscuit'
+--vim.cmd [[ hi Normal guibg=NONE ctermbg=NONE ]] -- transparent background
+--vim.cmd.colorscheme 'candelabra'
+--opt.background = 'light'
 opt.background = 'dark'
 
 -------------
@@ -90,7 +91,7 @@ opt.tabstop = 4 -- 1 tab == 4 spaces
 opt.softtabstop = 4
 opt.smartindent = true -- autoindent new lines
 vim.api.nvim_create_autocmd('FileType', { -- only 2 spaces indent on these filetypes
-  pattern = { 'html', 'templ', 'nix', 'lua', 'css' },
+  pattern = { 'html', 'templ', 'nix', 'lua', 'css', 'typescriptreact' },
   callback = function()
     vim.opt_local.shiftwidth = 2
     vim.opt_local.tabstop = 2
@@ -144,8 +145,11 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }) -- exit terminal mode in the builtin terminal
 
 -- better vertical movement/navigation
-vim.keymap.set('n', '<C-d>', '<C-d>zz')
-vim.keymap.set('n', '<C-u>', '<C-u>zz')
+-- NOTE: zz re-centers the screen, the scrolloff swap is there because for some
+-- reason, ctrl-d scrolls by the normal amount PLUS the scrolloff, but only
+-- when starting at the top.
+vim.keymap.set('n', '<C-d>', ':set scrolloff=0<CR><C-d>:set scrolloff=20<CR>zz')
+vim.keymap.set('n', '<C-u>', ':set scrolloff=0<CR><C-u>:set scrolloff=20<CR>zz')
 
 -- disabling some features
 vim.keymap.set('n', 'Q', '<Nop>')
@@ -605,8 +609,8 @@ require('lazy').setup({
           ['<C-p>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
@@ -726,8 +730,10 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -739,19 +745,12 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
-    config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
-
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
-    end,
+    -- There are additional nvim-treesitter modules that you can use to interact
+    -- with nvim-treesitter. You should go explore a few and see what interests you:
+    --
+    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -763,7 +762,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  require 'kickstart.plugins.debug',
+  -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
 

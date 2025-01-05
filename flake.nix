@@ -20,48 +20,55 @@
   description = "home manager flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.05";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
   };
 
-  outputs = { nixpkgs, home-manager, nur, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }:
   let
     system = "x86_64-linux";
     user = "winterveil";
-  in {
-    packages.${system}.default = home-manager.defaultPackage.${system};
-    homeConfigurations = {
-      "winterveil" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ nur.overlay ];
-        };
-        modules = [
-          ./home-manager/home.nix
-          {
-            home = {
-              homeDirectory = "/home/${user}";
-              username = "${user}";
-              stateVersion = "23.11";
+    pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ 
+          nur.overlay
+          (final: _prev: { # overlays are functions that take two arguments, the final set and the previous set.
+            unstable = import nixpkgs-unstable {
+              inherit (final) system config;
             };
-          }
-          {
-            nixpkgs = {
-              config = {
-                allowUnfree = true;
-              };
-            };
-          }
+          })
         ];
       };
+  in {
+    packages.${system}.default = home-manager.defaultPackage.${system};
+    homeConfigurations."winterveil" = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [
+        ./home-manager/home.nix
+        {
+          home = {
+            homeDirectory = "/home/${user}";
+            username = "${user}";
+            stateVersion = "23.11";
+          };
+        }
+        {
+          nixpkgs = {
+            config = {
+              allowUnfree = true;
+            };
+          };
+        }
+      ];
     };
   };
 }

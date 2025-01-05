@@ -53,6 +53,10 @@ style = "Regular"
 [window]
 opacity = 1
 
+[shell]
+program = "fish"
+# args = ["-c", "fish"]
+
 [window.padding]
 x = 8
 y = 8

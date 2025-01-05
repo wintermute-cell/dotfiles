@@ -1,6 +1,8 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, inputs, ... }: {
 
   imports = [ ../overlays ];
+
+  news.display = "silent";
 
   programs.home-manager.enable = true;
 
@@ -15,18 +17,82 @@
     };
   };
 
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = let 
+      browser = "firefox.desktop";
+      imageViewer = "nsxiv.desktop";
+      videoPlayer = "mpv.desktop";
+      audioPlayer = "vlc.desktop";
+    in {
+      "text/html" = browser;
+      "x-scheme-handler/http" = browser;
+      "x-scheme-handler/https" = browser;
+      "x-scheme-handler/ftp" = browser;
+      "x-scheme-handler/chrome" = browser;
+      "x-scheme-handler/about" = browser;
+      "x-scheme-handler/unknown" = browser;
+      "application/x-extension-htm" = browser;
+      "application/x-extension-html" = browser;
+      "application/x-extension-shtml" = browser;
+      "application/xhtml+xml" = browser;
+      "application/x-extension-xhtml" = browser;
+      "application/x-extension-xht" = browser;
+      "application/json" = browser;
+      "application/pdf" = "zathura.desktop";
+      "application/epub+zip" = "zathura.desktop";
+      "text/plain" = "nvim.desktop";
+      "text/markdown" = "nvim.desktop";
+      "text/x-markdown" = "nvim.desktop";
+      "x-scheme-handler/mailto" = "thunderbird.desktop";
+      "image/bmp" = imageViewer;
+      "image/gif" = imageViewer; 
+      "image/jpeg" = imageViewer;
+      "image/jpg" = imageViewer;
+      "image/png" = imageViewer;
+      "image/svg+xml" = imageViewer;
+      "image/tiff" = imageViewer;
+      "image/vnd.microsoft.icon" = imageViewer;
+      "image/webp" = imageViewer;
+      "video/mp2t" = videoPlayer;
+      "video/mp4" = videoPlayer;
+      "video/mpeg" = videoPlayer;
+      "video/ogg" = videoPlayer;
+      "video/webm" = videoPlayer;
+      "video/x-flv" = videoPlayer;
+      "video/x-matroska" = videoPlayer;
+      "video/x-msvideo" = videoPlayer;
+      "audio/aac" = audioPlayer;
+      "audio/mpeg" = audioPlayer;
+      "audio/ogg" = audioPlayer;
+      "audio/opus" = audioPlayer;
+      "audio/wav" = audioPlayer;
+      "audio/webm" = audioPlayer;
+      "audio/x-matroska" = audioPlayer;
+      "all/all" = "pcmanfm.desktop";
+      "inode/directory" = "pcmanfm.desktop";
+    };
+  };
+
   home.packages = with pkgs; [
     # meta
     nix-search-cli
 
-    # base system stuff, why is this not in the base system?
+    # base system stuff
     zip
     unzip
+    nvtopPackages.full
     trashy # safer alternative to rm, moves to xdg trash
 
     # base dev stuff, often a dependency for other progs
     gcc
     git
+    file
     wget
     curl
     gnumake
@@ -39,11 +105,18 @@
     cargo
     rustc
     libnotify
-    go-task
     tree
     sshfs # mounting remote filesystems
     awscli2
     plan9port
+    pkg-config
+    btop
+    fzf
+    xterm
+    edwood
+    plan9port
+    wio
+    dash
 
     # networking stuff
     nmap
@@ -55,8 +128,6 @@
       i3ipc 
       packaging
       pandas
-      plotly
-      dash
     ]))
 
     python312Packages.pip
@@ -65,6 +136,7 @@
     nodejs
     #python3
     go
+    graphviz # required for viewing pprof files
     delve # go debugger
     docker
     sqlite
@@ -80,13 +152,12 @@
     noto-fonts-emoji
 
     # neovim and its deps
-    neovim
+    unstable.neovim
     stylua  # external prog, used for formatting lua code
     ripgrep
     tree-sitter # the latex plugin needs this to be a PATH executable
 
     # user progs
-    firefox
     thunderbird
     alacritty
     wezterm
@@ -115,12 +186,12 @@
     tldr
     shotwell
     mpd
-    cantata # mpd client / music player
+    # cantata # mpd client / music player # NOTE: compilation broken on latest unstable 18.10.24
     obsidian
     bruno # API IDE like Postman
     wf-recorder # wayland screen recorder
     sway-contrib.grimshot # sway screenshot helper
-    mnemosyne
+    # mnemosyne # NOTE: compilation broken on latest unstable 18.10.24
     xournalpp
     gnome.adwaita-icon-theme # required by xournalpp
     wl-mirror
@@ -136,7 +207,23 @@
       courier
     ]))
     liberation_ttf_v1 # some basic fonts
-
+    unstable.prusa-slicer
+    jetbrains.goland
+    jetbrains.clion
+    unstable.zoom-us
+    vlc
+    avizo
+    kitty
+    playerctl
+    j4-dmenu-desktop
+    bemenu
+    qimgv
+    yt-dlp
+    rx # vim like pixelart program
+    lazydocker
+    libreoffice
+    (callPackage ../nix-packages/dam/default.nix {})
+    go-task
   ];
 
   # watson
@@ -147,6 +234,68 @@
       pager = false;
       date_format = "%d.%m.%Y";
     };
+  };
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        browser = "firefox -new-tab";
+        dmenu = "fuzzel";
+        follow = "mouse";
+        font = "Droid Sans 10";
+        format = ''
+            %a
+            <b>%s</b>
+            %b'';
+        frame_color = "#555555";
+        frame_width = 2;
+        geometry = "500x5-5+30";
+        horizontal_padding = 8;
+        icon_position = "off";
+        line_height = 0;
+        markup = "full";
+        padding = 8;
+        separator_color = "frame";
+        separator_height = 2;
+        transparency = 10;
+        word_wrap = true;
+      };
+
+      urgency_low = {
+        background = "#1d1f21";
+        foreground = "#4da1af";
+        frame_color = "#4da1af";
+        timeout = 10;
+      };
+
+      urgency_normal = {
+        background = "#1d1f21";
+        foreground = "#70a040";
+        frame_color = "#70a040";
+        timeout = 15;
+      };
+
+      urgency_critical = {
+        background = "#1d1f21";
+        foreground = "#dd5633";
+        frame_color = "#dd5633";
+        timeout = 0;
+      };
+
+      shortcuts = {
+        context = "mod4+grave";
+        close = "mod4+shift+space";
+      };
+    };
+  };
+
+  # udiskie
+  services.udiskie = {
+    enable = true;
+    automount = true;
+    notify = true;
+    tray = "auto";
   };
 
   # firefox
@@ -177,6 +326,13 @@
         darkreader
       ];
     };
+  };
+
+  # nix-index
+  programs.nix-index = {
+    enable = true;
+    enableFishIntegration = true;
+    enableZshIntegration = true;
   };
 
   programs.zsh = {
@@ -359,6 +515,12 @@
     #  recursive = false;
     #};
 
+    # fish
+    "${config.xdg.configHome}/fish" = {
+      source = ../fish;
+      recursive = false;
+    };
+
     # sway
     "${config.xdg.configHome}/sway" = {
       source = ../sway;
@@ -371,17 +533,46 @@
       recursive = false;
     };
 
+    # wezterm
+    "${config.xdg.configHome}/wezterm" = {
+      source = ../wezterm;
+      recursive = false;
+    };
+
     # tmux
     "${config.xdg.configHome}/tmux" = {
       source = ../tmux;
       recursive = false;
     };
 
-    # waybar
-    "${config.xdg.configHome}/waybar" = {
-      source = ../waybar;
-      recursive = false;
+    "${config.xdg.configHome}/nixos_generated/tmux_fish.conf" = {
+      text = ''
+        # integrate fish shell into tmux
+        set-option -g default-shell "${pkgs.fish}/bin/fish"
+      '';
     };
+
+    "${config.xdg.configHome}/nixos_generated/fish_nix_index.fish" = 
+      let
+        wrapper = pkgs.writeScript "command-not-found" ''
+          #!${pkgs.bash}/bin/bash
+          source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
+          command_not_found_handle "$@"
+        '';
+      in {
+      text = ''
+        # integrate nix-index's command-not-found into fish
+        function fish_command_not_found
+          ${wrapper} $argv
+        end
+      '';
+    };
+
+    # # waybar
+    # "${config.xdg.configHome}/waybar" = {
+    #   source = ../waybar;
+    #   recursive = false;
+    # };
 
     # zathura
     "${config.xdg.configHome}/zathura" = {

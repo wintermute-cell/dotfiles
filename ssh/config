@@ -4,9 +4,15 @@ Host github.com
 Host ec2-frontpages
  HostName ec2-frontpages
  IdentityFile ~/.ssh/frontpages-server.pem
+Host gitlab.informatik.uni-wuerzburg.de
+ HostName gitlab.informatik.uni-wuerzburg.de
+ IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
 Host gitlab2.informatik.uni-wuerzburg.de
  HostName gitlab2.informatik.uni-wuerzburg.de
  IdentityFile ~/.ssh/gitlab2.informatik.uni-wuerzburg.de
 Host writersglen-publications.git.beanstalkapp.com
  HostName writersglen-publications.git.beanstalkapp.com
  IdentityFile ~/.ssh/writersglen-publications.beanstalkapp.com
+Host 167.235.48.227
+ HostName 167.235.48.227
+ IdentityFile ~/.ssh/hetzner-tsserver

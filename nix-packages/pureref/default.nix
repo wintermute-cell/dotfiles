@@ -1,16 +1,11 @@
-{ lib, appimageTools, runCommand, curl, gnugrep, cacert }:
+{ lib, appimageTools }:
 
 appimageTools.wrapType1 rec {
   pname = "pureref";
   version = "2.0.0";
 
-  src = runCommand "PureRef-${version}_x64.Appimage" {
-    nativeBuildInputs = [ curl gnugrep cacert ];
-    outputHash = "sha256-EnOZ2ctsZaaVTHgt67gcy+SEgihrzoumnlbAhl+Ob1M=";
-  } ''
-    key="$(curl "https://www.pureref.com/download.php" --silent | grep '%3D%3D' | cut -d '"' -f2)"
-    curl "https://www.pureref.com/files/build.php?build=LINUX64.Appimage&version=${version}&downloadKey=$key" --output $out
-  '';
+  # Reference the local AppImage file instead of downloading
+  src = ./PureRef-2.0.3_x64.Appimage;
 
   meta = with lib; {
     description = "Reference Image Viewer";
@@ -21,3 +16,4 @@ appimageTools.wrapType1 rec {
     sourceProvenance = [ lib.sourceTypes.binaryNativeCode ];
   };
 }
+

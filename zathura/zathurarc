@@ -10,12 +10,15 @@ map t toggle_statusbar
 map <C-n> navigate next
 map <C-p> navigate previous
 
+set guioptions none # no statusbar
+set recolor-keephue true
+
 set selection-clipboard clipboard
 set default-bg "#323732"
 set statusbar-bg "#323732"
 set inputbar-bg "#323732"
 
-set font "CozetteVector 12"
+#set font "CozetteVector 12"
 
 # Lighthaus Colors:
 
