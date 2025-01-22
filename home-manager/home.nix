@@ -9,12 +9,20 @@
   # required to autoload fonts from packages installed via Home Manager
   fonts.fontconfig.enable = true;
 
-  gtk = {
-    enable = true;
-    cursorTheme = {
-      name = "plan9";
-      package = (pkgs.callPackage ../nix-packages/xcursor-plan9/default.nix {});
-    };
+  # gtk = {
+  #   enable = true;
+  #   cursorTheme = {
+  #     name = "plan9";
+  #     package = (pkgs.callPackage ../nix-packages/xcursor-plan9/default.nix {});
+  #   };
+  # };
+
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    name = "plan9";
+    package = (pkgs.callPackage ../nix-packages/xcursor-plan9/default.nix {});
+    # size = 28;
   };
 
   programs.direnv = {
@@ -82,6 +90,7 @@
   home.packages = with pkgs; [
     # meta
     nix-search-cli
+    comma
 
     # base system stuff
     zip
@@ -114,7 +123,6 @@
     fzf
     xterm
     edwood
-    plan9port
     wio
     dash
 
@@ -148,8 +156,9 @@
     (nerdfonts.override { fonts = [ "Iosevka" "IosevkaTerm" ]; })
     sarasa-gothic
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
+    mononoki
 
     # neovim and its deps
     unstable.neovim
@@ -214,6 +223,7 @@
     vlc
     avizo
     kitty
+    unstable.ghostty
     playerctl
     j4-dmenu-desktop
     bemenu

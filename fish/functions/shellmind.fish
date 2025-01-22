@@ -1,4 +1,4 @@
-function shellmind_replace
+function shellmind
     # ===================
     # CONFIGURATION
 
@@ -20,8 +20,7 @@ function shellmind_replace
         return
     end
 
-    # TODO: this might not work with one line prompts
-    echo -e "\033[2K\rThinking...\033[1A"
+    echo -e "\033[2K\rThinking..."
 
     set openai_key $OPENAI_API_KEY
     if test -z "$openai_key"
@@ -42,7 +41,7 @@ function shellmind_replace
     # escape the prompt for json
     set escaped_prompt (echo $prompt | jq -R -s '.')
 
-    set json_data "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":$escaped_prompt}],\"temperature\":0.3}"
+    set json_data "{\"model\":\"$MODEL\",\"messages\":[{\"role\":\"user\",\"content\":$escaped_prompt}],\"temperature\":$TEMPERATURE}"
 
     set resp (curl -s "https://api.openai.com/v1/chat/completions" \
         -H "Content-Type: application/json" \

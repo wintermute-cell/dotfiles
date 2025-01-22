@@ -44,6 +44,86 @@ return {
   { 'mbbill/undotree' },
 
   {
+    'mrjones2014/smart-splits.nvim',
+    event = 'VeryLazy', -- this plugin has a pretty slow startup time...
+    config = function()
+      local ss = require 'smart-splits'
+      ss.setup {
+        default_amount = 5,
+      }
+      -- Resize splits
+      vim.keymap.set('n', '<C-w><C-h>', require('smart-splits').resize_left, { desc = 'resize split leftward' })
+      vim.keymap.set('n', '<C-w><C-j>', require('smart-splits').resize_down, { desc = 'resize split downward' })
+      vim.keymap.set('n', '<C-w><C-k>', require('smart-splits').resize_up, { desc = 'resize split upward' })
+      vim.keymap.set('n', '<C-w><C-l>', require('smart-splits').resize_right, { desc = 'resize split rightward' })
+
+      -- Moving between splits
+      vim.keymap.set('n', '<C-w>h', require('smart-splits').move_cursor_left, { desc = 'move to left split' })
+      vim.keymap.set('n', '<C-w>j', require('smart-splits').move_cursor_down, { desc = 'move to split below' })
+      vim.keymap.set('n', '<C-w>k', require('smart-splits').move_cursor_up, { desc = 'move to split above' })
+      vim.keymap.set('n', '<C-w>l', require('smart-splits').move_cursor_right, { desc = 'move to right split' })
+
+      -- Swapping splits
+      vim.keymap.set('n', '<C-w><A-h>', require('smart-splits').swap_buf_left, { desc = 'swap with left split' })
+      vim.keymap.set('n', '<C-w><A-j>', require('smart-splits').swap_buf_down, { desc = 'swap with split below' })
+      vim.keymap.set('n', '<C-w><A-k>', require('smart-splits').swap_buf_up, { desc = 'swap with split above' })
+      vim.keymap.set('n', '<C-w><A-l>', require('smart-splits').swap_buf_right, { desc = 'swap with right split' })
+    end,
+  },
+
+  {
+    'yetone/avante.nvim',
+    event = 'VeryLazy',
+    lazy = false,
+    version = '*', -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+    opts = {
+      -- add any opts here
+      provider = 'openai',
+      auto_suggetions_provider = 'copilot',
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = 'make',
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      'stevearc/dressing.nvim',
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      --- The below dependencies are optional,
+      'echasnovski/mini.pick', -- for file_selector provider mini.pick
+      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+      'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+      'ibhagwan/fzf-lua', -- for file_selector provider fzf
+      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+      'zbirenbaum/copilot.lua', -- for providers='copilot'
+      {
+        -- support for image pasting
+        'HakonHarnes/img-clip.nvim',
+        event = 'VeryLazy',
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        'MeanderingProgrammer/render-markdown.nvim',
+        opts = {
+          file_types = { 'Avante' },
+        },
+        ft = { 'Avante' },
+      },
+    },
+  },
+
+  {
     'zbirenbaum/copilot.lua',
     opts = {
       suggestion = {
@@ -69,10 +149,10 @@ return {
     config = function()
       local harpoon = require 'harpoon'
 
-      harpoon:setup {}
+      harpoon:setup()
 
       vim.keymap.set('n', '<leader>a', function()
-        harpoon:list():append()
+        harpoon:list():add()
       end, { desc = 'harpoon: append to list' })
 
       vim.keymap.set('n', '<C-e>', function()
@@ -196,6 +276,18 @@ return {
       vim.g.vimtex_quickfix_ignore_filters = { 'Overfull', 'Underfull', 'Warning' }
       vim.g.vimtex_quickfix_open_on_warning = 0
       vim.g.vimtex_mappings_prefix = '<localleader>v'
+    end,
+  },
+
+  {
+    'dag/vim-fish',
+    ft = 'fish',
+    config = function()
+      vim.cmd [[
+        autocmd FileType fish compiler fish
+        autocmd FileType fish setlocal textwidth=79
+        autocmd FileType fish setlocal foldmethod=expr
+      ]]
     end,
   },
 

@@ -20,9 +20,9 @@
   description = "home manager flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -40,7 +40,7 @@
     pkgs = import nixpkgs {
         inherit system;
         overlays = [ 
-          nur.overlay
+          nur.overlays.default
           (final: _prev: { # overlays are functions that take two arguments, the final set and the previous set.
             unstable = import nixpkgs-unstable {
               inherit (final) system config;

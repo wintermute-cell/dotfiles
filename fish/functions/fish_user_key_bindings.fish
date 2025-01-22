@@ -11,5 +11,5 @@ function fish_user_key_bindings
     # The argument specifies the initial mode (insert, "default" or visual).
     fish_vi_key_bindings --no-erase insert
 
-    bind -M insert \cx 'shellmind_replace'
+    bind -M insert \cx 'shellmind'
 end

@@ -69,12 +69,12 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- highlight when yanking (copying
 -- opt.background = 'dark'
 -- vim.cmd.colorscheme 'base16-black-metal-burzum'
 
---vim.cmd.colorscheme 'deepflowv'
-vim.cmd.colorscheme 'biscuit'
+-- vim.cmd.colorscheme 'deepflowv'
+-- vim.cmd.colorscheme 'biscuit'
 --vim.cmd [[ hi Normal guibg=NONE ctermbg=NONE ]] -- transparent background
 --vim.cmd.colorscheme 'candelabra'
---opt.background = 'light'
-opt.background = 'dark'
+opt.background = 'light'
+-- opt.background = 'dark'
 
 -------------
 -- USAGE -----------
@@ -161,6 +161,29 @@ vim.keymap.set('t', '<C-w>h', '<C-\\><C-N><C-w>h', term_opts)
 vim.keymap.set('t', '<C-w>j', '<C-\\><C-N><C-w>j', term_opts)
 vim.keymap.set('t', '<C-w>k', '<C-\\><C-N><C-w>k', term_opts)
 vim.keymap.set('t', '<C-w>l', '<C-\\><C-N><C-w>l', term_opts)
+
+------------------------
+--   PER PROJECT CONFIG   -------
+---------------------------------------
+local project_configs = {
+  ['src/jamegam2025'] = function()
+    vim.cmd [[set makeprg=task]]
+  end,
+}
+
+vim.api.nvim_create_augroup('ProjectSpecificConfig', { clear = true })
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = 'ProjectSpecificConfig',
+  callback = function()
+    local cwd = vim.fn.getcwd()
+    for pattern, config_fn in pairs(project_configs) do
+      if string.match(cwd, pattern) then
+        config_fn()
+        break
+      end
+    end
+  end,
+})
 
 -------------
 --   LUA   -------
@@ -652,6 +675,16 @@ require('lazy').setup({
           { name = 'buffer' },
         },
       }
+    end,
+  },
+
+  {
+    dir = '/home/winterveil/src/flowxi',
+    name = 'flowxi',
+    priority = 1000,
+    init = function()
+      vim.opt.background = 'light'
+      vim.cmd.colorscheme 'flowxi'
     end,
   },
 

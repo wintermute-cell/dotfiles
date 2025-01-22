@@ -72,6 +72,9 @@ if status is-interactive
     # Cargo configuration (compatibility with gitconfigs insteadOf)
     set -xg CARGO_NET_GIT_FETCH_WITH_CLI true
 
+    # Non versioned private variables
+    source /home/winterveil/.env.fish
+
     # =========================
     # =       ALIASES         =
     # =========================
@@ -91,5 +94,7 @@ if status is-interactive
     alias remi "/home/winterveil/src/remi/remi"
     alias ,git-reignore "/home/winterveil/scripts/git_reignore.sh"
 
-    # /home/winterveil/src/remi/remi
+    if test -z "$REMI_DISABLE"
+        /home/winterveil/src/remi/remi
+    end
 end
