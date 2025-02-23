@@ -81,7 +81,7 @@ function fish_prompt
     echo -n -s $nix_shell_info
 
     # conditionally print virtual environment info :: "my_current/working_dir :: nix, V"
-    set -q VIRTUAL_ENV_DISABLE_PROMPT or set -g VIRTUAL_ENV_DISABLE_PROMPT true
+    set -xg VIRTUAL_ENV_DISABLE_PROMPT 1
     if set -q VIRTUAL_ENV 
         if test -n "$nix_shell_info"
             echo -n ', '

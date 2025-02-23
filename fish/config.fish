@@ -93,6 +93,7 @@ if status is-interactive
     alias ,walls "qimgv /home/winterveil/Pictures/wallpapers"
     alias remi "/home/winterveil/src/remi/remi"
     alias ,git-reignore "/home/winterveil/scripts/git_reignore.sh"
+    alias lg "lazygit"
 
     if test -z "$REMI_DISABLE"
         /home/winterveil/src/remi/remi

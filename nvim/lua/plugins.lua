@@ -80,6 +80,14 @@ return {
       -- add any opts here
       provider = 'openai',
       auto_suggetions_provider = 'copilot',
+      openai = {
+        endpoint = 'https://api.deepseek.com/v1',
+        model = 'deepseek-chat',
+        timeout = 30000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 4096,
+        ['api_key_name'] = 'DEEPSEEK_API_KEY',
+      },
     },
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
     build = 'make',
@@ -168,9 +176,10 @@ return {
       vim.keymap.set('n', '<C-l>', function()
         harpoon:list():select(3)
       end)
-      vim.keymap.set('n', '<C-;>', function()
-        harpoon:list():select(4)
-      end)
+      -- NOTE: Can't map semicolon!
+      -- vim.keymap.set('n', '<C-;>', function()
+      --   harpoon:list():select(4)
+      -- end)
 
       -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set('n', '<S-H>', function()

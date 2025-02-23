@@ -49,6 +49,13 @@ function shellmind
         -d "$json_data"
     )
 
+    # check for the existence of an error field and print it if it exists
+    set error (echo $resp | jq -r '.error // empty')
+    if test -n "$error"
+        echo $error 1>&2
+        return
+    end
+
     set completion (echo $resp | jq -r '.choices[0].message.content')
     if test -z "$completion"
         echo "An error occurred while processing the input. Please try again." 1>&2

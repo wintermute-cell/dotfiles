@@ -37,6 +37,8 @@
       imageViewer = "nsxiv.desktop";
       videoPlayer = "mpv.desktop";
       audioPlayer = "vlc.desktop";
+      # pdfViewer = "org.pwmt.zathura.desktop";
+      pdfViewer = "sioyek.desktop";
     in {
       "text/html" = browser;
       "x-scheme-handler/http" = browser;
@@ -52,8 +54,8 @@
       "application/x-extension-xhtml" = browser;
       "application/x-extension-xht" = browser;
       "application/json" = browser;
-      "application/pdf" = "zathura.desktop";
-      "application/epub+zip" = "zathura.desktop";
+      "application/pdf" = pdfViewer;
+      "application/epub+zip" = pdfViewer;
       "text/plain" = "nvim.desktop";
       "text/markdown" = "nvim.desktop";
       "text/x-markdown" = "nvim.desktop";
@@ -174,8 +176,10 @@
     lazygit
     bottom  # system monitor like htop
     zathura
+    sioyek
     nsxiv
     dust # du but better UX
+    ncdu # ncurses du
     mpv
     signal-desktop
     discord
@@ -202,7 +206,7 @@
     sway-contrib.grimshot # sway screenshot helper
     # mnemosyne # NOTE: compilation broken on latest unstable 18.10.24
     xournalpp
-    gnome.adwaita-icon-theme # required by xournalpp
+    adwaita-icon-theme # required by xournalpp
     wl-mirror
     # (callPackage ../nix-packages/timetrace/default.nix {}) # replaced by watson
     figlet
@@ -234,6 +238,7 @@
     libreoffice
     (callPackage ../nix-packages/dam/default.nix {})
     go-task
+    typora
   ];
 
   # watson
@@ -450,7 +455,8 @@
       # xdg
       export XDG_CONFIG_HOME="$HOME/.config"
       export XDG_CACHE_HOME="$HOME/.cache"
-      export XDG_DATA_HOME="$HOME/.local/share"
+      export XDG_DATA_HOME="$HOME/.local/share:$XDG_DATA_HOME"
+      export XDG_DATA_DIRS="$HOME/.local/share/:$HOME/.nix-profile/share/:$XDG_DATA_DIRS"
       export XDG_STATE_HOME="$HOME/.local/state"
       
       # wayland specific
@@ -466,6 +472,7 @@
       
       # other
       #export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+      export LIBSEAT_BACKEND="logind"
       
       # cleanup
       export GNUPGHOME="$XDG_DATA_HOME"/gnupg

@@ -19,3 +19,6 @@ Host writersglen-publications.git.beanstalkapp.com
 Host 167.235.48.227
  HostName 167.235.48.227
  IdentityFile ~/.ssh/hetzner-tsserver
+Host 172.16.44.195
+  HostName 172.16.44.195
+  IdentityFile ~/.ssh/bachelor-vm
