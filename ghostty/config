@@ -1,0 +1,16 @@
+font-family = "mononoki"
+command = fish
+theme = flexoki-light
+window-decoration = none
+gtk-titlebar = false
+resize-overlay = never
+link-url = true
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+
+keybind = ctrl+equal=increase_font_size:2
+keybind = ctrl+minus=decrease_font_size:2
+keybind = ctrl+zero=reset_font_size
+
+keybind = ctrl+enter=unbind

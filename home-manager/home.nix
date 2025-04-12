@@ -1,4 +1,12 @@
-{ pkgs, config, inputs, ... }: {
+{ pkgs, config, ... }:
+let
+  # NOTE: this is used as a crutch since flake based home-manager cannot do
+  # direct writable symlinks of config files when using mkOutOfStoreSymlink
+  # with a relative path. Therefore we need to use the absolute path for the
+  # link source. To stay consistent, this is centrally defined as `dotfilesDirectory`.
+  # see: https://github.com/nix-community/home-manager/issues/3514
+  dotfilesDirectory = "${config.home.homeDirectory}/dotfiles";
+in {
 
   imports = [ ../overlays ];
 
@@ -520,29 +528,15 @@
   };
 
   home.file = {
-    # nvim / neovim
-    # "${config.xdg.configHome}/nvim" = {
-    #   source = ../nvim;
-    #   recursive = false;
-    # };
+    # nvim
+    "${config.xdg.configHome}/nvim".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/nvim";
 
     # git
     "${config.xdg.configHome}/git" = {
       source = ../git;
       recursive = false;
     };
-
-    # zshrc
-    #"${config.home.homeDirectory}/.zshrc" = {
-    #  source = ../zsh/.zshrc;
-    #  recursive = false;
-    #};
-
-    # zshenv
-    #"${config.home.homeDirectory}/.zshenv" = {
-    #  source = ../zsh/.zshenv;
-    #  recursive = false;
-    #};
 
     # fish
     "${config.xdg.configHome}/fish" = {
@@ -597,23 +591,11 @@
       '';
     };
 
-    # # waybar
-    # "${config.xdg.configHome}/waybar" = {
-    #   source = ../waybar;
-    #   recursive = false;
-    # };
-
     # zathura
     "${config.xdg.configHome}/zathura" = {
       source = ../zathura;
       recursive = false;
     };
-
-    # aseprite
-    #"${config.xdg.configHome}/aseprite" = {
-    #  source = ../aseprite;
-    #  recursive = false;
-    #};
 
     # fuzzel
     "${config.xdg.configHome}/fuzzel" = {
@@ -642,6 +624,24 @@
     # ssh
     "${config.home.homeDirectory}/.ssh/config" = {
       source = ../ssh/config;
+      recursive = false;
+    };
+
+    # ghostty
+    "${config.xdg.configHome}/ghostty" = {
+      source = ../ghostty;
+      recursive = false;
+    };
+
+    # river
+    "${config.xdg.configHome}/river" = {
+      source = ../river;
+      recursive = false;
+    };
+
+    # zellij
+    "${config.xdg.configHome}/zellij" = {
+      source = ../zellij;
       recursive = false;
     };
 

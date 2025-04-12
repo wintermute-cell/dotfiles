@@ -877,7 +877,7 @@ require('lazy').setup({
     },
   },
 
-  lockfile = os.getenv 'HOME' .. '/dotfiles/nvim/lazy-lock.json',
+  -- lockfile = os.getenv 'HOME' .. '/dotfiles/nvim/lazy-lock.json',
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
