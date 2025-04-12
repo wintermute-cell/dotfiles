@@ -22,3 +22,6 @@ Host 167.235.48.227
 Host 172.16.44.195
   HostName 172.16.44.195
   IdentityFile ~/.ssh/bachelor-vm
+Host 192.168.178.3
+  HostName 192.168.178.3
+  IdentityFile ~/.ssh/hikari

@@ -55,6 +55,13 @@ if status is-interactive
     # set -xg LD_LIBRARY_PATH "/home/wintermute/src/bemenu"
     # set -xg BEMENU_RENDERERS "/home/wintermute/src/bemenu"
     set -xg MOZ_ENABLE_WAYLAND 1
+    set -xg XDG_CURRENT_DESKTOP "river"
+    set -xg XDG_SESSION_TYPE "wayland"
+    set -xg XDG_SESSION_DESKTOP "river"
+    set -xg QT_QPA_PLATFORM "wayland"
+    set -xg GDK_BACKEND "wayland,x11"
+    set -xg SDL_VIDEODRIVER "wayland"
+    set -xg CLUTTER_BACKEND "wayland"
 
     # Theme configuration
     set -xg THEME_MODE "monotone"
@@ -71,6 +78,10 @@ if status is-interactive
 
     # Cargo configuration (compatibility with gitconfigs insteadOf)
     set -xg CARGO_NET_GIT_FETCH_WITH_CLI true
+
+    # Taskfile
+    set -xg TASK_X_ENV_PRECEDENCE 1
+
 
     # Non versioned private variables
     source /home/winterveil/.env.fish
@@ -94,6 +105,7 @@ if status is-interactive
     alias remi "/home/winterveil/src/remi/remi"
     alias ,git-reignore "/home/winterveil/scripts/git_reignore.sh"
     alias lg "lazygit"
+    alias ,ze "zellij"
 
     if test -z "$REMI_DISABLE"
         /home/winterveil/src/remi/remi

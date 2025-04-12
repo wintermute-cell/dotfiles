@@ -6,6 +6,8 @@
 
   programs.home-manager.enable = true;
 
+  manual.json.enable = true; # required for manix fix from https://github.com/nix-community/manix/issues/18
+
   # required to autoload fonts from packages installed via Home Manager
   fonts.fontconfig.enable = true;
 
@@ -18,7 +20,7 @@
   # };
 
   home.pointerCursor = {
-    gtk.enable = true;
+    gtk.enable = true;  # this was supposed to fix wrong cursor in firefox but oh well...
     x11.enable = true;
     name = "plan9";
     package = (pkgs.callPackage ../nix-packages/xcursor-plan9/default.nix {});
@@ -93,6 +95,7 @@
     # meta
     nix-search-cli
     comma
+    manix
 
     # base system stuff
     zip
@@ -127,6 +130,7 @@
     edwood
     wio
     dash
+    bc
 
     # networking stuff
     nmap
@@ -138,7 +142,11 @@
       i3ipc 
       packaging
       pandas
+      networkx
+      matplotlib
+      scipy
     ]))
+    uv
 
     python312Packages.pip
 
@@ -152,6 +160,7 @@
     sqlite
     elixir
     lua
+    jdk  # ltex-ls requires java
 
     # fonts
     fontpreview # pretty bad UX, only works from terminal; but works on NixOS, font-manager does not
@@ -173,6 +182,7 @@
     alacritty
     wezterm
     tmux
+    unstable.zellij
     lazygit
     bottom  # system monitor like htop
     zathura
@@ -214,7 +224,6 @@
     (callPackage ../nix-packages/pureref/default.nix {})
     ffmpeg
     reaper
-    davinci-resolve
     pandoc
     (texliveFull.withPackages (ps: with ps; [
       courier
@@ -239,6 +248,9 @@
     (callPackage ../nix-packages/dam/default.nix {})
     go-task
     typora
+    unstable.aider-chat
+    feishin # navidrome client
+    (callPackage ../nix-packages/markdown-flashcards/default.nix {})
   ];
 
   # watson
@@ -509,10 +521,10 @@
 
   home.file = {
     # nvim / neovim
-    "${config.xdg.configHome}/nvim" = {
-      source = ../nvim;
-      recursive = false;
-    };
+    # "${config.xdg.configHome}/nvim" = {
+    #   source = ../nvim;
+    #   recursive = false;
+    # };
 
     # git
     "${config.xdg.configHome}/git" = {

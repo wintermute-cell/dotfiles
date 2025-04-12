@@ -77,6 +77,17 @@ opt.background = 'light'
 -- opt.background = 'dark'
 
 -------------
+-- NETRW -----------
+------------------------------
+
+-- `p` previews files in a
+vim.g.netrw_preview = 1 -- ... vertical split
+vim.g.netrw_alto = 0 -- ... to the right.
+
+vim.g.netrw_liststyle = 1 -- long listing style (w/ time and size)
+vim.g.netrw_sizestyle = 'H' -- human readable sizes
+
+-------------
 -- USAGE -----------
 ------------------------------
 vim.cmd [[set iskeyword+=-]] -- treat '-' as part of a word
@@ -302,6 +313,24 @@ require('lazy').setup({
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'TelescopeResults',
+        callback = function(ctx)
+          vim.api.nvim_buf_call(ctx.buf, function()
+            vim.fn.matchadd('TelescopeParent', '\t\t.*$')
+            vim.api.nvim_set_hl(0, 'TelescopeParent', { link = 'Comment' })
+          end)
+        end,
+      })
+
+      local function filenameFirst(_, path)
+        local tail = vim.fs.basename(path)
+        local parent = vim.fs.dirname(path)
+        if parent == '.' then
+          return tail
+        end
+        return string.format('%s\t\t%s', tail, parent)
+      end
       require('telescope').setup {
         extensions = {
           ['ui-select'] = {
@@ -311,7 +340,7 @@ require('lazy').setup({
         defaults = {
           previewer = true,
 
-          layout_strategy = 'horizontal',
+          layout_strategy = 'vertical',
           layout_config = {
             width = 0.95,
             height = 0.85,
@@ -326,12 +355,19 @@ require('lazy').setup({
               end,
             },
 
-            -- dont know what pickers vertical and flex configs are for, I
-            -- stole this from teej's config
             vertical = {
-              width = 0.9,
+              -- width = 0.9,
+              width = function(_, cols, _)
+                if cols > 200 then
+                  return 190
+                else
+                  return math.floor(cols * 0.9)
+                end
+              end,
               height = 0.95,
               preview_height = 0.5,
+              mirror = true,
+              prompt_position = 'top',
             },
 
             flex = {
@@ -345,10 +381,25 @@ require('lazy').setup({
           sorting_strategy = 'descending',
           scroll_strategy = 'cycle',
           color_devicons = true,
+          path_display = filenameFirst,
         },
         pickers = {
           colorscheme = {
             enable_preview = true,
+          },
+          jumplist = {
+            path_display = function(_, path)
+              return require('telescope.utils').path_tail(path)
+            end,
+          },
+          buffers = {
+            mappings = {
+              i = {
+                ['<C-d>'] = 'delete_buffer',
+              },
+            },
+            sort_mru = true,
+            disable_coordinates = true,
           },
         },
       }
@@ -748,7 +799,7 @@ require('lazy').setup({
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
       statusline.section_location = function()
-        return '%2l:%-2v'
+        return '%2l:%-2v(%P)'
       end
 
       ---@diagnostic disable-next-line: duplicate-set-field
