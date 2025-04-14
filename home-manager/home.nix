@@ -5,7 +5,7 @@ let
   # with a relative path. Therefore we need to use the absolute path for the
   # link source. To stay consistent, this is centrally defined as `dotfilesDirectory`.
   # see: https://github.com/nix-community/home-manager/issues/3514
-  dotfilesDirectory = "${config.home.homeDirectory}/dotfiles";
+  dotfilesDirectory = "/etc/dotfiles";
 in {
 
   imports = [ ../overlays ];
@@ -110,6 +110,7 @@ in {
     unzip
     nvtopPackages.full
     trashy # safer alternative to rm, moves to xdg trash
+    (callPackage ../nix-packages/barster/default.nix {})
 
     # base dev stuff, often a dependency for other progs
     gcc
@@ -129,6 +130,7 @@ in {
     libnotify
     tree
     sshfs # mounting remote filesystems
+    mtpfs # mounting android phones (and kindle devices!)
     awscli2
     plan9port
     pkg-config
@@ -528,6 +530,12 @@ in {
   };
 
   home.file = {
+    # zellij
+    "${config.home.homeDirectory}/scripts" = {
+      source = ../scripts;
+      recursive = false;
+    };
+
     # nvim
     "${config.xdg.configHome}/nvim".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/nvim";
@@ -589,6 +597,18 @@ in {
           ${wrapper} $argv
         end
       '';
+    };
+
+    # waybar
+    "${config.xdg.configHome}/waybar" = {
+      source = ../waybar;
+      recursive = false;
+    };
+
+    # sioyek
+    "${config.xdg.configHome}/sioyek" = {
+      source = ../sioyek;
+      recursive = false;
     };
 
     # zathura

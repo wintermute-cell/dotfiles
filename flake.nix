@@ -36,7 +36,8 @@
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nur, ... }:
   let
     system = "x86_64-linux";
-    user = "winterveil";
+    winterveil = "winterveil";
+    work = "work";
     pkgs = import nixpkgs {
         inherit system;
         overlays = [ 
@@ -71,14 +72,34 @@
       };
   in {
     packages.${system}.default = home-manager.defaultPackage.${system};
-    homeConfigurations."winterveil" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.${winterveil} = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
         ./home-manager/home.nix
         {
           home = {
-            homeDirectory = "/home/${user}";
-            username = "${user}";
+            homeDirectory = "/home/${winterveil}";
+            username = "${winterveil}";
+            stateVersion = "23.11";
+          };
+        }
+        {
+          nixpkgs = {
+            config = {
+              allowUnfree = true;
+            };
+          };
+        }
+      ];
+    };
+    homeConfigurations.${work} = home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [
+        ./home-manager/home.nix
+        {
+          home = {
+            homeDirectory = "/home/${work}";
+            username = "${work}";
             stateVersion = "23.11";
           };
         }

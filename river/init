@@ -39,9 +39,9 @@ riverctl spawn "/home/winterveil/src/barster/barster | dam"
 
 # Keybinds
 riverctl map normal Super P spawn "j4-dmenu-desktop --dmenu='bemenu -i -l 12 --scrollbar autohide --center -W 0.16'"
-riverctl map normal Super 0 spawn /home/winterveil/scripts/desktop_environment/powermenu.sh
-riverctl map normal Super A spawn /home/winterveil/scripts/desktop_environment/audiomenu.sh
-riverctl map normal Super Print spawn /home/winterveil/scripts/desktop_environment/screencapmenu.sh
+riverctl map normal Super 0 spawn "$HOME/scripts/desktop_environment/powermenu.sh"
+riverctl map normal Super A spawn "$HOME/scripts/desktop_environment/audiomenu.sh"
+riverctl map normal Super Print spawn "$HOME/scripts/desktop_environment/screencapmenu.sh"
 
 riverctl map normal None Print spawn "grimshot copy area"
 # TODO: come up with something smarter for this:

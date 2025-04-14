@@ -1,0 +1,11 @@
+{
+    "layer": "bottom",
+    "position": "top",
+    "height": 18,
+    "margin-top": -18,
+    "modules-right": ["tray"],
+
+    "tray": {
+        "spacing": 4
+    }
+}
