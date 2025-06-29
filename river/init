@@ -34,8 +34,8 @@ riverctl spawn avizo-service # for volume & light indicators
 riverctl spawn nm-applet
 
 # Bar
-riverctl spawn "/home/winterveil/src/mtrakker/server/mtrakker"
-riverctl spawn "/home/winterveil/src/barster/barster | dam"
+# riverctl spawn "/home/winterveil/src/mtrakker/server/mtrakker"
+riverctl spawn "barster | dam"
 
 # Keybinds
 riverctl map normal Super P spawn "j4-dmenu-desktop --dmenu='bemenu -i -l 12 --scrollbar autohide --center -W 0.16'"
@@ -43,16 +43,19 @@ riverctl map normal Super 0 spawn "$HOME/scripts/desktop_environment/powermenu.s
 riverctl map normal Super A spawn "$HOME/scripts/desktop_environment/audiomenu.sh"
 riverctl map normal Super Print spawn "$HOME/scripts/desktop_environment/screencapmenu.sh"
 
+riverctl map normal Super S spawn "hyprpicker -a"
 riverctl map normal None Print spawn "grimshot copy area"
 # TODO: come up with something smarter for this:
 # riverctl map normal Super+Shift spawn wf-recorder --file "$HOME/Videos/recording_$(date +%d_%m_%y-%H:%M:%S).mp4" -g "$(slurp)" -r 144 -x yuv420p  --audio=alsa_output.usb-Focusrite_Scarlett_Solo_USB-00.HiFi__hw_USB_1__sink.monitor
 # riverctl map normal Super+Shift+Print spawn killall -s SIGINT wf-recorder
 
 # Ghostty is slow to start up, this is an attempted fix. See: https://github.com/ghostty-org/ghostty/discussions/2978
-riverctl spawn "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
-riverctl map normal Super Return spawn "ghostty --gtk-single-instance=true"
+# riverctl spawn "ghostty --gtk-single-instance=true --quit-after-last-window-closed=false --initial-window=false"
+# riverctl map normal Super Return spawn "ghostty --gtk-single-instance=true"
+riverctl map normal Super Return spawn "foot"
 
 riverctl map normal Super+Shift C close
+riverctl map normal Super+Shift N close
 
 # Super+J and Super+K to focus the next/previous view in the layout stack
 riverctl map normal Super J focus-view next
@@ -75,12 +78,12 @@ riverctl map normal Super+Shift Comma send-to-output previous
 riverctl map normal Super+Shift Return zoom
 
 # Super+H and Super+L to decrease/increase the main ratio of rivertile(1)
-riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
-riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
+# riverctl map normal Super H send-layout-cmd rivertile "main-ratio -0.05"
+# riverctl map normal Super L send-layout-cmd rivertile "main-ratio +0.05"
 
 # Super+Shift+I and Super+Shift+D to increment/decrement the main count of rivertile(1)
-riverctl map normal Super+Shift I send-layout-cmd rivertile "main-count +1"
-riverctl map normal Super+Shift D send-layout-cmd rivertile "main-count -1"
+# riverctl map normal Super+Shift I send-layout-cmd rivertile "main-count +1"
+# riverctl map normal Super+Shift D send-layout-cmd rivertile "main-count -1"
 
 # Super+Alt+{H,J,K,L} to move views
 riverctl map normal Super+Alt H move left 100
@@ -183,7 +186,7 @@ done
 
 # Set background and border color
 riverctl background-color 0x111111
-riverctl border-color-focused 0xaf3029
+riverctl border-color-focused 0xff0000
 riverctl border-color-unfocused 0x586e75
 riverctl border-width 2
 
@@ -191,12 +194,15 @@ riverctl border-width 2
 if wlr-randr | grep -q "DP-3"; then
     wlr-randr --output "DP-3" --mode 2560x1440 --pos 0,0
     wlr-randr --output "eDP-1" --mode 2560x1440 --pos 2560,0 --scale 1.0
+elif wlr-randr | grep -q "DP-1"; then
+    wlr-randr --output "DP-1" --mode 3840x2160 --pos 0,0 --scale 1.0
+    wlr-randr --output "eDP-1" --mode 2560x1440 --pos 3840,0 --scale 1.0
 else
     wlr-randr --output "eDP-1" --mode 2560x1440 --pos 0,0 --scale 1.0
 fi
 
 # Set caps to escape
-riverctl keyboard-layout -options "caps:escape_shifted_capslock,compose:rctrl" us
+riverctl keyboard-layout -options "ctrl:nocaps,compose:rctrl" us
 
 # Focus follows mouse & mouse follows focus
 riverctl focus-follows-cursor always
@@ -220,8 +226,26 @@ riverctl rule-add -app-id "bar" csd
 
 # Set the default layout generator to be rivertile and start it.
 # River will send the process group of the init executable SIGTERM on exit.
-riverctl default-layout rivertile
-rivertile -view-padding 0 -outer-padding 0 &
+riverctl default-layout wideriver
+# rivertile -view-padding 0 -outer-padding 0 &
+riverctl rule-add ssd # server side decorations, required for client outlines
+
+riverctl map normal Super L send-layout-cmd wideriver "--ratio -0.05"
+riverctl map normal Super H send-layout-cmd wideriver "--ratio +0.05"
+
+riverctl map normal Super T send-layout-cmd wideriver "--layout wide"
+riverctl map normal Super M send-layout-cmd wideriver "--layout monocle"
+
+riverctl map normal Super+Shift I send-layout-cmd wideriver "--count +1"
+riverctl map normal Super+Shift D send-layout-cmd wideriver "--count -1"
+
+wideriver \
+    --layout wide \
+    --stack diminish \
+    --count-wide-left 2 \
+    --ratio-wide 0.36 \
+    --border-color-focused 0xff0000 \
+    --border-color-unfocused 0x586e75 \
 
 # riverctl default-layout river-luatile
 # riverctl map normal Super H send-layout-cmd luatile adjust_split(0.1)

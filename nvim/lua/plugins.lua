@@ -1,5 +1,15 @@
 return {
 
+  -- [[ Optimization ]] --
+  -------------------
+  { -- Automatically disables some features when opening a large file
+    'LunarVim/bigfile.nvim',
+    opts = {
+      -- size of the file in MiB, plugin rounds file sizes to the closest MiB
+      filesize = 2,
+    },
+  },
+
   -- [[ Visuals ]] --
   -------------------
   { -- Adds colorization to hex codes like #ff0000
@@ -50,86 +60,121 @@ return {
       local ss = require 'smart-splits'
       ss.setup {
         default_amount = 5,
+        cursor_follows_swapped_bufs = true,
+        multiplexer_integration = false,
       }
-      -- Resize splits
-      vim.keymap.set('n', '<C-w><C-h>', require('smart-splits').resize_left, { desc = 'resize split leftward' })
-      vim.keymap.set('n', '<C-w><C-j>', require('smart-splits').resize_down, { desc = 'resize split downward' })
-      vim.keymap.set('n', '<C-w><C-k>', require('smart-splits').resize_up, { desc = 'resize split upward' })
-      vim.keymap.set('n', '<C-w><C-l>', require('smart-splits').resize_right, { desc = 'resize split rightward' })
+
+      local function resize_mode_off()
+        -- Unmap the resize mode keys
+        vim.keymap.del('n', 'h')
+        vim.keymap.del('n', 'j')
+        vim.keymap.del('n', 'k')
+        vim.keymap.del('n', 'l')
+        vim.keymap.del('n', '<C-w><C-h>')
+        vim.keymap.del('n', '<C-w><C-j>')
+        vim.keymap.del('n', '<C-w><C-k>')
+        vim.keymap.del('n', '<C-w><C-l>')
+        vim.keymap.del('n', '<Esc>')
+      end
+
+      local function resize_mode_on()
+        -- Resize splits
+        vim.keymap.set('n', 'h', ss.resize_left, { desc = 'resize split leftward' })
+        vim.keymap.set('n', 'j', ss.resize_down, { desc = 'resize split downward' })
+        vim.keymap.set('n', 'k', ss.resize_up, { desc = 'resize split upward' })
+        vim.keymap.set('n', 'l', ss.resize_right, { desc = 'resize split rightward' })
+        -- Swapping splits
+        vim.keymap.set('n', '<C-w><C-h>', ss.swap_buf_left, { desc = 'swap with left split' })
+        vim.keymap.set('n', '<C-w><C-j>', ss.swap_buf_down, { desc = 'swap with split below' })
+        vim.keymap.set('n', '<C-w><C-k>', ss.swap_buf_up, { desc = 'swap with split above' })
+        vim.keymap.set('n', '<C-w><C-l>', ss.swap_buf_right, { desc = 'swap with right split' })
+
+        -- Make ESC key exit resize mode
+        vim.keymap.set('n', '<Esc>', function()
+          vim.g.resize_mode = false
+          resize_mode_off()
+          vim.notify('Resize mode is now OFF', vim.log.levels.INFO, { title = 'Smart Splits' })
+        end, { desc = 'Exit resize mode' })
+      end
+
+      vim.g.resize_mode = false
+      vim.keymap.set('n', '<C-w>r', function()
+        vim.g.resize_mode = not vim.g.resize_mode
+        vim.notify('Resize mode is now ' .. (vim.g.resize_mode and 'ON' or 'OFF'), vim.log.levels.INFO, { title = 'Smart Splits' })
+        if vim.g.resize_mode then
+          resize_mode_on()
+        else
+          resize_mode_off()
+        end
+      end, { desc = 'Toggle resize mode' })
 
       -- Moving between splits
-      vim.keymap.set('n', '<C-w>h', require('smart-splits').move_cursor_left, { desc = 'move to left split' })
-      vim.keymap.set('n', '<C-w>j', require('smart-splits').move_cursor_down, { desc = 'move to split below' })
-      vim.keymap.set('n', '<C-w>k', require('smart-splits').move_cursor_up, { desc = 'move to split above' })
-      vim.keymap.set('n', '<C-w>l', require('smart-splits').move_cursor_right, { desc = 'move to right split' })
-
-      -- Swapping splits
-      vim.keymap.set('n', '<C-w><A-h>', require('smart-splits').swap_buf_left, { desc = 'swap with left split' })
-      vim.keymap.set('n', '<C-w><A-j>', require('smart-splits').swap_buf_down, { desc = 'swap with split below' })
-      vim.keymap.set('n', '<C-w><A-k>', require('smart-splits').swap_buf_up, { desc = 'swap with split above' })
-      vim.keymap.set('n', '<C-w><A-l>', require('smart-splits').swap_buf_right, { desc = 'swap with right split' })
+      vim.keymap.set('n', '<C-w>h', ss.move_cursor_left, { desc = 'move to left split' })
+      vim.keymap.set('n', '<C-w>j', ss.move_cursor_down, { desc = 'move to split below' })
+      vim.keymap.set('n', '<C-w>k', ss.move_cursor_up, { desc = 'move to split above' })
+      vim.keymap.set('n', '<C-w>l', ss.move_cursor_right, { desc = 'move to right split' })
     end,
   },
 
-  {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    lazy = false,
-    version = '*', -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
-    opts = {
-      -- add any opts here
-      provider = 'openai',
-      auto_suggetions_provider = 'copilot',
-      openai = {
-        endpoint = 'https://api.deepseek.com/v1',
-        model = 'deepseek-chat',
-        timeout = 30000, -- Timeout in milliseconds
-        temperature = 0,
-        max_tokens = 4096,
-        ['api_key_name'] = 'DEEPSEEK_API_KEY',
-      },
-    },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = 'make',
-    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
-    dependencies = {
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      --- The below dependencies are optional,
-      'echasnovski/mini.pick', -- for file_selector provider mini.pick
-      'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-      'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
-      'ibhagwan/fzf-lua', -- for file_selector provider fzf
-      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
-      'zbirenbaum/copilot.lua', -- for providers='copilot'
-      {
-        -- support for image pasting
-        'HakonHarnes/img-clip.nvim',
-        event = 'VeryLazy',
-        opts = {
-          -- recommended settings
-          default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
-            drag_and_drop = {
-              insert_mode = true,
-            },
-            -- required for Windows users
-            use_absolute_path = true,
-          },
-        },
-      },
-      {
-        -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          file_types = { 'Avante' },
-        },
-        ft = { 'Avante' },
-      },
-    },
-  },
+  -- {
+  --   'yetone/avante.nvim',
+  --   event = 'VeryLazy',
+  --   lazy = false,
+  --   version = '*', -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
+  --   opts = {
+  --     -- add any opts here
+  --     provider = 'openai',
+  --     auto_suggetions_provider = 'copilot',
+  --     openai = {
+  --       endpoint = 'https://openrouter.ai/api/v1',
+  --       model = 'anthropic/claude-3.7-sonnet',
+  --       timeout = 30000, -- Timeout in milliseconds
+  --       temperature = 0.2,
+  --       max_tokens = 4096,
+  --       ['api_key_name'] = 'OPENROUTER_API_KEY',
+  --     },
+  --   },
+  --   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+  --   build = 'make',
+  --   -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+  --   dependencies = {
+  --     'stevearc/dressing.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'MunifTanjim/nui.nvim',
+  --     --- The below dependencies are optional,
+  --     'echasnovski/mini.pick', -- for file_selector provider mini.pick
+  --     'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
+  --     'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+  --     'ibhagwan/fzf-lua', -- for file_selector provider fzf
+  --     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
+  --     'zbirenbaum/copilot.lua', -- for providers='copilot'
+  --     {
+  --       -- support for image pasting
+  --       'HakonHarnes/img-clip.nvim',
+  --       event = 'VeryLazy',
+  --       opts = {
+  --         -- recommended settings
+  --         default = {
+  --           embed_image_as_base64 = false,
+  --           prompt_for_file_name = false,
+  --           drag_and_drop = {
+  --             insert_mode = true,
+  --           },
+  --           -- required for Windows users
+  --           use_absolute_path = true,
+  --         },
+  --       },
+  --     },
+  --     {
+  --       -- Make sure to set this up properly if you have lazy=true
+  --       'MeanderingProgrammer/render-markdown.nvim',
+  --       opts = {
+  --         file_types = { 'Avante' },
+  --       },
+  --       ft = { 'Avante' },
+  --     },
+  --   },
+  -- },
 
   {
     'zbirenbaum/copilot.lua',
@@ -198,84 +243,6 @@ return {
     end,
   },
 
-  --   {
-  --     dir = '/home/winterveil/lab/lir.nvim',
-  --     config = function()
-  --       local lir = require 'lir'
-  --       local actions = require 'lir.actions'
-  --       local mark_actions = require 'lir.mark.actions'
-  --       local clipboard_actions = require 'lir.clipboard.actions'
-  --
-  --       local function open_with_xdg(f)
-  --         local f = lir.get_context():current().fullpath
-  --         vim.fn.system("xdg-open '" .. string.gsub(f, '([\'"\\])', '\\%1') .. "'")
-  --       end
-  --
-  --       local function reverse_sort()
-  --         local f = lir.get_context().files
-  --         if vim.g.lir_is_reverse then
-  --           vim.g.lir_is_reverse = not vim.g.lir_is_reverse
-  --           table.sort(f, function(a, b)
-  --             return a.name < b.name
-  --           end)
-  --         else
-  --           vim.g.lir_is_reverse = true
-  --           table.sort(f, function(a, b)
-  --             return a.name > b.name
-  --           end)
-  --         end
-  --         lir.get_context().files = f
-  --         actions.reload()
-  --       end
-  --
-  --       lir.setup {
-  --         show_hidden_files = false,
-  --         header = [[===============================================================================
-  --   Quick Help:
-  --     <CR>: open          <Del>: delete      <C-h>: toggle hidden
-  --     <C-l>: refresh      -: up              a: toggle hidden
-  --     c: cd               d: mkdir           D: delete
-  --     gf: open            gh: toggle hidden  R: rename
-  --     s: sort             t: tabedit         v: vsplit
-  --     x: open with xdg    %: new file        m: mark
-  --     M: unmark           <Space>: toggle mark  y: yank path
-  -- ===============================================================================]],
-  --         disable_highlight = true,
-  --         show_navigation = true,
-  --         devicons = { enable = false },
-  --         mappings = {
-  --           ['<CR>'] = actions.edit, -- Enter to open a file/directory
-  --           ['<Del>'] = actions.delete, -- Del to delete a file/directory
-  --           ['<C-h>'] = actions.toggle_show_hidden, -- Ctrl-H to toggle hidden files
-  --           ['<C-l>'] = actions.reload, -- Ctrl-L to refresh the directory
-  --           ['-'] = actions.up, -- '-' to go up one directory
-  --           ['a'] = actions.toggle_show_hidden, -- 'a' to toggle normal/hidden file visibility
-  --           ['c'] = actions.cd, -- 'c' to change directory
-  --           ['d'] = actions.mkdir, -- 'd' to create a directory
-  --           ['D'] = actions.delete, -- 'D' to delete the file/directory
-  --           ['gf'] = actions.edit, -- 'gf' to open the file
-  --           ['gh'] = actions.toggle_show_hidden, -- 'gh' to toggle hidden files visibility
-  --           ['R'] = actions.rename, -- 'R' to rename a file/directory
-  --           ['s'] = reverse_sort, -- 's' to refresh (sort equivalent)
-  --           ['t'] = actions.tabedit, -- 't' to open a file in a new tab
-  --           ['v'] = actions.vsplit, -- 'v' to open a file in a vertical split
-  --           ['x'] = open_with_xdg, -- 'x' to open the file under cursor
-  --           ['%'] = actions.newfile, -- '%' to create a new file
-  --           ['m'] = mark_actions.mark, -- 'm' to mark a file
-  --           ['M'] = mark_actions.unmark, -- 'M' to unmark files
-  --           ['<Space>'] = mark_actions.toggle, -- Space to toggle marks
-  --           ['y'] = actions.yank_path, -- 'y' to yank the file path
-  --         },
-  --         -- on_init = function()
-  --         --   -- prepend the current buffer with a header like `hello world`
-  --         --   vim.api.nvim_buf_set_option(0, 'modifiable', true)
-  --         --   vim.api.nvim_buf_set_lines(0, 0, 0, false, { 'hello world' })
-  --         --   vim.api.nvim_buf_set_option(0, 'modifiable', false)
-  --         -- end,
-  --       }
-  --     end,
-  --   },
-
   -- [[ Languages ]] --
   ---------------------
   {
@@ -296,39 +263,7 @@ return {
         autocmd FileType fish compiler fish
         autocmd FileType fish setlocal textwidth=79
         autocmd FileType fish setlocal foldmethod=expr
-      ]]
+        ]]
     end,
   },
-
-  -- {
-  --   'Badhi/nvim-treesitter-cpp-tools',
-  --   dependencies = { 'nvim-treesitter/nvim-treesitter' },
-  --   -- Optional: Configuration
-  --   opts = function()
-  --     local options = {
-  --       preview = {
-  --         quit = 'q', -- optional keymapping for quit preview
-  --         accept = '<tab>', -- optional keymapping for accept preview
-  --       },
-  --       header_extension = 'h', -- optional
-  --       source_extension = 'cpp', -- optional
-  --       custom_define_class_function_commands = { -- optional
-  --         TSCppImplWrite = {
-  --           output_handle = require('nt-cpp-tools.output_handlers').get_add_to_cpp(),
-  --         },
-  --         --[[
-  --               <your impl function custom command name> = {
-  --                   output_handle = function (str, context)
-  --                       -- string contains the class implementation
-  --                       -- do whatever you want to do with it
-  --                   end
-  --               }
-  --               ]]
-  --       },
-  --     }
-  --     return options
-  --   end,
-  --   -- End configuration
-  --   config = true,
-  -- },
 }

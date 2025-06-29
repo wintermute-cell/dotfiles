@@ -1,0 +1,15 @@
+Host github.com
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/github.com
+
+Host github.com.private
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/private.github.com
+
+Host logs.dieter-datenschutz.de
+     HostName logs.dieter-datenschutz.de
+     User julius
+     IdentityFile ~/.ssh/logs.dieter-datenschutz.de
+

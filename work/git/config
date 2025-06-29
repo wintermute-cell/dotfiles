@@ -1,0 +1,10 @@
+[user]
+	email = julius@dieter-datenschutz.de
+	name = kjulius0
+
+[url "ssh://git@github.com/"]
+insteadOf = https://github.com/
+
+# This is a hack to allow the user to use the flake at /etc/dotfiles
+[safe]
+    directory = *

@@ -7,9 +7,6 @@ let
   # see: https://github.com/nix-community/home-manager/issues/3514
   dotfilesDirectory = "/etc/dotfiles";
 in {
-
-  imports = [ ../overlays ];
-
   news.display = "silent";
 
   programs.home-manager.enable = true;
@@ -108,6 +105,7 @@ in {
     # base system stuff
     zip
     unzip
+    dtrx # extraction multitool (Do The Right Extraction)
     nvtopPackages.full
     trashy # safer alternative to rm, moves to xdg trash
     (callPackage ../nix-packages/barster/default.nix {})
@@ -135,12 +133,15 @@ in {
     plan9port
     pkg-config
     btop
+    glances
     fzf
     xterm
     edwood
     wio
     dash
     bc
+    dbeaver-bin
+    xorg.xkeyboardconfig # just to have the man pages
 
     # networking stuff
     nmap
@@ -155,6 +156,8 @@ in {
       networkx
       matplotlib
       scipy
+      pywayland
+      evdev
     ]))
     uv
 
@@ -174,18 +177,25 @@ in {
 
     # fonts
     fontpreview # pretty bad UX, only works from terminal; but works on NixOS, font-manager does not
-    (nerdfonts.override { fonts = [ "Iosevka" "IosevkaTerm" ]; })
+    nerd-fonts.iosevka
+    nerd-fonts.iosevka-term
     sarasa-gothic
     noto-fonts
     noto-fonts-cjk-sans
     noto-fonts-emoji
     mononoki
+    terminus_font
+    # creep
+    cozette
+    # tamzen
 
     # neovim and its deps
     unstable.neovim
     stylua  # external prog, used for formatting lua code
     ripgrep
     tree-sitter # the latex plugin needs this to be a PATH executable
+    neovide
+    neovim-remote
 
     # user progs
     thunderbird
@@ -199,17 +209,19 @@ in {
     sioyek
     nsxiv
     dust # du but better UX
-    ncdu # ncurses du
+    # ncdu # ncurses du
+    dua # ncdu but better and faster
     mpv
-    signal-desktop
+    unstable.signal-desktop
     discord
     pcmanfm
     aseprite
-    neofetch
+    fastfetch
     teamspeak_client
     pavucontrol
     chafa  # image/gif to textmode art cli tool
-    (callPackage ../nix-packages/streamrip/streamrip.nix {})
+    # (callPackage ../nix-packages/streamrip/streamrip.nix {})
+    streamrip
     (gimp-with-plugins.override {
       plugins = with gimpPlugins; [
         gmic
@@ -221,9 +233,11 @@ in {
     mpd
     # cantata # mpd client / music player # NOTE: compilation broken on latest unstable 18.10.24
     obsidian
+    anki-bin
     bruno # API IDE like Postman
     wf-recorder # wayland screen recorder
     sway-contrib.grimshot # sway screenshot helper
+    hyprpicker # color picker
     # mnemosyne # NOTE: compilation broken on latest unstable 18.10.24
     xournalpp
     adwaita-icon-theme # required by xournalpp
@@ -233,16 +247,14 @@ in {
     obs-studio
     (callPackage ../nix-packages/pureref/default.nix {})
     ffmpeg
-    reaper
     pandoc
     (texliveFull.withPackages (ps: with ps; [
       courier
     ]))
     liberation_ttf_v1 # some basic fonts
     unstable.prusa-slicer
-    jetbrains.goland
-    jetbrains.clion
-    unstable.zoom-us
+    # jetbrains.goland
+    # jetbrains.clion
     vlc
     avizo
     kitty
@@ -254,24 +266,15 @@ in {
     yt-dlp
     rx # vim like pixelart program
     lazydocker
-    libreoffice
+    # libreoffice
     (callPackage ../nix-packages/dam/default.nix {})
     go-task
     typora
     unstable.aider-chat
-    feishin # navidrome client
+    unstable.feishin # navidrome client
     (callPackage ../nix-packages/markdown-flashcards/default.nix {})
+    nyxt
   ];
-
-  # watson
-  programs.watson = {
-    enable = true;
-    enableZshIntegration = true;
-    settings.options = {
-      pager = false;
-      date_format = "%d.%m.%Y";
-    };
-  };
 
   services.dunst = {
     enable = true;
@@ -345,7 +348,8 @@ in {
         "general.autoScroll" = true;
         "browser.toolbars.bookmarks.visibility" = "always";
       };
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
+        kagi-search
         tridactyl
         bitwarden
         sponsorblock
@@ -372,161 +376,9 @@ in {
     enableZshIntegration = true;
   };
 
-  programs.zsh = {
+  programs.zoxide = {
     enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    #dotDir = "${config.xdg.configHome}/zsh";
-    history = {
-      extended = true;
-      path = "${config.xdg.stateHome}/zsh/.history";
-      size = 10000;
-      save = 10000;
-      share = true;
-
-    };
-
-    initExtraBeforeCompInit = ''
-      fpath+=("${config.home.profileDirectory}"/share/zsh/site-functions "${config.home.profileDirectory}"/share/zsh/$ZSH_VERSION/functions "${config.home.profileDirectory}"/share/zsh/vendor-completions)
-    '';
-
-    initExtra = ''
-      setopt appendhistory
-      
-      # immediately add to history
-      setopt INC_APPEND_HISTORY
-      
-      # timestamp for history entries
-      export HISTTIMEFORMAT="[%F %T] "
-      setopt EXTENDED_HISTORY
-      
-      setopt extendedglob nomatch # extended globbing
-      unsetopt beep autocd # no bell, no autocd
-      bindkey -v # vi mode
-      
-      # custom prompt
-      setopt prompt_subst # reeval prompt every time it is printed
-      git_prompt() {
-        BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-      
-        if [ ! -z $BRANCH ]; then
-          echo -n "[$BRANCH"
-          if [ ! -z "$(git status --short)" ]; then
-            echo -n "+"
-          fi
-          echo -n "]"
-        fi
-      }
-
-      dev_shell_prompt() {
-        if [ -n "$IN_DEV_SHELL" ]; then
-          echo "[DEV]"
-        fi
-      }
-      
-      #PS1='%2~ $(git_prompt)%# '
-      PS1='$(dev_shell_prompt) %2~ $(git_prompt)%# '
-      
-      # Change cursor shape for different vi modes.
-      function zle-keymap-select {
-        if [[ $KEYMAP == vicmd ]] ||
-           [[ $1 = 'block' ]]; then
-          echo -ne '\e[1 q'
-        elif [[ $KEYMAP == main ]] ||
-             [[ $KEYMAP == viins ]] ||
-             [[ $KEYMAP = "" ]] ||
-             [[ $1 = 'beam' ]]; then
-          echo -ne '\e[5 q'
-        fi
-      }
-      zle -N zle-keymap-select
-      zle-line-init() {
-          zle -K viins # initiate `vi insert` as keymap (can be removed if `bindkey -V` has been set elsewhere)
-          echo -ne "\e[5 q"
-      }
-      zle -N zle-line-init
-      echo -ne '\e[5 q' # Use beam shape cursor on startup.
-      preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
-      # enable reverse search
-      bindkey '^R' history-incremental-search-backward
-      
-      bindkey '^n' expand-or-complete
-      bindkey '^p' reverse-menu-complete
-      
-      # Edit line in vim with ctrl-e:
-      autoload edit-command-line; zle -N edit-command-line
-      bindkey '^E' edit-command-line
-      bindkey '^[L' autosuggest-accept
-    '';
-
-    envExtra = ''
-      export TERM="xterm-256color" # some programs/systems don't recognize 'alacritty', so use xterm-256color
-      export VISUAL="nvim"
-      if [[ -n $SSH_CONNECTION ]]; then
-          export EDITOR="vim"
-      else
-          export EDITOR=$VISUAL
-      fi
-      
-      # $PATH
-      #export PATH="/home/wintermute/.local/bin:/usr/bin:$PATH"
-      #export PATH="$(go env GOBIN):$(go env GOPATH)/bin:$PATH"
-      
-      # xdg
-      export XDG_CONFIG_HOME="$HOME/.config"
-      export XDG_CACHE_HOME="$HOME/.cache"
-      export XDG_DATA_HOME="$HOME/.local/share:$XDG_DATA_HOME"
-      export XDG_DATA_DIRS="$HOME/.local/share/:$HOME/.nix-profile/share/:$XDG_DATA_DIRS"
-      export XDG_STATE_HOME="$HOME/.local/state"
-      
-      # wayland specific
-      #export LD_LIBRARY_PATH="/home/wintermute/src/bemenu"
-      #export BEMENU_RENDERERS="/home/wintermute/src/bemenu"
-      export MOZ_ENABLE_WAYLAND=1
-      
-      # theme
-      # export THEME_MODE="flowver"
-      export THEME_MODE="monotone"
-      export XCURSOR_SIZE=20
-      export XCURSOR_THEME=plan9
-      
-      # other
-      #export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-      export LIBSEAT_BACKEND="logind"
-      
-      # cleanup
-      export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-      export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc
-      export XCURSOR_PATH=/usr/share/icons:$XDG_DATA_HOME/icons
-      export LESSHISTFILE="$XDG_CACHE_HOME"/less/history
-      export XINITRC="$XDG_CONFIG_HOME"/X11/xinitrc
-      export TEXMFHOME="$XDG_CONFIG_HOME/texmf"
-      
-      # cargo (compatibility with gitconfigs insteadOf)
-      export CARGO_NET_GIT_FETCH_WITH_CLI=true
-    '';
-
-    shellAliases = {
-      # aliases
-      "v"               = "nvim";
-      "rm"              = "rm -I";
-      "py"              = "python";
-      "n"               = "nnn -edDgx";
-      ",ide"            = "${config.home.homeDirectory}/scripts/ide.sh";
-      ",vide"           = "${config.home.homeDirectory}/scripts/vide.sh";
-      ",staticsrv"      = "go run ${config.home.homeDirectory}/scripts/staticwebserver.go";
-      ",newtask"        = "${config.home.homeDirectory}/scripts/new_task.sh";
-      "t"               = "task"; # careful, setting this to go-task will break completion, as completion expects "task"
-      "del"             = "trashy put";
-      ",nix-switch-hm"  = "${config.home.homeDirectory}/scripts/nixos/home_manager_switch.sh";
-      ",nix-switch-os"  = "${config.home.homeDirectory}/scripts/nixos/nixos_switch.sh";
-      ",ws"             = "watson start";
-      ",wstop"          = "watson stop";
-      ",wclock"         = "watch -n 5 \"watson status | sed 's/^.*started \\(.*\\) ago (.*$/\\1/' | figlet\" ";
-      ",prime-run"      = "${config.home.homeDirectory}/scripts/prime-run.sh";
-    };
+    # enableFishIntegration = true; # doesnt work if fish is not managed by home-manager
   };
 
   home.file = {
@@ -547,10 +399,12 @@ in {
     };
 
     # fish
-    "${config.xdg.configHome}/fish" = {
-      source = ../fish;
-      recursive = false;
-    };
+    # "${config.xdg.configHome}/fish" = {
+    #   source = ../fish;
+    #   recursive = false;
+    # };
+    "${config.xdg.configHome}/fish".source = # fish requires .config/fish/fish_variables to be writable
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesDirectory}/fish";
 
     # sway
     "${config.xdg.configHome}/sway" = {

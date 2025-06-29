@@ -20,16 +20,16 @@
   description = "home manager flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nur.url = "github:nix-community/NUR";
   };
 
@@ -52,18 +52,14 @@
               rustPlatform = old.rustPlatform // {
                 buildRustPackage = args:
                   old.rustPlatform.buildRustPackage (args // {
-
                     version = "0.8.0-pr20";
-
                     src = prev.fetchFromGitHub {
                       owner = "nix-community";
                       repo = "manix";
                       rev = "c532d14b0b59d92c4fab156fc8acd0565a0836af";
                       sha256 = "sha256-Uo+4/be6rT0W8Z1dvCRXOANvoct6gJ4714flhyFzmKU=";
                     };
-
-                    cargoHash = "sha256-ey8nXMCFnDSlJl+2uYYFm1YrhJ+r0sq48qtCwhqI0mo=";
-
+                    cargoHash = "sha256-FTrKdOuXTOqr7on4RzYl/UxgUJqh+Rk3KJXqsW0fuo0=";
                   });
               };
             });
@@ -75,7 +71,8 @@
     homeConfigurations.${winterveil} = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ./home-manager/home.nix
+        ./home-manager/base.nix
+        ./home-manager/winterveil.nix
         {
           home = {
             homeDirectory = "/home/${winterveil}";
@@ -95,7 +92,8 @@
     homeConfigurations.${work} = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
-        ./home-manager/home.nix
+        ./home-manager/base.nix
+        ./home-manager/work.nix
         {
           home = {
             homeDirectory = "/home/${work}";

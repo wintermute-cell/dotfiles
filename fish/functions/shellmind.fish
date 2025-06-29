@@ -10,7 +10,7 @@ function shellmind
     set ADDITIONAL_PROMPT ""
 
     # The openai model name. Options: https://platform.openai.com/docs/models
-    set MODEL "gpt-4o-mini"
+    set MODEL "gpt-4.1-mini"
 
     # END CONFIGURATION
     # ===================
